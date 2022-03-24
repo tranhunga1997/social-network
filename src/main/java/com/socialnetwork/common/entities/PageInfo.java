@@ -5,8 +5,10 @@ import java.time.LocalDateTime;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.socialnetwork.common.entities.user.UserEntity;
@@ -66,8 +68,10 @@ public class PageInfo {
 	
 	
 	@JoinColumn(name="owner_id", updatable = false, insertable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private UserEntity owner;
 	
 	@JoinColumn(name="block_cause_id", updatable = false, insertable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
 	private BlockCauseInfo blockCauseInfo;
 }
