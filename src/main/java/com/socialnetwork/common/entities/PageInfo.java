@@ -51,7 +51,7 @@ public class PageInfo {
 	@Convert(converter = BooleanConvert.class)
 	private boolean delFlag;
 	//del_at
-	@Column(name="update_at")
+	@Column(name="del_at")
 	private LocalDateTime delAt;
 	//block_flag
 	@Column(name="block_flag", nullable = false)
