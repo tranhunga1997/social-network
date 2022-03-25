@@ -23,7 +23,7 @@ import lombok.Data;
  *
  */
 @Entity
-@Table(name="page_info")
+@Table(name="m_page_info")
 @Data
 public class PageInfo {
 	//page_id

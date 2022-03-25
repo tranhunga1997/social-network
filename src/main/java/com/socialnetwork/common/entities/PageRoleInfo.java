@@ -13,7 +13,7 @@ import lombok.Data;
  *
  */
 @Entity
-@Table(name="page_role_info")
+@Table(name="m_page_role_info")
 @Data
 public class PageRoleInfo {
 	@Id

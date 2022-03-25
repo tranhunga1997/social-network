@@ -18,7 +18,7 @@ import com.socialnetwork.common.types.BooleanConvert;
 import lombok.Data;
 
 @Entity
-@Table(name="page_member_info")
+@Table(name="m_page_member_info")
 @Data
 @IdClass(PageMemberPk.class)
 public class PageMemberInfo {

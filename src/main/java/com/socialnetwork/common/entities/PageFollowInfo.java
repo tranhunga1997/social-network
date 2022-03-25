@@ -16,7 +16,7 @@ import com.socialnetwork.common.entities.user.UserEntity;
 import lombok.Data;
 
 @Entity
-@Table(name="page_follow_info")
+@Table(name="m_page_follow_info")
 @Data
 @IdClass(PageFollowPk.class)
 public class PageFollowInfo {
