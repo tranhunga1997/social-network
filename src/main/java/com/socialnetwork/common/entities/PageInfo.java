@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.socialnetwork.common.entities.user.UserEntity;
 import com.socialnetwork.common.types.BooleanConvert;
 import com.socialnetwork.common.types.PageType;
 import com.socialnetwork.common.types.PageTypeConvert;
@@ -69,7 +68,7 @@ public class PageInfo {
 	
 	@JoinColumn(name="owner_id", updatable = false, insertable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
-	private UserEntity owner;
+	private UserInfo owner;
 	
 	@JoinColumn(name="block_cause_id", updatable = false, insertable = false)
 	@ManyToOne(fetch = FetchType.LAZY)

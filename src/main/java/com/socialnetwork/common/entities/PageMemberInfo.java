@@ -12,7 +12,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.socialnetwork.common.entities.user.UserEntity;
 import com.socialnetwork.common.types.BooleanConvert;
 
 import lombok.Data;
@@ -56,7 +55,7 @@ public class PageMemberInfo {
 	private PageInfo pageInfo;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="member_id", insertable = false, updatable = false)
-	private UserEntity memberInfo;
+	private UserInfo memberInfo;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="page_role_id", insertable = false, updatable = false)
 	private PageRoleInfo pageRoleInfo;

@@ -11,8 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
-import com.socialnetwork.common.entities.user.UserEntity;
-
 import lombok.Data;
 
 @Entity
@@ -41,5 +39,5 @@ public class PageLikeInfo {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id", insertable = false, updatable = false)
-	private UserEntity userInfo;
+	private UserInfo userInfo;
 }
