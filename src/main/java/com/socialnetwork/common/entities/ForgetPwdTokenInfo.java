@@ -1,4 +1,4 @@
-package com.socialnetwork.common.entities.user;
+package com.socialnetwork.common.entities;
 
 import java.time.LocalDate;
 
@@ -14,13 +14,13 @@ import com.socialnetwork.common.entities.BaseEntity;
 import lombok.Data;
 
 @Entity
-@Table(name = "T_REGIST_TOKEN_INFO")
+@Table(name = "T_FORGET_PASSWORD_TOKEN_INFO")
 @Data
-public class RegistTokenEntity extends BaseEntity {
+public class ForgetPwdTokenInfo extends BaseEntity{
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -162074673424250813L;
+	private static final long serialVersionUID = -1817162344884066258L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
@@ -29,5 +29,4 @@ public class RegistTokenEntity extends BaseEntity {
 	private String token;
 	@Column(nullable = false)
 	private LocalDate tokenExpiredDate;
-	
 }

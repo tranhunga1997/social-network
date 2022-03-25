@@ -1,4 +1,4 @@
-package com.socialnetwork.common.entities.user;
+package com.socialnetwork.common.entities;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import lombok.Data;
 @Entity
 @Table(name = "M_PERMISSION_INFO")
 @Data
-public class PermissionInfoEntity extends BaseEntity {
+public class PermissionInfo extends BaseEntity {
 	/**
 	 * 
 	 */
@@ -32,9 +32,9 @@ public class PermissionInfoEntity extends BaseEntity {
 	@Column(length = 20, nullable = false)
 	private String name;
 	
-	@ManyToOne(targetEntity = RoleInfoEntity.class)
+	@ManyToOne(targetEntity = RoleInfo.class)
 	@JoinTable(name = "ROLES_PERMISSIONS_LINK",
 			joinColumns = @JoinColumn(name = "permission_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private List<RoleInfoEntity> roles;
+	private List<RoleInfo> roles;
 }

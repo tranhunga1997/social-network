@@ -1,5 +1,6 @@
-package com.socialnetwork.common.entities.user;
+package com.socialnetwork.common.entities;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,14 +11,12 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
-import com.socialnetwork.common.entities.BaseEntity;
-
 import lombok.Data;
 
 @Entity
 @Table(name="M_USER_INFO")
 @Data
-public class UserEntity extends BaseEntity {
+public class UserInfo extends BaseEntity {
 	
 	/**
 	 * 
@@ -37,8 +36,11 @@ public class UserEntity extends BaseEntity {
 	private String email;
 	
 	@ManyToMany(mappedBy = "users")
-	private List<RoleInfoEntity> roles;
+	private List<RoleInfo> roles;
 	
 	private boolean enable;
 	private boolean block;
+	private LocalDateTime createDatetime;
+	private LocalDateTime updateDatetime;
+	private LocalDateTime deleteDatetime;
 }

@@ -50,6 +50,11 @@ public class StringUtil {
     	return Pattern.matches(pattern, str);
     }
 	
+    /**
+     * <dd>Giải thích: kiểm tra chuỗi trống
+     * @param str
+     * @return
+     */
     public static boolean isBlank(String str) {
     	str = StringUtils.trimWhitespace(str);
     	return "".equals(str);

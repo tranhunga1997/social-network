@@ -1,4 +1,4 @@
-package com.socialnetwork.common.entities.user;
+package com.socialnetwork.common.entities;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ import lombok.Data;
 @Entity
 @Table(name = "M_AUTHENTICATE_INFO")
 @Data
-public class AuthenticateEntity extends BaseEntity {
+public class AuthenticateInfo extends BaseEntity {
 	/**
 	 * 
 	 */
@@ -30,7 +30,7 @@ public class AuthenticateEntity extends BaseEntity {
 	
 	@ManyToOne
 	@JoinColumn(name = "user_id")
-	private UserEntity user;
+	private UserInfo user;
 	private Integer historyId;
 	@Column(length = 32)
 	private String password;

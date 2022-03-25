@@ -1,4 +1,4 @@
-package com.socialnetwork.common.entities.user.pk;
+package com.socialnetwork.common.entities.pk;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;

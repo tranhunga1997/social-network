@@ -1,4 +1,4 @@
-package com.socialnetwork.common.entities.user;
+package com.socialnetwork.common.entities;
 
 import java.time.LocalDate;
 
@@ -14,23 +14,20 @@ import com.socialnetwork.common.entities.BaseEntity;
 import lombok.Data;
 
 @Entity
-@Table(name = "T_LOGIN_TOKEN_INFO")
+@Table(name = "T_REGIST_TOKEN_INFO")
 @Data
-public class LoginTokenEntity extends BaseEntity {
+public class RegistTokenInfo extends BaseEntity {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6844799339149998835L;
-	
+	private static final long serialVersionUID = -162074673424250813L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	@Column(length = 12, nullable = false)
-	private String ipAddress;
 	private Long userId;
 	@Column(length = 100, nullable = false)
 	private String token;
 	@Column(nullable = false)
 	private LocalDate tokenExpiredDate;
-
+	
 }

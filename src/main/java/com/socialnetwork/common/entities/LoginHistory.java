@@ -1,4 +1,4 @@
-package com.socialnetwork.common.entities.user;
+package com.socialnetwork.common.entities;
 
 import java.time.LocalDateTime;
 
@@ -8,8 +8,7 @@ import javax.persistence.Id;
 import javax.persistence.IdClass;
 import javax.persistence.Table;
 
-import com.socialnetwork.common.entities.BaseEntity;
-import com.socialnetwork.common.entities.user.pk.LoginHistioryPK;
+import com.socialnetwork.common.entities.pk.LoginHistioryPK;
 
 import lombok.Data;
 
@@ -17,7 +16,7 @@ import lombok.Data;
 @Table(name = "H_LOGIN_INFO")
 @Data
 @IdClass(LoginHistioryPK.class)
-public class LoginHistoryEntity extends BaseEntity {
+public class LoginHistory extends BaseEntity {
 	/**
 	 * 
 	 */
