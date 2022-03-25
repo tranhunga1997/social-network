@@ -7,6 +7,7 @@ import com.socialnetwork.common.repositories.PageFollowInfoRepository;
 import com.socialnetwork.common.repositories.PageInfoRepository;
 import com.socialnetwork.common.repositories.PageLikeInfoRepository;
 import com.socialnetwork.common.repositories.PageMemberInfoRepository;
+import com.socialnetwork.page.dto.PageDto;
 
 /**
  * 
@@ -24,6 +25,11 @@ public class PageServiceImpl implements PageService{
 	PageLikeInfoRepository pageLikeInfoRepository;
 	@Autowired
 	PageMemberInfoRepository pageMemberInfoRepository;
+	@Override
+	public PageDto findPageById(Long pageId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 	
 }

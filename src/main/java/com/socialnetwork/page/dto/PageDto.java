@@ -34,7 +34,7 @@ public class PageDto {
 		BeanCopyUtils.copyProperties(pageInfo, this);
 	}
 	/**
-	 * CHuyển 
+	 * Chuyển 
 	 * @return
 	 */
 	public PageInfo toPageInfo() {

@@ -12,7 +12,7 @@ import lombok.Data;
  *
  */
 @Entity
-@Table(name="block_cause_info")
+@Table(name="m_block_cause_info")
 @Data
 public class BlockCauseInfo {
 	//block_cause_id
