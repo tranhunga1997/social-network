@@ -9,7 +9,11 @@ import com.socialnetwork.common.utils.BeanCopyUtils;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
+/**
+ * UserInfoDto
+ * @author Mạnh Hùng
+ *
+ */
 @Data
 @NoArgsConstructor
 public class UserInfoDto {
@@ -25,10 +29,18 @@ public class UserInfoDto {
 	private LocalDateTime updateDatetime;
 	private LocalDateTime deleteDatetime;
 	
+	/**
+	 * Constructor
+	 * @param userInfo
+	 */
 	public UserInfoDto(UserInfo userInfo) {
 		BeanCopyUtils.copyProperties(userInfo, this);
 	}
 	
+	/**
+	 * Chuyển dữ liệu từ user dto sang user info
+	 * @return UserInfo
+	 */
 	public UserInfo toUserInfo() {
 		UserInfo userInfo = new UserInfo();
 		BeanCopyUtils.copyProperties(this, userInfo);
