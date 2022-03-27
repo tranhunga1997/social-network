@@ -39,6 +39,9 @@ public class UserService {
 		
 		return userInfoDtos;
 	}
+	public long getUserId(String username) {
+		return userRepository.getUserId(username);
+	}
 	/**
 	 * Tìm tài khoản theo id
 	 * @param id
@@ -75,8 +78,8 @@ public class UserService {
 	 * @return UserInfoDto
 	 */
 	public UserInfoDto create(UserInfoDto dto) {
-		if(StringUtil.isNull(dto.getId())) {
-			throw new SocialException("E_00002");
+		if(!StringUtil.isNull(dto.getId())) {
+			throw new SocialException("W_00002");
 		}
 		
 		UserInfo userInfo = new UserInfo();
@@ -92,8 +95,8 @@ public class UserService {
 	 * @return UserInfoDto
 	 */
 	public UserInfoDto update(UserInfoDto dto) {
-		if(!StringUtil.isNull(dto.getId())) {
-			throw new SocialException("E_00002");
+		if(StringUtil.isNull(dto.getId())) {
+			throw new SocialException("W_00002");
 		}
 		
 		UserInfo userInfo = new UserInfo();

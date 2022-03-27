@@ -26,7 +26,7 @@ public class UserInfo extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Column(length = 50, unique = true)
+	@Column(length = 50, unique = true, nullable = false)
 	private String username;
 	@Column(length = 50)
 	private String lastName;
@@ -40,7 +40,4 @@ public class UserInfo extends BaseEntity {
 	
 	private boolean enable;
 	private boolean block;
-	private LocalDateTime createDatetime;
-	private LocalDateTime updateDatetime;
-	private LocalDateTime deleteDatetime;
 }

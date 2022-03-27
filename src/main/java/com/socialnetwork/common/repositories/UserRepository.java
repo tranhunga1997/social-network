@@ -15,6 +15,9 @@ import com.socialnetwork.common.entities.UserInfo;
 public interface UserRepository extends JpaRepository<UserInfo, Long> {
 	Optional<UserInfo> findByUsername(String username);
 	
+	@Query("SELECT u.id FROM #{#entityName} u WHERE u.username = ?1")
+	long getUserId(String username);
+	
 	@Query("UPDATE #{#entityName} u SET u.enable = true WHERE u.username = ?1")
 	void activeByUsername(String username);
 	
