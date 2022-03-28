@@ -20,6 +20,10 @@ public class BeanCopyUtils {
 	public static void copyProperties(Object source, Object target) {
 		for(Field sourceFiled : source.getClass().getDeclaredFields()) {
 			try {
+				// không copy serialVersionUID 
+				if("serialVersionUID".equals(sourceFiled.getName())){
+					continue;
+				}
 				//Lấy thuộc tính cùng tên
 				Field targetField = target.getClass().getDeclaredField(sourceFiled.getName());
 				//Cho phép truy cập
@@ -32,6 +36,7 @@ public class BeanCopyUtils {
 			}
 		}
 	}
+	
 	/**
 	 * chuyển dữ liệu sang dạng map
 	 * @param source
