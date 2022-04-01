@@ -1,7 +1,5 @@
 package com.socialnetwork.common.repositories;
 
-import java.util.Optional;
-
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,8 +10,7 @@ import com.socialnetwork.common.entities.UserInfo;
 
 @Repository
 @Transactional
-public interface UserRepository extends JpaRepository<UserInfo, Long> {
-	Optional<UserInfo> findByUsername(String username);
+public interface UserRepository extends JpaRepository<UserInfo, String> {
 	
 	@Query("SELECT u.id FROM #{#entityName} u WHERE u.username = ?1")
 	long getUserId(String username);

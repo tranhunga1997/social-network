@@ -1,6 +1,6 @@
 package com.socialnetwork.common.entities;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,8 +29,8 @@ public class LoginTokenInfo extends BaseEntity {
 	private String ipAddress;
 	private Long userId;
 	@Column(length = 100, nullable = false)
-	private String token;
+	private String refreshToken;
 	@Column(nullable = false)
-	private LocalDate tokenExpiredDate;
+	private LocalDateTime tokenExpiredDate;
 
 }

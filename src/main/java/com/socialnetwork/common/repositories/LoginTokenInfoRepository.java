@@ -1,4 +1,5 @@
 package com.socialnetwork.common.repositories;
+import java.time.LocalDateTime;
 
 import javax.transaction.Transactional;
 
@@ -10,5 +11,8 @@ import com.socialnetwork.common.entities.LoginTokenInfo;
 @Repository
 @Transactional
 public interface LoginTokenInfoRepository extends JpaRepository<LoginTokenInfo, Long>{
-
+	
+	LoginTokenInfo findByRefreshToken(String refreshToken);
+	
+	LocalDateTime findtokenExpiredDateByRefreshToken(String refreshToken);
 }

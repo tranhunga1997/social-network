@@ -8,11 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.socialnetwork.common.entities.AuthenticateInfo;
-import com.socialnetwork.common.entities.UserInfo;
 import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.AuthenticateRepository;
-import com.socialnetwork.common.repositories.UserRepository;
-import com.socialnetwork.common.utils.BeanCopyUtils;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.user.dtos.AuthenticateInfoDto;
 
@@ -24,12 +21,22 @@ public class AuthenticateService {
 	private UserService userService;
 	
 	// tìm thông tin mật khẩu (new)
+	/**
+	 * Tìm thông tin mật khẩu (new)
+	 * @param userId
+	 * @return thông tin mật khẩu (new)
+	 */
 	public AuthenticateInfoDto findNewInfo(long userId) {
 		AuthenticateInfo authenticateInfo = authenticateRepository.findNewInfo(userId);
 		AuthenticateInfoDto dto = new AuthenticateInfoDto(authenticateInfo);
 		return dto;
 	}
 	// tìm thông tin mật khẩu (old)
+	/**
+	 * Tìm thông tin mật khẩu (old)
+	 * @param userId
+	 * @return danh sách thông tin mật khẩu (cũ)
+	 */
 	public List<AuthenticateInfoDto> findOldInfo(long userId) {
 		List<AuthenticateInfo> authenticateInfos = authenticateRepository.findOldInfo(userId);
 		List<AuthenticateInfoDto> dtos = new ArrayList<>();
@@ -41,20 +48,27 @@ public class AuthenticateService {
 	}
 	
 	// tạo thông tin mật khẩu
+	/**
+	 * Tạo thông tin mật khẩu
+	 * @param dto
+	 * @return thông tin mật khẩu đã tạo
+	 * @throws SocialException
+	 */
 	public AuthenticateInfoDto create(AuthenticateInfoDto dto) throws SocialException {
-		if(!StringUtil.isNull(dto.getId())) {
-			throw new SocialException("W_00002");
-		}
-		
-		AuthenticateInfo authenInfo = new AuthenticateInfo();
+		AuthenticateInfo authenInfo = null;
 		dto.setHistoryId(1);
 		authenInfo = dto.toAuthenticateInfo();
 		AuthenticateInfo result = authenticateRepository.save(authenInfo);
-		BeanCopyUtils.copyProperties(result, dto);
-		return dto;
+		return new AuthenticateInfoDto(result);
 	}
 	
 	// thay đổi mật khẩu
+	/**
+	 * Thay đổi mật khẩu
+	 * @param userId
+	 * @param password
+	 * @throws SocialException
+	 */
 	public void update(long userId, String password) throws SocialException{
 		// kiểm tra null và blank password
 		if(StringUtil.isNull(password) || StringUtil.isBlank(password)) {

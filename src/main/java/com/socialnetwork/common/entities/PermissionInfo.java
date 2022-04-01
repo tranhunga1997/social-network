@@ -9,10 +9,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-
-import com.socialnetwork.common.entities.BaseEntity;
 
 import lombok.Data;
 
@@ -32,7 +30,7 @@ public class PermissionInfo extends BaseEntity {
 	@Column(length = 20, nullable = false)
 	private String name;
 	
-	@ManyToOne(targetEntity = RoleInfo.class)
+	@ManyToMany(targetEntity = RoleInfo.class)
 	@JoinTable(name = "ROLES_PERMISSIONS_LINK",
 			joinColumns = @JoinColumn(name = "permission_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))

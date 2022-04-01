@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class AuthenticateInfoDto {
-	private Long id;
 	private Long userId;
 	private Integer historyId;
 	private String password;

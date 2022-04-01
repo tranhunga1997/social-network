@@ -15,7 +15,7 @@ public class LoginTokenInfoDto {
 	private Long id;
 	private String ipAddress;
 	private Long userId;
-	private String token;
+	private String refreshToken;
 	private LocalDate tokenExpiredDate;
 	private LocalDateTime createDatetime;
 	private LocalDateTime updateDatetime;

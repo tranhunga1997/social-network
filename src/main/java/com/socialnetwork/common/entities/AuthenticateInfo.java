@@ -24,11 +24,12 @@ public class AuthenticateInfo implements Serializable{
 	 */
 	private static final long serialVersionUID = 2956338042471354684L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	@Column(name = "user_id")
+	@Column(name="user_id")
 	private Long userId;
+	@Id
+	@Column(name="history_id")
 	private Integer historyId;
+	
 	@Column(length = 32)
 	private String password;
 	private Integer loginFailedCounter;

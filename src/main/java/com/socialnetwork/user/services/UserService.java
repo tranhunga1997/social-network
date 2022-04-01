@@ -43,32 +43,15 @@ public class UserService {
 		return userRepository.getUserId(username);
 	}
 	/**
-	 * Tìm tài khoản theo id
-	 * @param id
-	 * @return
-	 */
-	public UserInfoDto findById(long id) {
-		Optional<UserInfo> userOptional = userRepository.findById(id);
-		UserInfoDto userInfoDto = new UserInfoDto();
-		if(userOptional.isEmpty()) {
-			BeanCopyUtils.copyProperties(userOptional.get(), userInfoDto);
-		}else {
-			userInfoDto = null;
-		}
-		return userInfoDto;
-	}
-	/**
 	 * Tìm tài khoản theo username
 	 * @param username
 	 * @return
 	 */
 	public UserInfoDto findByUsername(String username) {
-		Optional<UserInfo> userOptional = userRepository.findByUsername(username);
-		UserInfoDto userInfoDto = new UserInfoDto();
+		Optional<UserInfo> userOptional = userRepository.findById(username);
+		UserInfoDto userInfoDto = null;
 		if(userOptional.isEmpty()) {
-			BeanCopyUtils.copyProperties(userOptional.get(), userInfoDto);
-		}else {
-			userInfoDto = null;
+			userInfoDto = new UserInfoDto(userOptional.get());
 		}
 		return userInfoDto;
 	}
@@ -78,15 +61,12 @@ public class UserService {
 	 * @return UserInfoDto
 	 */
 	public UserInfoDto create(UserInfoDto dto) {
-		if(!StringUtil.isNull(dto.getId())) {
+		if(!StringUtil.isNull(dto.getUsername())) {
 			throw new SocialException("W_00002");
 		}
 		
-		UserInfo userInfo = new UserInfo();
-		BeanCopyUtils.copyProperties(dto, userInfo);
-		long id = userRepository.save(userInfo).getId();
-		dto.setId(id);
-		return dto;
+		UserInfo userInfo = dto.toUserInfo();
+		return new UserInfoDto(userRepository.save(userInfo));
 	}
 	/**
 	 * Sửa tài khoản
@@ -95,15 +75,12 @@ public class UserService {
 	 * @return UserInfoDto
 	 */
 	public UserInfoDto update(UserInfoDto dto) {
-		if(StringUtil.isNull(dto.getId())) {
+		if(StringUtil.isNull(dto.getUsername())) {
 			throw new SocialException("W_00002");
 		}
 		
-		UserInfo userInfo = new UserInfo();
-		BeanCopyUtils.copyProperties(dto, userInfo);
-		long id = userRepository.save(userInfo).getId();
-		dto.setId(id);
-		return dto;
+		UserInfo userInfo = dto.toUserInfo();
+		return new UserInfoDto(userRepository.save(userInfo));
 	}
 	/**
 	 * Kích hoạt tài khoản

@@ -1,21 +1,20 @@
 package com.socialnetwork.common.entities;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 @Entity
 @Table(name="M_USER_INFO")
 @Data
+@EqualsAndHashCode(callSuper = false)
 public class UserInfo extends BaseEntity {
 	
 	/**
@@ -24,9 +23,7 @@ public class UserInfo extends BaseEntity {
 	private static final long serialVersionUID = 1261742782485421495L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
-	@Column(length = 50, unique = true, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String username;
 	@Column(length = 50)
 	private String lastName;
