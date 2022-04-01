@@ -1,5 +1,7 @@
 package com.socialnetwork.common.exceptions;
 
+import com.socialnetwork.common.utils.MessageUtils;
+
 import lombok.Getter;
 
 /**
@@ -26,5 +28,9 @@ public class SocialException  extends RuntimeException{
 	public SocialException(String messageCode, Object...args) {
 		this.messageCode = messageCode;
 		this.args = args;
+	}
+	@Override
+	public String getMessage() {
+		return MessageUtils.getMessage(messageCode, args);
 	}
 }

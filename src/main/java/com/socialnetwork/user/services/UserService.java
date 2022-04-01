@@ -61,7 +61,7 @@ public class UserService {
 	 * @return UserInfoDto
 	 */
 	public UserInfoDto create(UserInfoDto dto) {
-		if(!StringUtil.isNull(dto.getUsername())) {
+		if(StringUtil.isNull(dto.getUsername())) {
 			throw new SocialException("W_00002");
 		}
 		
