@@ -1,5 +1,7 @@
 package com.socialnetwork.common.types;
 
+import javax.persistence.AttributeConverter;
+
 import com.socialnetwork.common.exceptions.SocialException;
 /**
  * 
@@ -31,5 +33,20 @@ public enum PageType {
 		default:
 			throw new SocialException("W_00001");
 		}
+	}
+	public static class Convert implements AttributeConverter<PageType, Character>{
+
+		@Override
+		public Character convertToDatabaseColumn(PageType attribute) {
+			if(attribute == null )
+				return null;
+			return attribute.getValue();
+		}
+
+		@Override
+		public PageType convertToEntityAttribute(Character dbData) {
+			return from(dbData);
+		}
+
 	}
 }

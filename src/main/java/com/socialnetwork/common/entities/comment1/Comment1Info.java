@@ -1,0 +1,62 @@
+package com.socialnetwork.common.entities.comment1;
+
+import javax.persistence.Column;
+import javax.persistence.Convert;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+import com.socialnetwork.common.entities.BaseSocialEntity;
+import com.socialnetwork.common.types.ContentType;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+//@Entity
+@Table(name = "m_comment_lv1_info")
+@Data
+@EqualsAndHashCode(callSuper = false)
+public class Comment1Info extends BaseSocialEntity{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	//PAGE_ID
+	@Id
+	@Column(name = "page_id")
+	private Long pageId;
+	
+	//STATUS_ID
+	@Id
+	@Column(name = "status_id")
+	private Long statusId;
+	
+	//content_id
+	@Id
+	@Column(name = "content_id")
+	private Integer contentId;
+	
+	//comment_lv1_id
+	@Id
+	@Column(name = "comment_lv1_id")
+	private Long commentLv1Id;
+	
+	//owner
+	@Column(name="owner_id")
+	private Long ownerId;
+	
+	//content_text
+	@Column(name="content_text", length = 2000)
+	private String contentText;
+	
+	//content_type
+	@Column(name="content_type")
+	@Convert(converter = ContentType.Convert.class)
+	private ContentType contentType;
+	
+	//content_uri
+	@Column(name="content_uri", length = 255)
+	private String contentUri;
+
+}

@@ -6,11 +6,6 @@ import java.util.regex.Pattern;
 
 import org.springframework.util.StringUtils;
 
-/**
- * StringUtil: Xử lý về chuỗi
- * @author Mạnh Hùng
- *
- */
 public class StringUtil {
     private static final Pattern NONLATIN = Pattern.compile("[^\\w-]");
     private static final Pattern WHITESPACE = Pattern.compile("[\\s]");

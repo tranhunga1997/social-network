@@ -2,8 +2,7 @@ package com.socialnetwork.user.dtos;
 
 import java.time.LocalDateTime;
 
-import com.socialnetwork.common.entities.AuthenticateInfo;
-import com.socialnetwork.common.entities.UserInfo;
+import com.socialnetwork.common.entities.user.AuthenticateInfo;
 import com.socialnetwork.common.utils.BeanCopyUtils;
 
 import lombok.Data;

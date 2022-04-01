@@ -5,9 +5,9 @@ import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.socialnetwork.common.entities.LoginTokenInfo;
+import com.socialnetwork.common.entities.user.LoginTokenInfo;
 import com.socialnetwork.common.exceptions.SocialException;
-import com.socialnetwork.common.repositories.LoginTokenInfoRepository;
+import com.socialnetwork.common.repositories.user.LoginTokenInfoRepository;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.common.utils.TokenProvider;
 import com.socialnetwork.user.dtos.LoginTokenInfoDto;
@@ -30,9 +30,9 @@ public class LoginTokenInfoService {
 		LoginTokenInfo loginTokenInfo = new LoginTokenInfo();
 		loginTokenInfo.setUserId(userId);
 		loginTokenInfo.setIpAddress(ipAddress);
-		loginTokenInfo.setRefreshToken(TokenProvider.generateToken());
-		loginTokenInfo.setTokenExpiredDate(LocalDateTime.now().plusDays(EXPIRY_DAY));
-		loginTokenInfo.setCreateDatetime(LocalDateTime.now());
+		loginTokenInfo.setToken(TokenProvider.generateToken());
+		loginTokenInfo.setTokenExpiredAt(LocalDateTime.now().plusDays(EXPIRY_DAY));
+		loginTokenInfo.setCreateAt(LocalDateTime.now());
 		LoginTokenInfo result = loginTokenInfoRepository.save(loginTokenInfo);
 		LoginTokenInfoDto dto = new LoginTokenInfoDto(result);
 		return dto;
@@ -43,7 +43,7 @@ public class LoginTokenInfoService {
 	 * @param id
 	 * @return <code>true</code> tồn tại, <code>false</code> không tồn tại
 	 */
-	public boolean isExists(long id) {
+	public boolean isExists(String id) {
 		return loginTokenInfoRepository.existsById(id);
 	}
 	
@@ -53,7 +53,7 @@ public class LoginTokenInfoService {
 	 * @return <code>true</code> còn hiệu lực, <code>false</code> hết hiệu lực
 	 */
 	public boolean isExpiryDate(String refreshToken) {
-		LocalDateTime expiry = loginTokenInfoRepository.findtokenExpiredDateByRefreshToken(refreshToken);
+		LocalDateTime expiry = loginTokenInfoRepository.findTokenExpiredAtByRefreshToken(refreshToken);
 		if(StringUtil.isNull(expiry)) {
 			throw new SocialException("E_00003");
 		}
@@ -67,7 +67,7 @@ public class LoginTokenInfoService {
 	 * Xóa refresh token
 	 * @param id
 	 */
-	public void delete(long id) {
+	public void delete(String id) {
 		loginTokenInfoRepository.deleteById(id);
 	}
 	

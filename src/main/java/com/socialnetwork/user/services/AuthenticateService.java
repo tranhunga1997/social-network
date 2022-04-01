@@ -7,9 +7,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.socialnetwork.common.entities.AuthenticateInfo;
+import com.socialnetwork.common.entities.user.AuthenticateInfo;
 import com.socialnetwork.common.exceptions.SocialException;
-import com.socialnetwork.common.repositories.AuthenticateRepository;
+import com.socialnetwork.common.repositories.user.AuthenticateRepository;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.user.dtos.AuthenticateInfoDto;
 
@@ -82,14 +82,14 @@ public class AuthenticateService {
 		}
 		AuthenticateInfo authInfo = authenticateInfoDto.toAuthenticateInfo();
 		// xóa thông tin cũ
-		authInfo.setDeleteDatetime(LocalDateTime.now());
+		authInfo.setDeleteAt(LocalDateTime.now());
 		authenticateRepository.save(authInfo);
 		
 		// tạo thông tin (history+1)
 		authInfo.setHistoryId(authInfo.getHistoryId()+1);
 		authInfo.setPassword(password);
-		authInfo.setCreateDatetime(LocalDateTime.now());
-		authInfo.setDeleteDatetime(null);
+		authInfo.setCreateAt(LocalDateTime.now());
+		authInfo.setDeleteAt(null);
 		authenticateRepository.save(authInfo);
 	}
 	

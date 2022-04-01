@@ -2,7 +2,7 @@ package com.socialnetwork.page.dto;
 
 import java.time.LocalDateTime;
 
-import com.socialnetwork.common.entities.PageInfo;
+import com.socialnetwork.common.entities.page.PageInfo;
 import com.socialnetwork.common.types.PageType;
 import com.socialnetwork.common.utils.BeanCopyUtils;
 

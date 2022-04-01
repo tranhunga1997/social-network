@@ -3,8 +3,8 @@ package com.socialnetwork.user.dtos;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.socialnetwork.common.entities.RoleInfo;
-import com.socialnetwork.common.entities.UserInfo;
+import com.socialnetwork.common.entities.user.RoleInfo;
+import com.socialnetwork.common.entities.user.UserInfo;
 import com.socialnetwork.common.utils.BeanCopyUtils;
 
 import lombok.Data;

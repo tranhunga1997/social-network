@@ -16,8 +16,8 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.socialnetwork.common.entities.UserInfo;
-import com.socialnetwork.common.repositories.UserRepository;
+import com.socialnetwork.common.entities.user.UserInfo;
+import com.socialnetwork.common.repositories.user.UserRepository;
 import com.socialnetwork.user.dtos.UserInfoDto;
 
 //@ExtendWith(MockitoExtension.class)
@@ -36,8 +36,8 @@ class UserServiceTest {
 			dto.setUsername("user"+i);
 			dto.setFirstName("hung"+i);
 			dto.setLastName("tran");
-			dto.setEnable(true);
-			dto.setCreateDatetime(LocalDateTime.now());
+			dto.setEnabled(true);
+			dto.setCreateAt(LocalDateTime.now());
 			userInfosGlobal.add(dto);
 		}
 	}

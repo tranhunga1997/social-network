@@ -16,9 +16,9 @@ public class BaseEntity implements Serializable {
 	 */
 	private static final long serialVersionUID = -1876453224787306485L;
 	@Column(name="create_at")
-	private LocalDateTime createDatetime;
+	private LocalDateTime createAt;
 	@Column(name="update_at")
-	private LocalDateTime updateDatetime;
+	private LocalDateTime updateAt;
 	@Column(name="del_at")
-	private LocalDateTime deleteDatetime;
+	private LocalDateTime deleteAt;
 }

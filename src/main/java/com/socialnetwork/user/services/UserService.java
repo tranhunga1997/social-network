@@ -7,9 +7,9 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.socialnetwork.common.entities.UserInfo;
+import com.socialnetwork.common.entities.user.UserInfo;
 import com.socialnetwork.common.exceptions.SocialException;
-import com.socialnetwork.common.repositories.UserRepository;
+import com.socialnetwork.common.repositories.user.UserRepository;
 import com.socialnetwork.common.utils.BeanCopyUtils;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.user.dtos.UserInfoDto;
@@ -48,7 +48,7 @@ public class UserService {
 	 * @return
 	 */
 	public UserInfoDto findByUsername(String username) {
-		Optional<UserInfo> userOptional = userRepository.findById(username);
+		Optional<UserInfo> userOptional = userRepository.findByUsername(username);
 		UserInfoDto userInfoDto = null;
 		if(userOptional.isEmpty()) {
 			userInfoDto = new UserInfoDto(userOptional.get());
