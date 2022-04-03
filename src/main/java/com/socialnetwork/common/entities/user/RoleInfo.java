@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -31,12 +32,12 @@ public class RoleInfo extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="role_id")
 	private Integer id;
-	@Column(name="role_slug",length = 32)
+	@Column(name="role_slug",length = 25)
 	private String slug;
-	@Column(name="role_name",length = 32)
+	@Column(name="role_name",length = 25)
 	private String name;
 	
-	@ManyToMany(targetEntity = UserInfo.class)
+	@ManyToMany(fetch = FetchType.LAZY,targetEntity = UserInfo.class)
 	@JoinTable(name = "m_user_role_link",
 			joinColumns = @JoinColumn(name = "role_id"),
 			inverseJoinColumns = @JoinColumn(name = "user_id"))

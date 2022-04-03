@@ -15,6 +15,7 @@ import com.socialnetwork.common.entities.user.UserInfo;
 @Transactional
 public interface UserRepository extends JpaRepository<UserInfo, Long> {
 	Optional<UserInfo> findByUsername(String username);
+	Optional<UserInfo> findByEmail(String email);
 	
 	@Modifying
 	@Query("UPDATE #{#entityName} u SET u.isEnabled = true WHERE u.username = :username")
@@ -37,5 +38,7 @@ public interface UserRepository extends JpaRepository<UserInfo, Long> {
 	@Query("SELECT u.userId FROM #{#entityName} u WHERE u.username = ?1")
 	long getUserId(String username);
 	
+	boolean existsByUsername(String username);
 	
+	boolean existsByEmail(String email);
 }

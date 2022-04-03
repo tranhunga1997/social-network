@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Date;
+import java.util.UUID;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
@@ -11,7 +12,8 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import com.socialnetwork.common.entities.UserInfo;
+import com.socialnetwork.common.entities.user.UserInfo;
+
 
 class TokenProviderTest {
 
@@ -39,7 +41,7 @@ class TokenProviderTest {
 	@Test
 	void testGenerateToken() {
 		String token = TokenProvider.generateToken();
-		System.out.println(token);
+		System.out.println(token.length());
 	}
 
 	@Test

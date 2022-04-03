@@ -25,7 +25,7 @@ public class RegistTokenInfo extends BaseEntity {
 	 */
 	private static final long serialVersionUID = -162074673424250813L;
 
-	@Column(length = 100, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String token;
 	
 	@Id
