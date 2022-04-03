@@ -5,15 +5,18 @@ import java.time.LocalDateTime;
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
 
 import com.socialnetwork.common.entities.sequence.SequenceInfo;
 import com.socialnetwork.common.services.sequence.SequenceService;
+import com.socialnetwork.common.utils.MessageUtils;
 import com.socialnetwork.user.dtos.UserInfoDto;
 import com.socialnetwork.user.services.UserService;
 
 @Configuration
 public class DataInit {
+	
 	@Autowired
 	private UserService userSerivce;
 	@Autowired
@@ -36,4 +39,6 @@ public class DataInit {
 			userSerivce.create(dto);
 		}
 	}
+	
+
 }
