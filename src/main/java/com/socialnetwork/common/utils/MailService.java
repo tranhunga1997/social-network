@@ -22,7 +22,7 @@ import org.thymeleaf.context.Context;
  *
  */
 @Component
-public class MailUtils {
+public class MailService {
 
     @Autowired
     private JavaMailSender javaMailSender;

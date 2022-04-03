@@ -44,7 +44,7 @@ public class TokenProvider {
      * @return String
      */
     public static String generateToken() {
-    	return UUID.randomUUID().toString().replaceAll("-", "");
+    	return UUID.randomUUID().toString();
     }
     
     /**

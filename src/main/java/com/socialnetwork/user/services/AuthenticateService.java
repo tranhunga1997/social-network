@@ -1,6 +1,7 @@
 package com.socialnetwork.user.services;
 
 import java.time.LocalDateTime;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,8 +11,10 @@ import org.springframework.stereotype.Service;
 import com.socialnetwork.common.entities.user.AuthenticateInfo;
 import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.AuthenticateRepository;
+import com.socialnetwork.common.utils.MailService;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.user.dtos.AuthenticateInfoDto;
+import com.socialnetwork.user.dtos.ForgetPwdTokenInfoDto;
 import com.socialnetwork.user.dtos.UserInfoDto;
 
 /**
@@ -25,6 +28,10 @@ public class AuthenticateService {
 	private AuthenticateRepository authenticateRepository;
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private ForgetPwdTokenInfoService forgetPwdTokenInfoService;
+	@Autowired
+	private MailService mailService;
 	
 
 	/**
@@ -121,9 +128,9 @@ public class AuthenticateService {
 		}
 		
 		// tạo token
-		
+		ForgetPwdTokenInfoDto forgetPwdTokenInfoDto = forgetPwdTokenInfoService.create(userInfoDto.getUserId());
 		// gửi mail
-		
+		mailService.sendTextMail(email, "title", "forget password token");
 		
 	}
 	/**
