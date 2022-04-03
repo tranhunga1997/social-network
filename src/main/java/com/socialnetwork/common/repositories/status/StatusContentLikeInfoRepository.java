@@ -7,4 +7,5 @@ import com.socialnetwork.common.entities.status.StatusContentLikeInfoPK;
 
 public interface StatusContentLikeInfoRepository extends CrudRepository<StatusContentLikeInfo, StatusContentLikeInfoPK>{
 
+	
 }
