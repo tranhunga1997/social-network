@@ -1,4 +1,4 @@
-package com.socialnetwork.user.dtos;
+package com.socialnetwork.general.user.dtos;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

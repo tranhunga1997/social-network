@@ -1,4 +1,4 @@
-package com.socialnetwork.user.services;
+package com.socialnetwork.general.user.services;
 
 import java.time.LocalDateTime;
 
@@ -13,9 +13,9 @@ import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.AuthenticateRepository;
 import com.socialnetwork.common.utils.MailService;
 import com.socialnetwork.common.utils.StringUtil;
-import com.socialnetwork.user.dtos.AuthenticateInfoDto;
-import com.socialnetwork.user.dtos.ForgetPwdTokenInfoDto;
-import com.socialnetwork.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.dtos.AuthenticateInfoDto;
+import com.socialnetwork.general.user.dtos.ForgetPwdTokenInfoDto;
+import com.socialnetwork.general.user.dtos.UserInfoDto;
 
 /**
  * Xử lấy các thông tin mật khẩu

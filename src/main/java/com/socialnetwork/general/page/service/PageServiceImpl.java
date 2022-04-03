@@ -1,4 +1,4 @@
-package com.socialnetwork.page.service;
+package com.socialnetwork.general.page.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,7 +7,7 @@ import com.socialnetwork.common.repositories.page.PageFollowInfoRepository;
 import com.socialnetwork.common.repositories.page.PageInfoRepository;
 import com.socialnetwork.common.repositories.page.PageLikeInfoRepository;
 import com.socialnetwork.common.repositories.page.PageMemberInfoRepository;
-import com.socialnetwork.page.dto.PageDto;
+import com.socialnetwork.general.page.dto.PageDto;
 
 /**
  * 

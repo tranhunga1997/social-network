@@ -1,4 +1,4 @@
-package com.socialnetwork.user.services;
+package com.socialnetwork.general.user.services;
 
 import java.time.LocalDateTime;
 
@@ -10,7 +10,7 @@ import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.LoginTokenInfoRepository;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.common.utils.TokenProvider;
-import com.socialnetwork.user.dtos.LoginTokenInfoDto;
+import com.socialnetwork.general.user.dtos.LoginTokenInfoDto;
 
 @Service
 public class LoginTokenInfoService {

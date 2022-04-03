@@ -1,4 +1,4 @@
-package com.socialnetwork.user.services;
+package com.socialnetwork.general.user.services;
 
 
 import java.time.LocalDateTime;
@@ -12,8 +12,8 @@ import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.RegistTokenRepository;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.common.utils.TokenProvider;
-import com.socialnetwork.user.dtos.RegistTokenHistoryDto;
-import com.socialnetwork.user.dtos.RegistTokenInfoDto;
+import com.socialnetwork.general.user.dtos.RegistTokenHistoryDto;
+import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
 
 /**
  * Xử lý token đăng ký

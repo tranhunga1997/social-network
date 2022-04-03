@@ -1,4 +1,4 @@
-package com.socialnetwork.user.services;
+package com.socialnetwork.general.user.services;
 
 import java.time.LocalDateTime;
 
@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.socialnetwork.common.entities.user.ForgetPwdTokenInfo;
 import com.socialnetwork.common.repositories.user.ForgetPwdTokenRepository;
 import com.socialnetwork.common.utils.TokenProvider;
-import com.socialnetwork.user.dtos.ForgetPwdTokenInfoDto;
+import com.socialnetwork.general.user.dtos.ForgetPwdTokenInfoDto;
 
 @Service
 public class ForgetPwdTokenInfoService {

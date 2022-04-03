@@ -1,10 +1,10 @@
-package com.socialnetwork.user.services;
+package com.socialnetwork.general.user.services;
 
 import org.springframework.stereotype.Service;
 
 import com.socialnetwork.common.entities.user.RegistTokenHistory;
 import com.socialnetwork.common.repositories.user.RegistTokenHistoryRepository;
-import com.socialnetwork.user.dtos.RegistTokenHistoryDto;
+import com.socialnetwork.general.user.dtos.RegistTokenHistoryDto;
 
 @Service
 public class RegistTokenHistoryService {

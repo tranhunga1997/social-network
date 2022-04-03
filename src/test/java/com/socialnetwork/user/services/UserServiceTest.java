@@ -18,7 +18,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.socialnetwork.common.entities.user.UserInfo;
 import com.socialnetwork.common.repositories.user.UserRepository;
-import com.socialnetwork.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.services.UserService;
 
 //@ExtendWith(MockitoExtension.class)
 class UserServiceTest {

@@ -1,4 +1,4 @@
-package com.socialnetwork.user.services;
+package com.socialnetwork.general.user.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 import com.socialnetwork.common.entities.user.PermissionInfo;
 import com.socialnetwork.common.repositories.user.PermissionInfoRepository;
 import com.socialnetwork.common.utils.StringUtil;
-import com.socialnetwork.user.dtos.PermissionInfoDto;
+import com.socialnetwork.general.user.dtos.PermissionInfoDto;
 
 @Service
 public class PermissionInfoService {

@@ -1,4 +1,4 @@
-package com.socialnetwork.user.services;
+package com.socialnetwork.general.user.services;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,8 @@ import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.UserRepository;
 import com.socialnetwork.common.utils.BeanCopyUtils;
 import com.socialnetwork.common.utils.StringUtil;
-import com.socialnetwork.user.dtos.RegistTokenInfoDto;
-import com.socialnetwork.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
+import com.socialnetwork.general.user.dtos.UserInfoDto;
 /**
  * <b>Tác dụng: </b>xử lý logic bảng thông tin tài khoản.
  * @author Mạnh Hùng

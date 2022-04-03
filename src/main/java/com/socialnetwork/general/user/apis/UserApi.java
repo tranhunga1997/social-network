@@ -1,4 +1,4 @@
-package com.socialnetwork.user.apis;
+package com.socialnetwork.general.user.apis;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 import com.socialnetwork.common.entities.ReponseData;
 import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.utils.StringUtil;
-import com.socialnetwork.user.dtos.AuthenticateInfoDto;
-import com.socialnetwork.user.services.AuthenticateService;
-import com.socialnetwork.user.services.UserService;
+import com.socialnetwork.general.user.dtos.AuthenticateInfoDto;
+import com.socialnetwork.general.user.services.AuthenticateService;
+import com.socialnetwork.general.user.services.UserService;
 
 @CrossOrigin("*")
 @RestController

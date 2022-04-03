@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.socialnetwork.common.entities.user.LoginHistoryInfo;
 import com.socialnetwork.common.entities.user.LoginHistoryPk;
-import com.socialnetwork.user.dtos.LoginHistoryInfoDto;
+import com.socialnetwork.general.user.dtos.LoginHistoryInfoDto;
 
 @Repository
 public interface LoginHistoryRepository extends JpaRepository<LoginHistoryInfo, LoginHistoryPk>{

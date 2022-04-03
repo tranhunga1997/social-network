@@ -1,4 +1,4 @@
-package com.socialnetwork.page.dto;
+package com.socialnetwork.general.page.dto;
 
 import java.time.LocalDateTime;
 

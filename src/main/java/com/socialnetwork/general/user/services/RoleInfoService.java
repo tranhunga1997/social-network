@@ -1,4 +1,4 @@
-package com.socialnetwork.user.services;
+package com.socialnetwork.general.user.services;
 
 import java.time.LocalDateTime;
 
@@ -12,7 +12,7 @@ import com.socialnetwork.common.entities.user.RoleInfo;
 import com.socialnetwork.common.exceptions.SystemException;
 import com.socialnetwork.common.repositories.user.RoleInfoRepository;
 import com.socialnetwork.common.utils.StringUtil;
-import com.socialnetwork.user.dtos.RoleInfoDto;
+import com.socialnetwork.general.user.dtos.RoleInfoDto;
 
 /**
  * Class xử lý thông tin role
