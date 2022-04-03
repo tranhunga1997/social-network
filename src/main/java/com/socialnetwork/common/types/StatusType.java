@@ -4,6 +4,11 @@ import javax.persistence.AttributeConverter;
 
 import com.socialnetwork.common.exceptions.SocialException;
 
+/**
+ * 
+ * @author thuong
+ *
+ */
 public enum StatusType {
 	PRIVATE('0'),//bảo mật
 	FRIEND('1'),// Chỉ bạn bè

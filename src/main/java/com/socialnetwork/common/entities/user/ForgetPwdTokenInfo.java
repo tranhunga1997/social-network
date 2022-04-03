@@ -11,7 +11,11 @@ import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-
+/**
+ * 
+ * @author hung
+ *
+ */
 @Entity
 @Table(name = "T_FORGET_PASSWORD_TOKEN_INFO")
 @Data

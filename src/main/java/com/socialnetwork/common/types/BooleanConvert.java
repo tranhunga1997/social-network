@@ -6,7 +6,6 @@ import com.socialnetwork.common.exceptions.SocialException;
 /**
  * 
  * @author thuong
- *
  */
 public class BooleanConvert implements AttributeConverter<Boolean, Character>{
 

@@ -1,4 +1,4 @@
-package com.socialnetwork.common.entities.status;
+package com.socialnetwork.common.entities.comment2;
 
 import java.time.LocalDateTime;
 
@@ -24,10 +24,10 @@ import lombok.Data;
  *
  */
 @Entity
-@Table(name="m_status_content_like_info")
+@Table(name="m_comment_lv2_like_info")
 @Data
-@IdClass(StatusContentLikeInfoPK.class)
-public class StatusContentLikeInfo {
+@IdClass(CommentLv2LikeInfoPK.class)
+public class CommentLv2LikeInfo {
 	//PAGE_ID
 	@Id
 	@Column(name="page_id")
@@ -40,6 +40,14 @@ public class StatusContentLikeInfo {
 	@Id
 	@Column(name="content_id")
 	private Integer contentId;
+	//comment_lv1_id
+	@Id
+	@Column(name="comment_lv1_id")
+	private Long commentLv1Id;
+	//comment_lv1_id
+	@Id
+	@Column(name="comment_lv2_id")
+	private Long commentLv2Id;
 	//USER_ID
 	@Id
 	@Column(name="user_id")
@@ -57,9 +65,12 @@ public class StatusContentLikeInfo {
 	@JoinColumns({
 		@JoinColumn(name="page_id", referencedColumnName = "page_id", insertable = false, updatable = false),
 		@JoinColumn(name="status_id", referencedColumnName = "status_id", insertable = false, updatable = false),
-		@JoinColumn(name="content_id", referencedColumnName = "content_id", insertable = false, updatable = false)
+		@JoinColumn(name="content_id", referencedColumnName = "content_id", insertable = false, updatable = false),
+		@JoinColumn(name="comment_lv1_id", referencedColumnName = "comment_lv1_id", insertable = false, updatable = false),
+		@JoinColumn(name="comment_lv2_id", referencedColumnName = "comment_lv2_id", insertable = false, updatable = false)
+
 	})
-	private StatusContentInfo statusContentInfo;
+	private CommentLv2Info commentLv2Info;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="user_id", insertable = false, updatable = false)

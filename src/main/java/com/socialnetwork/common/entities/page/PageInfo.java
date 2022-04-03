@@ -18,7 +18,6 @@ import lombok.EqualsAndHashCode;
 /**
  * 
  * @author thuong
- *
  */
 @Entity
 @Table(name="m_page_info")

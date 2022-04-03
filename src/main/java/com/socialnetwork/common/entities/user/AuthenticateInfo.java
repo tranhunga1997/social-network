@@ -13,12 +13,16 @@ import com.socialnetwork.common.entities.BaseEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 
+ * @author hung
+ *
+ */
 @Entity
 @Table(name = "M_AUTHENTICATE_INFO")
 @Data
 @EqualsAndHashCode(callSuper = false)
-@IdClass(AuthenticatePk.class)
+@IdClass(AuthenticateInfoPK.class)
 public class AuthenticateInfo extends BaseEntity {
 	/**
 	 * 

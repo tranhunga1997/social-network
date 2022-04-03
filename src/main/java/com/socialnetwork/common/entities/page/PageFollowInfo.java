@@ -14,11 +14,15 @@ import javax.persistence.Table;
 import com.socialnetwork.common.entities.user.UserInfo;
 
 import lombok.Data;
-
+/**
+ * 
+ * @author thuong
+ *
+ */
 @Entity
 @Table(name="m_page_follow_info")
 @Data
-@IdClass(PageFollowPk.class)
+@IdClass(PageFollowInfoPK.class)
 public class PageFollowInfo {
 	//PAGE_ID
 	@Id

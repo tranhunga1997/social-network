@@ -6,6 +6,11 @@ import com.socialnetwork.common.exceptions.SocialException;
 
 import lombok.Getter;
 
+/**
+ * 
+ * @author thuong
+ *
+ */
 public enum ContentType {
 	TEXT('1'),
 	MEDIA('2'),

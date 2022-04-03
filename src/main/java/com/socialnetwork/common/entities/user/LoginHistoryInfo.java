@@ -16,23 +16,26 @@ import com.socialnetwork.common.entities.BaseEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 
+ * @author hung
+ *
+ */
 @Entity
 @Table(name = "H_LOGIN_INFO")
 @Data
-@IdClass(LoginHistoryPk.class)
+@IdClass(LoginHistoryInfoPK.class)
 @EqualsAndHashCode(callSuper = false)
 public class LoginHistoryInfo implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = -6308675124624326206L;
 	@Id
 	@Column(name="ip_address", length = 12)
 	private String ipAddress;
-	
 	@Id
-	@Column(name = "access_at")
+	@Column(name="access_at")
 	private LocalDateTime accessAt;
 	
 	@Column(nullable = false, name="user_id")

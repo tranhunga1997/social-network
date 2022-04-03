@@ -3,20 +3,33 @@ package com.socialnetwork.common.entities.comment1;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.IdClass;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinColumns;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 import com.socialnetwork.common.entities.BaseSocialEntity;
+import com.socialnetwork.common.entities.status.StatusContentInfo;
+import com.socialnetwork.common.entities.user.UserInfo;
 import com.socialnetwork.common.types.ContentType;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-//@Entity
+/**
+ * 
+ * @author thuong
+ *
+ */
+@Entity
 @Table(name = "m_comment_lv1_info")
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class Comment1Info extends BaseSocialEntity{
+@IdClass(CommentLv1InfoPK.class)
+public class CommentLv1Info extends BaseSocialEntity{
 
 	/**
 	 * 
@@ -58,5 +71,18 @@ public class Comment1Info extends BaseSocialEntity{
 	//content_uri
 	@Column(name="content_uri", length = 255)
 	private String contentUri;
+	
+	@JoinColumn(name="owner_id", updatable = false, insertable = false)
+	@ManyToOne(fetch = FetchType.LAZY)
+	private UserInfo ownerInfo;
+	
+	@JoinColumns({
+		@JoinColumn(name="page_id", referencedColumnName = "page_id", insertable = false, updatable = false),
+		@JoinColumn(name="status_id", referencedColumnName = "status_id", insertable = false, updatable = false),
+		@JoinColumn(name="content_id", referencedColumnName = "content_id", insertable = false, updatable = false)
+	})
+	@ManyToOne(fetch = FetchType.LAZY)
+	private StatusContentInfo statusContentInfo;
+	
 
 }

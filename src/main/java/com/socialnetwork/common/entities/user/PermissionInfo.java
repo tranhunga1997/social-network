@@ -16,7 +16,11 @@ import com.socialnetwork.common.entities.BaseEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 
+ * @author hung
+ *
+ */
 @Entity
 @Table(name = "m_permission_info")
 @Data

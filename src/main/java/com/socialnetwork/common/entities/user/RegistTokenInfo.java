@@ -14,7 +14,11 @@ import com.socialnetwork.common.entities.BaseEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 
+ * @author hung
+ *
+ */
 @Entity
 @Table(name = "T_REGIST_TOKEN_INFO")
 @Data
@@ -24,11 +28,11 @@ public class RegistTokenInfo extends BaseEntity {
 	 * 
 	 */
 	private static final long serialVersionUID = -162074673424250813L;
-
-	@Column(length = 50, nullable = false)
-	private String token;
 	
 	@Id
+	@Column(length = 100, nullable = false)
+	private String token;
+	
 	@Column(name="user_id", nullable = false)
 	private Long userId;
 	

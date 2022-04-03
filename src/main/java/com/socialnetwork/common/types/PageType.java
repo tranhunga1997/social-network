@@ -6,7 +6,6 @@ import com.socialnetwork.common.exceptions.SocialException;
 /**
  * 
  * @author thuong
- *
  */
 public enum PageType {
 	UNIT('0'),//trang cá nhân

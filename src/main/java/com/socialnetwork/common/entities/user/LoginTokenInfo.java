@@ -14,7 +14,11 @@ import com.socialnetwork.common.entities.BaseEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 
+ * @author hung
+ *
+ */
 @Entity
 @Table(name = "T_LOGIN_TOKEN_INFO")
 @Data

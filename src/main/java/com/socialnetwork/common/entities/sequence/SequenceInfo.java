@@ -6,7 +6,11 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import lombok.Data;
-
+/**
+ * 
+ * @author thuong
+ *
+ */
 @Entity
 @Table(name="m_sequence_info")
 @Data

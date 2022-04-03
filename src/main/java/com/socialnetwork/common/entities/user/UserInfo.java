@@ -14,7 +14,11 @@ import com.socialnetwork.common.types.BooleanConvert;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-
+/**
+ * 
+ * @author hung
+ *
+ */
 @Entity
 @Table(name="M_USER_INFO")
 @Data
