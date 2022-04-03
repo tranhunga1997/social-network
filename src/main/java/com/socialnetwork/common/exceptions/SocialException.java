@@ -21,7 +21,7 @@ public class SocialException  extends AbstractSocialException{
 	 * @param messageCode
 	 * @param args
 	 */
-	public SocialException(String messageCode, Object[] args) {
+	public SocialException(String messageCode, Object... args) {
 		super(messageCode, args);
 	}
 }
