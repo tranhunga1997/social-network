@@ -18,7 +18,6 @@ import lombok.Data;
 /**
  * Thông tin khi tìm kiếm page
  * @author thuong
- *
  */
 @Entity
 @Table(name = "v_page_search_info")

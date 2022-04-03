@@ -13,11 +13,15 @@ import javax.persistence.Table;
 import com.socialnetwork.common.types.ContentType;
 
 import lombok.Data;
-
+/**
+ * 
+ * @author thuong
+ *
+ */
 @Table(name="m_status_content_info")
 @Entity
 @Data
-@IdClass(StatusContentPk.class)
+@IdClass(StatusContentInfoPK.class)
 public class StatusContentInfo {
 	// PAGE_ID
 	@Id
@@ -44,8 +48,8 @@ public class StatusContentInfo {
 	
 	@ManyToOne
 	@JoinColumns(value = { 
-			@JoinColumn(name = "page_id", insertable = false, updatable = false),
-			@JoinColumn(name = "status_id", insertable = false, updatable = false)
+			@JoinColumn(name="page_id", referencedColumnName = "page_id", insertable = false, updatable = false),
+			@JoinColumn(name="status_id", referencedColumnName = "status_id", insertable = false, updatable = false),
 	})
 	private StatusInfo statusInfo;
 }

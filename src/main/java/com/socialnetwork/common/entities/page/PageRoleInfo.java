@@ -10,7 +10,6 @@ import lombok.Data;
  * Lưu thông tin quyền hạn trong page
  * owner, admin, staff,  member...
  * @author thuong
- *
  */
 @Entity
 @Table(name="m_page_role_info")

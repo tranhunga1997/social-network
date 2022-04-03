@@ -18,10 +18,15 @@ import com.socialnetwork.common.types.StatusType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
+/**
+ * 
+ * @author thuong
+ *
+ */
 @Data
 @Entity
 @Table(name = "m_status_info")
-@IdClass(StatusPk.class)
+@IdClass(StatusInfoPK.class)
 @EqualsAndHashCode(callSuper = false)
 public class StatusInfo extends BaseSocialEntity{
 	/**

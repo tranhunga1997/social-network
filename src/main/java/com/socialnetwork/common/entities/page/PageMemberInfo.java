@@ -16,11 +16,15 @@ import com.socialnetwork.common.entities.user.UserInfo;
 import com.socialnetwork.common.types.BooleanConvert;
 
 import lombok.Data;
-
+/**
+ * 
+ * @author thuong
+ *
+ */
 @Entity
 @Table(name="m_page_member_info")
 @Data
-@IdClass(PageMemberPk.class)
+@IdClass(PageMemberInfoPK.class)
 public class PageMemberInfo {
 	//PAGE_ID
 	@Id

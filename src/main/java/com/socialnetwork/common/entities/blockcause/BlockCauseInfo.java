@@ -9,7 +9,7 @@ import lombok.Data;
 /**
  * 
  * @author thuong
- *
+
  */
 @Entity
 @Table(name="m_block_cause_info")

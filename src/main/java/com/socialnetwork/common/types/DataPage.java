@@ -7,7 +7,6 @@ import lombok.Data;
 /**
  * 
  * @author thuong
- *
  * @param <D>: Dto
  * @param <F>: SearchInput
  */

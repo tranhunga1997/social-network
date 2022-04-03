@@ -17,7 +17,11 @@ import com.socialnetwork.common.entities.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-
+/**
+ * 
+ * @author hung
+ *
+ */
 @Entity
 @Table(name = "m_role_info")
 @Data
