@@ -1,7 +1,5 @@
 package com.socialnetwork.common.exceptions;
 
-import com.socialnetwork.common.utils.MessageUtils;
-
 import lombok.Getter;
 
 /**
@@ -11,26 +9,17 @@ import lombok.Getter;
  *
  */
 @Getter
-public class SystemException  extends RuntimeException{
+public class SystemException  extends AbstractSocialException{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// Tham số khi in ra thông báo
-	private Object[] args;
-	// Mã lỗi
-	private String messageCode;
 	/**
 	 * Constructor
 	 * @param messageCode
 	 * @param args
 	 */
 	public SystemException(String messageCode, Object...args) {
-		this.messageCode = messageCode;
-		this.args = args;
-	}
-	@Override
-	public String getMessage() {
-		return MessageUtils.getMessage(messageCode, args);
+		super(messageCode, args);
 	}
 }

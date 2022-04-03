@@ -11,26 +11,17 @@ import lombok.Getter;
  *
  */
 @Getter
-public class SocialException  extends RuntimeException{
+public class SocialException  extends AbstractSocialException{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// Tham số khi in ra thông báo
-	private Object[] args;
-	// Mã lỗi
-	private String messageCode;
 	/**
-	 * Constructor
+	 * 
 	 * @param messageCode
 	 * @param args
 	 */
-	public SocialException(String messageCode, Object...args) {
-		this.messageCode = messageCode;
-		this.args = args;
-	}
-	@Override
-	public String getMessage() {
-		return MessageUtils.getMessage(messageCode, args);
+	public SocialException(String messageCode, Object... args) {
+		super(messageCode, args);
 	}
 }

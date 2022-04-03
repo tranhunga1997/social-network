@@ -11,26 +11,20 @@ import lombok.Getter;
  *
  */
 @Getter
-public class InputException  extends RuntimeException{
+public class InputException  extends AbstractSocialException{
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	// Tham số khi in ra thông báo
-	private Object[] args;
-	// Mã lỗi
-	private String messageCode;
+	
+	private String field;
 	/**
 	 * Constructor
 	 * @param messageCode
 	 * @param args
 	 */
-	public InputException(String messageCode, Object...args) {
-		this.messageCode = messageCode;
-		this.args = args;
-	}
-	@Override
-	public String getMessage() {
-		return MessageUtils.getMessage(messageCode, args);
+	public InputException(String field, String messageCode, Object...args) {
+		super(messageCode, args);
+		this.field = field;
 	}
 }
