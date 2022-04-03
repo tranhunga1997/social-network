@@ -30,20 +30,15 @@ public class LoginTokenInfo extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
+	@Column(name="user_id", nullable = false)
+	private Long userId;
+	
 	@Column(length = 50, nullable = false)
 	private String token;
 	
 	@Column(name="ip_address",length = 15, nullable = false)
 	private String ipAddress;
-	
-	@Column(name="user_id", nullable = false)
-	private Long userId;
-	
+
 	@Column(name="token_expired_at",nullable = false)
 	private LocalDateTime tokenExpiredAt;
-
-	//relationship
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="user_id", insertable = false, updatable = false)
-	private UserInfo userInfo;
 }

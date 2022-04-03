@@ -21,7 +21,7 @@ public interface RegistTokenRepository extends JpaRepository<RegistTokenInfo, Lo
 	 */
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE #{#entityName} r_token SET r_token.token = ?1 "
+	@Query(value = "UPDATE #{#entityName} r_token SET r_token.token = ?1, u.updateAt = NOW() "
 			+ "WHERE r_token.userId = ?2")
 	int updateToken(String token, long userId);
 }

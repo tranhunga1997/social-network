@@ -18,21 +18,21 @@ public interface UserRepository extends JpaRepository<UserInfo, Long> {
 	Optional<UserInfo> findByEmail(String email);
 	
 	@Modifying
-	@Query("UPDATE #{#entityName} u SET u.isEnabled = true WHERE u.username = :username")
+	@Query("UPDATE #{#entityName} u SET u.isEnabled = true, u.updateAt = NOW() WHERE u.username = :username")
 	void activeByUsername(String username);
 	
 	@Modifying
-	@Query("UPDATE #{#entityName} u SET u.isEnabled = true WHERE u.userId = ?1")
+	@Query("UPDATE #{#entityName} u SET u.isEnabled = true, u.updateAt = NOW() WHERE u.userId = ?1")
 	void activeById(long id);
 	
 	@Modifying
-	@Query("UPDATE #{#entityName} u SET u.isBlocked = ?2 WHERE u.username = ?1")
+	@Query("UPDATE #{#entityName} u SET u.isBlocked = ?2, u.updateAt = NOW() WHERE u.username = ?1")
 	void blockAndUnblock(String username, boolean status);
 	@Modifying
-	@Query("UPDATE #{#entityName} u SET u.isBlocked = ?2 WHERE u.userId = ?1")
+	@Query("UPDATE #{#entityName} u SET u.isBlocked = ?2, u.updateAt = NOW() WHERE u.userId = ?1")
 	void blockAndUnblock(long id, boolean status);
 	@Modifying
-	@Query("UPDATE #{#entityName} u SET u.email = ?2 WHERE u.username = ?1")
+	@Query("UPDATE #{#entityName} u SET u.email = ?2, u.updateAt = NOW() WHERE u.username = ?1")
 	void changeEmail(String username, String email);
 	
 	@Query("SELECT u.userId FROM #{#entityName} u WHERE u.username = ?1")
