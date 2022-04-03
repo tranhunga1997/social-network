@@ -6,6 +6,7 @@ DROP TABLE IF EXISTS t_login_token_info CASCADE;
 DROP TABLE IF EXISTS t_forget_password_token_info CASCADE;
 DROP TABLE IF EXISTS t_regist_token_info CASCADE;
 DROP TABLE IF EXISTS h_login_info CASCADE;
+DROP TABLE IF EXISTS t_regist_token_history;
 DROP TABLE IF EXISTS m_permission_info CASCADE;
 DROP TABLE IF EXISTS m_role_info CASCADE;
 DROP TABLE IF EXISTS m_user_role_link CASCADE;
@@ -70,6 +71,15 @@ CREATE TABLE t_regist_token_info(
     del_at TIMESTAMP
 );
 
+CREATE TABLE t_regist_token_history(
+    token VARCHAR(255) PRIMARY KEY, 
+    user_id BIGINT NOT NULL,
+    token_expired_at TIMESTAMP,
+    active_at TIMESTAMP,
+    create_at TIMESTAMP,
+    update_at TIMESTAMP,
+    del_at TIMESTAMP
+);
 
 CREATE TABLE h_login_info(
     ip_address VARCHAR(15),
@@ -125,6 +135,9 @@ ALTER TABLE t_forget_password_token_info ADD CONSTRAINT t_forget_password_user_f
     FOREIGN KEY(user_id) REFERENCES m_user_info (user_id);
 
 ALTER TABLE t_regist_token_info ADD CONSTRAINT t_regist_token_user_fk
+    FOREIGN KEY(user_id) REFERENCES m_user_info (user_id);
+
+ALTER TABLE t_regist_token_history ADD CONSTRAINT t_regist_token_history_user_fk
     FOREIGN KEY(user_id) REFERENCES m_user_info (user_id);
 
 ALTER TABLE h_login_info ADD CONSTRAINT h_login_user_fk

@@ -1,7 +1,5 @@
 package com.socialnetwork.common.exceptions;
 
-import com.socialnetwork.common.utils.MessageUtils;
-
 import lombok.Getter;
 
 /**

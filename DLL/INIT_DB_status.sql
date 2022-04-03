@@ -34,6 +34,7 @@ CREATE TABLE m_status_content_like_info(
     status_id BIGINT,
     content_id INT,
     user_id BIGINT,
+    like_type CHAR(1),
     create_at TIMESTAMP,
     PRIMARY KEY(page_id, status_id, content_id, user_id)
 );

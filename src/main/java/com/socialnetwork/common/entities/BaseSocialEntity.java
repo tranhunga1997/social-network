@@ -9,6 +9,8 @@ import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 
 import com.socialnetwork.common.entities.blockcause.BlockCauseInfo;
 import com.socialnetwork.common.types.BooleanConvert;
@@ -56,4 +58,15 @@ public abstract class BaseSocialEntity implements Serializable{
 	@JoinColumn(name="block_cause_id", updatable = false, insertable = false)
 	@ManyToOne(fetch = FetchType.LAZY)
 	private BlockCauseInfo blockCauseInfo;
+	
+	@PreUpdate
+	public void update() {
+		this.updateAt = LocalDateTime.now();
+	}
+	
+	@PrePersist
+	public void persist() {
+		this.createAt = LocalDateTime.now();
+	}
+	
 }
