@@ -30,10 +30,10 @@ public class LoginTokenInfo extends BaseEntity {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@Column(length = 100, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String token;
 	
-	@Column(name="ip_address",length = 12, nullable = false)
+	@Column(name="ip_address",length = 15, nullable = false)
 	private String ipAddress;
 	
 	@Column(name="user_id", nullable = false)

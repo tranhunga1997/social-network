@@ -21,7 +21,7 @@ public class RegistTokenHistory implements Serializable{
 	
 	@Id
 	private Long userId;
-	@Column(length = 100, nullable = false)
+	@Column(length = 50, nullable = false)
 	private String token;
 	@Column(nullable = false)
 	private LocalDateTime activeAt;

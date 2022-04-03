@@ -1,5 +1,6 @@
 package com.socialnetwork.common.entities.user;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -25,13 +26,13 @@ import lombok.EqualsAndHashCode;
 @Data
 @IdClass(LoginHistoryInfoPK.class)
 @EqualsAndHashCode(callSuper = false)
-public class LoginHistoryInfo extends BaseEntity {
+public class LoginHistoryInfo implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = -6308675124624326206L;
 	@Id
-	@Column(name="ip_address", length = 15)
+	@Column(name="ip_address", length = 12)
 	private String ipAddress;
 	@Id
 	@Column(name="access_at")

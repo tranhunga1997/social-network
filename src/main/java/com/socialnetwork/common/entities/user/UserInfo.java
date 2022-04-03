@@ -34,16 +34,16 @@ public class UserInfo extends BaseEntity {
 	@Column(name="user_id")
 	private Long userId;
 	
-	@Column(length = 50, unique = true)
+	@Column(length = 20, unique = true)
 	private String username;
 	
-	@Column(name="last_name",length = 50)
+	@Column(name="last_name",length = 20)
 	private String lastName;
 	
-	@Column(name="first_name",length = 50)
+	@Column(name="first_name",length = 20)
 	private String firstName;
 	
-	@Column(length = 100, nullable = false)
+	@Column(length = 40, nullable = false)
 	private String email;
 
 	@Column(name="is_enabled")

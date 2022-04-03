@@ -12,6 +12,7 @@ import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.AuthenticateRepository;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.user.dtos.AuthenticateInfoDto;
+import com.socialnetwork.user.dtos.UserInfoDto;
 
 /**
  * Xử lấy các thông tin mật khẩu
@@ -112,7 +113,19 @@ public class AuthenticateService {
 	}
 	
 	// quên mật khẩu - viết khi hoàn thành tính năng token
-	
+	public void forgetPassword(String email) {
+		// lấy thông tin tài khoản từ email
+		UserInfoDto userInfoDto = userService.findByEmail(email);
+		if(StringUtil.isNull(userInfoDto)) {
+			return;
+		}
+		
+		// tạo token
+		
+		// gửi mail
+		
+		
+	}
 	/**
 	 * Tăng số lần đăng nhập thất bại
 	 * @param authenId
@@ -121,6 +134,4 @@ public class AuthenticateService {
 	public void loginFailedAction(long authenId, int counter) {
 		authenticateRepository.changeLoginFailed(counter+1, authenId);
 	}
-	
-	//
 }

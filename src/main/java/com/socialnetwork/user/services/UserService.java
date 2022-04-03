@@ -12,6 +12,7 @@ import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.UserRepository;
 import com.socialnetwork.common.utils.BeanCopyUtils;
 import com.socialnetwork.common.utils.StringUtil;
+import com.socialnetwork.user.dtos.RegistTokenInfoDto;
 import com.socialnetwork.user.dtos.UserInfoDto;
 /**
  * <b>Tác dụng: </b>xử lý logic bảng thông tin tài khoản.
@@ -22,6 +23,8 @@ import com.socialnetwork.user.dtos.UserInfoDto;
 public class UserService {
 	@Autowired
 	private UserRepository userRepository;
+	@Autowired
+	private RegistTokenService registTokenService;
 	
 	/**
 	 * Tìm tất cả tài khoản
@@ -32,9 +35,7 @@ public class UserService {
 		List<UserInfoDto> userInfoDtos = new ArrayList<>();
 		
 		for(UserInfo userInfo : userInfos) {
-			UserInfoDto userInfoDto = new UserInfoDto();
-			BeanCopyUtils.copyProperties(userInfo, userInfoDto);
-			userInfoDtos.add(userInfoDto);
+			userInfoDtos.add(new UserInfoDto(userInfo));
 		}
 		
 		return userInfoDtos;
@@ -48,15 +49,63 @@ public class UserService {
 	public long getUserId(String username) {
 		return userRepository.getUserId(username);
 	}
+	
+	/**
+	 * Lấy thông tin email
+	 * @param username
+	 * @return email
+	 */
+	public String getEmail(String username) {
+		return findByUsername(username).getEmail();
+	}
+	
+	/**
+	 * Lấy thông tin email
+	 * @param userId
+	 * @return email
+	 */
+	public String getEmail(long userId) {
+		return findById(userId).getEmail();
+	}
+	
 	/**
 	 * Tìm tài khoản theo username
 	 * @param username
-	 * @return
+	 * @return thông tin tài khoản
 	 */
 	public UserInfoDto findByUsername(String username) {
 		Optional<UserInfo> userOptional = userRepository.findByUsername(username);
 		UserInfoDto userInfoDto = null;
-		if(userOptional.isEmpty()) {
+		if(userOptional.isPresent()) {
+			userInfoDto = new UserInfoDto(userOptional.get());
+		}
+		return userInfoDto;
+	}
+	
+	/**
+	 * Tìm tài khoản theo user id
+	 * @param userId
+	 * @return thông tin tài khoản
+	 */
+	public UserInfoDto findById(long userId) {
+		Optional<UserInfo> userOptional = userRepository.findById(userId);
+		UserInfoDto userInfoDto = null;
+		if(userOptional.isPresent()) {
+			userInfoDto = new UserInfoDto(userOptional.get());
+		}
+		return userInfoDto;
+	}
+	
+	/**
+	 * Tìm tài khoản theo email
+	 * @param email
+	 * @return thông tin tài khoản
+	 */
+	public UserInfoDto findByEmail(String email) {
+		Optional<UserInfo> userOptional = userRepository.findByEmail(email);
+		
+		UserInfoDto userInfoDto = null;
+		if(userOptional.isPresent()) {
 			userInfoDto = new UserInfoDto(userOptional.get());
 		}
 		return userInfoDto;
@@ -115,4 +164,45 @@ public class UserService {
 		// viết sau khi hoàn thành gửi mail
 	}
 	
+	/**
+	 * Kiểm tra tồn tại tài khoản
+	 * @param userId
+	 * @return <code>true</code> tồn tại, <code>false</code> ngược lại
+	 */
+	public boolean isExists(long userId) {
+		return userRepository.existsById(userId);
+	}
+	
+	/**
+	 * Kiểm tra tồn tại tài khoản
+	 * @param userId
+	 * @return <code>true</code> tồn tại, <code>false</code> ngược lại
+	 */
+	public boolean isExists(String username) {
+		return userRepository.existsByUsername(username);
+	}
+	
+	public boolean isExistsByEmail(String email) {
+		return userRepository.existsByEmail(email);
+	}
+	/**
+	 * Kích hoạt tài khoản
+	 * @param registToken
+	 * @param userId
+	 * @return <code>true</code> kích hoạt thành công, <code>false</code> ngược lại
+	 */
+	public boolean active(String registToken, long userId) {
+		RegistTokenInfoDto registTokenInfoDto = registTokenService.findByToken(registToken);
+		// so sánh token đúng với user id
+		if(registTokenInfoDto.getUserId() != userId) {
+			return false;
+		}
+		
+		// kích hoạt tài khoản
+		userRepository.activeById(userId);
+		
+		// xóa logic regist token
+		registTokenService.deleteLogic(userId);
+		return true;
+	}
 }
