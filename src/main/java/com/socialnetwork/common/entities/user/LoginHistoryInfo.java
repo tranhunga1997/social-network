@@ -25,12 +25,13 @@ public class LoginHistoryInfo extends BaseEntity {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -6308675124624326206L;
+	private static final long serialVersionUID = 1L;
 	@Id
 	@Column(name="ip_address", length = 15)
 	private String ipAddress;
+	
 	@Id
-	@Column(name="access_at")
+	@Column(name = "access_at")
 	private LocalDateTime accessAt;
 	
 	@Column(nullable = false, name="user_id")

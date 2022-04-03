@@ -14,7 +14,7 @@ public class BaseEntity implements Serializable {
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = -1876453224787306485L;
+	private static final long serialVersionUID = 1L;
 	@Column(name="create_at")
 	private LocalDateTime createAt;
 	@Column(name="update_at")

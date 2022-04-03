@@ -39,6 +39,12 @@ public class UserService {
 		
 		return userInfoDtos;
 	}
+	
+	/**
+	 * Tìm user id
+	 * @param username
+	 * @return user id
+	 */
 	public long getUserId(String username) {
 		return userRepository.getUserId(username);
 	}

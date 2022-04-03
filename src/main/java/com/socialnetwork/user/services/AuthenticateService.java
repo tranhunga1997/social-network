@@ -13,6 +13,11 @@ import com.socialnetwork.common.repositories.user.AuthenticateRepository;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.user.dtos.AuthenticateInfoDto;
 
+/**
+ * Xử lấy các thông tin mật khẩu
+ * @author Mạnh Hùng
+ *
+ */
 @Service
 public class AuthenticateService {
 	@Autowired
@@ -20,7 +25,7 @@ public class AuthenticateService {
 	@Autowired
 	private UserService userService;
 	
-	// tìm thông tin mật khẩu (new)
+
 	/**
 	 * Tìm thông tin mật khẩu (new)
 	 * @param userId
@@ -31,7 +36,7 @@ public class AuthenticateService {
 		AuthenticateInfoDto dto = new AuthenticateInfoDto(authenticateInfo);
 		return dto;
 	}
-	// tìm thông tin mật khẩu (old)
+
 	/**
 	 * Tìm thông tin mật khẩu (old)
 	 * @param userId
@@ -47,7 +52,6 @@ public class AuthenticateService {
 		return dtos;
 	}
 	
-	// tạo thông tin mật khẩu
 	/**
 	 * Tạo thông tin mật khẩu
 	 * @param dto
@@ -62,7 +66,6 @@ public class AuthenticateService {
 		return new AuthenticateInfoDto(result);
 	}
 	
-	// thay đổi mật khẩu
 	/**
 	 * Thay đổi mật khẩu
 	 * @param userId
@@ -93,7 +96,13 @@ public class AuthenticateService {
 		authenticateRepository.save(authInfo);
 	}
 	
-	// lấy history id
+	/**
+	 * Lấy history id (hiện tại chưa sử dụng)
+	 * @param userId
+	 * @return
+	 * @throws SocialException
+	 */
+	@Deprecated
 	public int getHistoryId(long userId) throws SocialException{
 		AuthenticateInfo authenticateInfo = authenticateRepository.findNewInfo(userId);
 		if(StringUtil.isNull(authenticateInfo)) {
@@ -104,7 +113,11 @@ public class AuthenticateService {
 	
 	// quên mật khẩu - viết khi hoàn thành tính năng token
 	
-	// tăng số lần đăng nhập thất bại
+	/**
+	 * Tăng số lần đăng nhập thất bại
+	 * @param authenId
+	 * @param counter
+	 */
 	public void loginFailedAction(long authenId, int counter) {
 		authenticateRepository.changeLoginFailed(counter+1, authenId);
 	}

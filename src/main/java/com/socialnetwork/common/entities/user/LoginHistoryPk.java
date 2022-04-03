@@ -7,7 +7,6 @@ import javax.persistence.Embeddable;
 
 import lombok.Data;
 
-@Embeddable
 @Data
 public class LoginHistoryPk implements Serializable{
 
