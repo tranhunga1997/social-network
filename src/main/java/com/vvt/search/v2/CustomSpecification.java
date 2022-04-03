@@ -34,6 +34,7 @@ import com.vvt.search.v2.type.SearchArrayType;
  * 
  * @author Vu van thuong
  *
+ *
  * @param <T>
  */
 public class CustomSpecification<T> implements Specification<T>{
