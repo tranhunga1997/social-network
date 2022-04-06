@@ -66,7 +66,7 @@ public class MailService {
      * @param attrs (các tham số truyền vào template dưới dạng Map)
      * @return 
      */
-    public String readHtmlTemplateFile(String pathTemplate,Map<String, Object> attrs) {
+    public String sendWithHtmlTemplate(String pathTemplate,Map<String, Object> attrs) {
     	final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
     	Context context = new Context(null, attrs);
     	context.setVariable("baseUrl", baseUrl);

@@ -66,10 +66,15 @@ public class AuthenticateService {
 	 * @return thông tin mật khẩu đã tạo
 	 * @throws SocialException
 	 */
-	public AuthenticateInfoDto create(AuthenticateInfoDto dto) throws SocialException {
+	public AuthenticateInfoDto create(long userId, String password) throws SocialException {
 		AuthenticateInfo authenInfo = null;
-		dto.setHistoryId(1);
-		authenInfo = dto.toAuthenticateInfo();
+		AuthenticateInfoDto authDto = new AuthenticateInfoDto();
+		authDto.setUserId(userId);
+		authDto.setPassword(password);
+		authDto.setHistoryId(1);
+		authDto.setLoginFailedCounter(0);
+		authDto.setCreateDatetime(LocalDateTime.now());
+		authenInfo = authDto.toAuthenticateInfo();
 		AuthenticateInfo result = authenticateRepository.save(authenInfo);
 		return new AuthenticateInfoDto(result);
 	}
