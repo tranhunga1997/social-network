@@ -10,10 +10,10 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.socialnetwork.common.entities.user.AuthenticateInfo;
-import com.socialnetwork.common.entities.user.AuthenticatePk;
+import com.socialnetwork.common.entities.user.AuthenticateInfoPK;
 
 @Repository
-public interface AuthenticateRepository extends JpaRepository<AuthenticateInfo, AuthenticatePk>{
+public interface AuthenticateRepository extends JpaRepository<AuthenticateInfo, AuthenticateInfoPK>{
 	AuthenticateInfo findByUserId(long userId);
 	
 	

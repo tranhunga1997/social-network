@@ -6,11 +6,10 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import com.socialnetwork.common.entities.user.LoginHistoryInfo;
-import com.socialnetwork.common.entities.user.LoginHistoryPk;
-import com.socialnetwork.general.user.dtos.LoginHistoryInfoDto;
+import com.socialnetwork.common.entities.user.LoginHistoryInfoPK;
 
 @Repository
-public interface LoginHistoryRepository extends JpaRepository<LoginHistoryInfo, LoginHistoryPk>{
+public interface LoginHistoryRepository extends JpaRepository<LoginHistoryInfo, LoginHistoryInfoPK>{
 	
 	List<LoginHistoryInfo> findByUserId(long userId);
 }
