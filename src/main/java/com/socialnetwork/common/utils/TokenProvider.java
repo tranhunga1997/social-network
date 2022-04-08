@@ -29,11 +29,12 @@ public class TokenProvider {
 	
     /**
      * Tạo jwt dựa theo thông tin user
-     * @param userInfo
+     * @param username
+     * @param refreshTokenId tác dụng tăng tính an toàn
      * @return JWT
      */
-    public static String generateJwt(UserInfo userInfo, long loginId){
-        String jwt = Jwts.builder().setSubject(userInfo.getUsername()).setId(String.valueOf(loginId))
+    public static String generateJwt(String username, long refreshTokenId){
+        String jwt = Jwts.builder().setSubject(username).setId(String.valueOf(refreshTokenId))
                 .setIssuedAt(new Date()).setExpiration(generateExpirationDate()).signWith(SignatureAlgorithm.HS512,JWT_SECRET)
                 .compact();
         return jwt;
@@ -70,7 +71,7 @@ public class TokenProvider {
         return claims.getSubject();
     }
     
-    public static Long getLoginIdFromJwt(String jwt) {
+    public static Long getRefreshTokenIdFromJwt(String jwt) {
     	Claims claims = Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(jwt).getBody();
     	return Long.parseLong(claims.getId());
     }

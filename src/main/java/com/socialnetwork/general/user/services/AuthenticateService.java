@@ -6,8 +6,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Objects;
 import com.socialnetwork.common.entities.user.AuthenticateInfo;
 import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.AuthenticateRepository;
@@ -33,7 +35,8 @@ public class AuthenticateService {
 	@Autowired
 	private MailService mailService;
 	
-
+	@Value("${user.login.failed_counter}")
+	private int loginFailedCounter;
 	/**
 	 * Tìm thông tin mật khẩu (new)
 	 * @param userId
@@ -124,7 +127,10 @@ public class AuthenticateService {
 		return authenticateInfo.getHistoryId();
 	}
 	
-	// quên mật khẩu - viết khi hoàn thành tính năng token
+	/**
+	 * Quên mật khẩu
+	 * @param email 
+	 */
 	public void forgetPassword(String email) {
 		// lấy thông tin tài khoản từ email
 		UserInfoDto userInfoDto = userService.findByEmail(email);
@@ -138,6 +144,7 @@ public class AuthenticateService {
 		mailService.sendTextMail(email, "title", "forget password token");
 		
 	}
+	
 	/**
 	 * Tăng số lần đăng nhập thất bại
 	 * @param authenId
@@ -145,5 +152,43 @@ public class AuthenticateService {
 	 */
 	public void loginFailedAction(long authenId, int counter) {
 		authenticateRepository.changeLoginFailed(counter+1, authenId);
+	}
+	
+	/**
+	 * Xác thực người dùng
+	 * @param userInfo 
+	 * @param authenticateInfo
+	 * @param password nhận từ form
+	 * @return
+	 * 	-1: tài khoản không tồn tại 
+	 * <br>0: thành công
+	 * <br>1: tài khoản chưa kích hoạt
+	 * <br>2: tài khoản đang bị khóa
+	 * <br>3: quá số lần đăng nhập thất bại
+	 * <br>4: sai mật khẩu
+	 */
+	public int authentication(UserInfoDto userInfo, AuthenticateInfoDto authenticateInfo, String password) {
+		int result = 0;
+		
+		/*tài khoản không tồn tại*/
+		if(StringUtil.isNull(userInfo) || StringUtil.isNull(authenticateInfo)) {
+			result = -1;
+		}
+		
+		 /*tài khoản tồn tại*/
+		// kiểm tra mật khẩu
+		if(!Objects.equal(authenticateInfo.getPassword(), password)) {
+			// kiểm tra tài khoản active
+			if(!userInfo.isEnable()) {
+				result = 1;
+			}else if(userInfo.isBlock()) {
+				result = 2;
+			}else if(authenticateInfo.getLoginFailedCounter() >= loginFailedCounter) {
+				result = 3;
+			}else {
+				result = 4;
+			}
+		}
+		return result;
 	}
 }

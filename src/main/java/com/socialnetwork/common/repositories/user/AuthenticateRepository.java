@@ -29,6 +29,7 @@ public interface AuthenticateRepository extends JpaRepository<AuthenticateInfo, 
 	
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE #{#entityName} auth SET auth.loginFailedCounter = :counter WHERE auth.id = :id")
-	void changeLoginFailed(int counter, long id);
+	@Query(value = "UPDATE m_authenticate_info auth SET auth.login_failed_counter = ?1 WHERE auth.id = :id",
+			nativeQuery = true)
+	void changeLoginFailed(int counter, long userId);
 }

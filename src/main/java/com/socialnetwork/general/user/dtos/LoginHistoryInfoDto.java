@@ -6,8 +6,10 @@ import com.socialnetwork.common.entities.user.LoginHistoryInfo;
 import com.socialnetwork.common.utils.BeanCopyUtils;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class LoginHistoryInfoDto {
 	private String ipAddress;
 	private LocalDateTime accessAt;
