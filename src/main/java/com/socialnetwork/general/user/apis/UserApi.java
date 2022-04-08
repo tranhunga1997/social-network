@@ -135,18 +135,25 @@ public class UserApi {
 		int authCode = authService.authentication(userInfoDto, authenticateInfoDto, password);
 		switch (authCode) {
 		case -1:
-			throw new SocialException("W_00011", "Đăng nhập"); // tài khoản không tồn tại
+			// tài khoản không tồn tại
+			throw new SocialException("W_00011", "Đăng nhập"); 
 		case 0: 
+			// thành công
 			break;
 		case 1:
-			throw new SocialException("W_00014"); // tài khoản chưa kích hoạt
+			 // tài khoản chưa kích hoạt
+			throw new SocialException("W_00014");
 		case 2:
-			throw new SocialException("W_00015"); // tài khoản bị khóa
+			// tài khoản bị khóa
+			throw new SocialException("W_00015"); 
 		case 3:
+			// quá số lần đăng nhập
 			userService.blockAndUnblock(username, false);
-			throw new SocialException("W_00013"); // quá số lần đăng nhập
+			throw new SocialException("W_00013"); 
 		case 4:
-			throw new SocialException("W_00011", "Đăng nhập"); // sai mật khẩu
+			// sai mật khẩu
+			authService.loginFailedAction(userInfoDto.getUserId(), authenticateInfoDto.getLoginFailedCounter());
+			throw new SocialException("W_00011", "Đăng nhập"); 
 		}
 		
 		// khởi tạo jwt và refresh token

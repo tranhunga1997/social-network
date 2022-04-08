@@ -147,11 +147,11 @@ public class AuthenticateService {
 	
 	/**
 	 * Tăng số lần đăng nhập thất bại
-	 * @param authenId
+	 * @param userId
 	 * @param counter
 	 */
-	public void loginFailedAction(long authenId, int counter) {
-		authenticateRepository.changeLoginFailed(counter+1, authenId);
+	public void loginFailedAction(long userId, int counter) {
+		authenticateRepository.changeLoginFailed(counter+1, userId);
 	}
 	
 	/**

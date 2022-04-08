@@ -18,7 +18,8 @@ public interface AuthenticateRepository extends JpaRepository<AuthenticateInfo, 
 	
 	
 	@Query(value = "SELECT authen.* FROM m_authenticate_info authen WHERE "
-			+ "authen.history_id = (SELECT max(a.history_id) FROM m_authenticate_info a WHERE authen.user_id = ?1)",
+			+ "authen.history_id = (SELECT max(a.history_id) FROM m_authenticate_info a WHERE a.user_id = authen.user_id) "
+			+ "AND authen.user_id = ?1",
 			nativeQuery = true)
 	AuthenticateInfo findNewInfo(long userId);
 	
@@ -29,7 +30,9 @@ public interface AuthenticateRepository extends JpaRepository<AuthenticateInfo, 
 	
 	@Transactional
 	@Modifying
-	@Query(value = "UPDATE m_authenticate_info auth SET auth.login_failed_counter = ?1 WHERE auth.id = :id",
+	@Query(value = "UPDATE m_authenticate_info auth SET auth.login_failed_counter = ?1 WHERE "
+			+ "auth.user_id = ?2 "
+			+ "AND auth.history_id = (SELECT max(a.history_id) FROM m_authenticate_info a WHERE a.user_id = auth.user_id)",
 			nativeQuery = true)
 	void changeLoginFailed(int counter, long userId);
 }
