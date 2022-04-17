@@ -2,6 +2,7 @@ package com.socialnetwork.common.utils;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
 import javax.mail.MessagingException;
 
 import org.junit.jupiter.api.AfterEach;
@@ -14,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class MailUtilsTest {
 	
 	@Autowired
-	MailUtils mailUtils;
+	MailService mailService;
 	
 	@BeforeEach
 	void setUp() throws Exception {
@@ -26,14 +27,14 @@ class MailUtilsTest {
 
 	@Test
 	void testSendTextMail() {
-		mailUtils.sendTextMail("tranhunga1997@gmail.com", "Test text", "Hi there!!");
+		mailService.sendTextMail("tranhunga1997@gmail.com", "Test text", "Hi there!!");
 //		fail("Not yet implemented");
 	}
 
 	@Test
 	void testSendHtmlMail() {
 		try {
-			mailUtils.sendHtmlMail("tranhunga1997@gmail.com", "Test html", "<h1>Hi there!!</h1>");
+			mailService.sendHtmlMail("tranhunga1997@gmail.com", "Test html", "<h1>Hi there!!</h1>");
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

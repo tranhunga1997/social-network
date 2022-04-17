@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<configuration>
+	<!-- THIẾT LẬP IN CONSOLE -->
+	<appender name="OUT-TO-CONSOLE"
+		class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d{HH:mm:ss} %highlight(%level): %logger.%M - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<!-- THIẾT LẬP IN FILE (ĐỊNH DẠNG: log_dd-MM-yyyy.log) -->
+	<appender name="OUT-TO-FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		
+		<rollingPolicy
+			class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>
+				logs/log_%d{dd-MM-yyyy}.log
+			</fileNamePattern>
+			<maxHistory>10</maxHistory>
+			<totalSizeCap>100MB</totalSizeCap>
+		</rollingPolicy>
+
+		<encoder
+			class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<charset>UTF-8</charset>
+			<pattern>
+				%d{dd-MM-yyyy HH:mm:ss} %level: %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+	
+	<!-- THIẾT LẬP PHẠM VI VÀ LOG LEVEL -->
+	<logger name="com.socialnetwork" additivity="false"
+		level="debug">
+		<appender-ref ref="OUT-TO-CONSOLE" />
+		<appender-ref ref="OUT-TO-FILE" />
+	</logger>
+
+	<!-- THIẾT LẬP ROOT -->
+	<root level="DEBUG">
+		<appender-ref ref="OUT-TO-CONSOLE" />
+	</root>
+</configuration>

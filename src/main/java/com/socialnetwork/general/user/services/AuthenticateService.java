@@ -76,7 +76,7 @@ public class AuthenticateService {
 		authDto.setPassword(password);
 		authDto.setHistoryId(1);
 		authDto.setLoginFailedCounter(0);
-		authDto.setCreateDatetime(LocalDateTime.now());
+		authDto.setCreateAt(LocalDateTime.now());
 		authenInfo = authDto.toAuthenticateInfo();
 		AuthenticateInfo result = authenticateRepository.save(authenInfo);
 		return new AuthenticateInfoDto(result);

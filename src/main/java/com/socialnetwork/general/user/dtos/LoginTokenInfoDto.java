@@ -12,22 +12,24 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class LoginTokenInfoDto {
-	private Long id;
+//	private Long id;
 	private String ipAddress;
 	private Long userId;
 	private String refreshToken;
-	private LocalDate tokenExpiredDate;
+	private LocalDateTime tokenExpiredAt;
 	private LocalDateTime createDatetime;
 	private LocalDateTime updateDatetime;
 	private LocalDateTime deleteDatetime;
 	
-	public LoginTokenInfoDto(LoginTokenInfo info) {
-		BeanCopyUtils.copyProperties(info, this);
+	public LoginTokenInfoDto(LoginTokenInfo entity) {
+		BeanCopyUtils.copyProperties(entity, this);
+		this.refreshToken = entity.getToken();
 	}
 	
 	public LoginTokenInfo toLoginTokenInfo() {
-		LoginTokenInfo info = new LoginTokenInfo();
-		BeanCopyUtils.copyProperties(this, info);
-		return info;
+		LoginTokenInfo entity = new LoginTokenInfo();
+		BeanCopyUtils.copyProperties(this, entity);
+		entity.setToken(this.refreshToken);
+		return entity;
 	}
 }

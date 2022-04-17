@@ -36,7 +36,7 @@ public class LoginTokenInfo extends BaseEntity {
 	@Column(length = 50, nullable = false)
 	private String token;
 	
-	@Column(name="ip_address",length = 15, nullable = false)
+	@Column(name="ip_address",length = 20, nullable = false)
 	private String ipAddress;
 
 	@Column(name="token_expired_at",nullable = false)

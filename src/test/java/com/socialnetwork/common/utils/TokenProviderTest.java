@@ -22,8 +22,8 @@ class TokenProviderTest {
 	@BeforeAll
 	static void setUpBeforeClass() throws Exception {
 		UserInfo userInfo = new UserInfo();
-		userInfo.setUsername("sunico1997");
-		JWT = TokenProvider.generateJwt(userInfo, 2);
+		userInfo.setUsername("admin");
+		JWT = TokenProvider.generateJwt(userInfo.getUsername(), 1);
 	}
 
 	@AfterAll
@@ -52,8 +52,8 @@ class TokenProviderTest {
 	
 	@Test
 	void testGetLoginIdFromJwt() {
-		long loginId = TokenProvider.getLoginIdFromJwt(JWT);
-		assertEquals(2, loginId);
+		String username = TokenProvider.getUserUsernameFromJwt(JWT);
+		assertEquals("admin", username);
 	}
 
 	@Test

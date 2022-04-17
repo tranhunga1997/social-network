@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -41,10 +42,12 @@ import com.socialnetwork.general.user.services.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import lombok.extern.slf4j.Slf4j;
 
 @CrossOrigin("*")
 @RestController
 @RequestMapping("api/user")
+@Slf4j
 public class UserApi {
 	@Autowired
 	private UserService userService;
@@ -62,6 +65,15 @@ public class UserApi {
 	private LoginHistoryService loginHistoryService;
 	
 	/* ============================================================================================ */
+	
+	@GetMapping("/test-logger")
+	String testLogger() {
+		log.debug("test logger!!!");
+		log.info("test logger!!!");
+		log.warn("test logger!!!");
+		return "test logger";
+	}
+	
 	/**
 	 * Controller đăng ký tài khoản
 	 * @param req httpRequest
@@ -86,7 +98,7 @@ public class UserApi {
 		}
 		//lấy thông tin role user
 		List<RoleInfo> roleInfos = new ArrayList<>(); 
-		RoleInfoDto roleInfoDto = roleInfoService.findById(2); // lấy thông tin role user
+		RoleInfoDto roleInfoDto = roleInfoService.findById(1); // lấy thông tin role user
 		if(StringUtil.isNull(roleInfoDto)) {
 			throw new SocialException("E_00003");
 		}
@@ -158,7 +170,7 @@ public class UserApi {
 		
 		// khởi tạo jwt và refresh token
 		LoginTokenInfoDto loginTokenInfoDto = loginTokenInfoService.create(userInfoDto.getUserId(), ipAddress);
-		String jwt = TokenProvider.generateJwt(username, loginTokenInfoDto.getId());
+		String jwt = TokenProvider.generateJwt(username, userInfoDto.getUserId());
 		
 		// ghi lại lịch sử đăng nhập
 		LoginHistoryInfoDto loginHistoryInfoDto = new LoginHistoryInfoDto();

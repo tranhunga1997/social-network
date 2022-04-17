@@ -15,9 +15,9 @@ public class AuthenticateInfoDto {
 	private Integer historyId;
 	private String password;
 	private Integer loginFailedCounter;
-	private LocalDateTime createDatetime;
-	private LocalDateTime updateDatetime;
-	private LocalDateTime deleteDatetime;
+	private LocalDateTime createAt;
+	private LocalDateTime updateAt;
+	private LocalDateTime deleteAt;
 	
 	public AuthenticateInfoDto(AuthenticateInfo authenInfo) {
 		BeanCopyUtils.copyProperties(authenInfo, this);

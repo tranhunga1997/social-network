@@ -26,13 +26,11 @@ public class UserRegisterForm {
 	@Size(min = 6, max = 32)
 	private String passwordConfirm;
 	
-	@NotBlank
-	@Pattern(regexp = "^[a-z][A-Z]$")
+	@Pattern(regexp = "^[^\\d]+$")
 	@Size(max = 20)
 	private String lastName;
 	
-	@NotBlank
-	@Pattern(regexp = "^[a-z][A-Z]$")
+	@Pattern(regexp = "^[^\\d]+$")
 	@Size(max = 20)
 	private String firstName;
 	

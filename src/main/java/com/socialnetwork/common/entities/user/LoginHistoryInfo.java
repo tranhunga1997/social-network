@@ -32,7 +32,7 @@ public class LoginHistoryInfo implements Serializable {
 	 */
 	private static final long serialVersionUID = -6308675124624326206L;
 	@Id
-	@Column(name="ip_address", length = 12)
+	@Column(name="ip_address", length = 20)
 	private String ipAddress;
 	@Id
 	@Column(name="access_at")
