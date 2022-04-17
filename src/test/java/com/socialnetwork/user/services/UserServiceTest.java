@@ -9,12 +9,12 @@ import java.util.List;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.web.servlet.MockMvc;
 
 import com.socialnetwork.common.entities.user.UserInfo;
 import com.socialnetwork.common.repositories.user.UserRepository;
@@ -22,16 +22,22 @@ import com.socialnetwork.general.user.dtos.UserInfoDto;
 import com.socialnetwork.general.user.services.UserService;
 
 //@ExtendWith(MockitoExtension.class)
+@SpringBootTest
 class UserServiceTest {
 	@Mock
 	UserRepository userRepository;
 	@InjectMocks
 	UserService userService;
 	
+	MockMvc mockMvc;
+	
 	List<UserInfo> userInfosGlobal = new ArrayList<>();
 	@BeforeEach
 	void setUp() throws Exception {
+		// instance mockito
 		MockitoAnnotations.initMocks(this);
+		
+		// data giả
 		for(int i =1; i<=10; i++) {
 			UserInfo dto = new UserInfo();
 			dto.setUsername("user"+i);

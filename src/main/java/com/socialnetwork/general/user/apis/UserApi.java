@@ -2,15 +2,14 @@ package com.socialnetwork.general.user.apis;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-
 import java.util.List;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -50,30 +49,21 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class UserApi {
 	@Autowired
-	private UserService userService;
+	UserService userService;
 	@Autowired
-	private AuthenticateService authService;
+	AuthenticateService authService;
 	@Autowired
-	private RoleInfoService roleInfoService;
+	RoleInfoService roleInfoService;
 	@Autowired
-	private RegistTokenService registTokenService;
+	RegistTokenService registTokenService;
 	@Autowired
-	private LoginTokenInfoService loginTokenInfoService;
+	LoginTokenInfoService loginTokenInfoService;
 	@Autowired
-	private MailService mailService;
+	MailService mailService;
 	@Autowired
-	private LoginHistoryService loginHistoryService;
+	LoginHistoryService loginHistoryService;
 	
 	/* ============================================================================================ */
-	
-	@GetMapping("/test-logger")
-	String testLogger() {
-		log.debug("test logger!!!");
-		log.info("test logger!!!");
-		log.warn("test logger!!!");
-		return "test logger";
-	}
-	
 	/**
 	 * Controller đăng ký tài khoản
 	 * @param req httpRequest
@@ -86,7 +76,7 @@ public class UserApi {
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
 	@PostMapping("/register")
-	ResponseEntity<?> create(HttpServletRequest req, @Validated UserRegisterForm form){
+	ResponseEntity<?> create(HttpServletRequest req, @Valid UserRegisterForm form){
 		// kiểm tra xác nhận mật khẩu
 		if(!Objects.equals(form.getPassword(), form.getPasswordConfirm())) {
 			throw new InputException("xác nhận mật khẩu", "E_00012", "mật khẩu", "xác nhận mật khẩu");
@@ -134,7 +124,7 @@ public class UserApi {
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
 	@PostMapping("/login")
-	ResponseEntity<LoginResponseData> login(HttpServletRequest req, @Validated UserLoginForm form){
+	ResponseEntity<LoginResponseData> login(HttpServletRequest req, @Valid UserLoginForm form){
 		String ipAddress = req.getRemoteAddr();
 		
 		// kiểm tra tài khoản

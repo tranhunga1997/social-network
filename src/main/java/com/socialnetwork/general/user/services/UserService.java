@@ -76,9 +76,12 @@ public class UserService {
 	public UserInfoDto findByUsername(String username) {
 		Optional<UserInfo> userOptional = userRepository.findByUsername(username);
 		UserInfoDto userInfoDto = null;
-		if(userOptional.isPresent()) {
-			userInfoDto = new UserInfoDto(userOptional.get());
+		
+		if(userOptional.isEmpty()) {
+			throw new SocialException("E_00003");
 		}
+		
+		userInfoDto = new UserInfoDto(userOptional.get());
 		return userInfoDto;
 	}
 	

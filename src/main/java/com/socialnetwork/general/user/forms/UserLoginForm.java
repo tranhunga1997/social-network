@@ -7,11 +7,11 @@ import lombok.Data;
 
 @Data
 public class UserLoginForm {
-	@NotBlank
-	@Size(max = 20)
+	@NotBlank(message = "Chưa nhập tài khoản")
+	@Size(max = 20, message = "Độ dài tài khoản quá 20 ký tự")
 	private String username;
 	
-	@NotBlank
-	@Size(min = 6, max = 32)
+	@NotBlank(message = "Chưa nhập mật khẩu")
+	@Size(min = 6, max = 32, message = "Nhập mật khẩu giới hạn từ 6 đến 32 ký tự")
 	private String password;
 }
