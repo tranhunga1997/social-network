@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.socialnetwork.common.entities.user.LoginTokenInfo;
 
 @Repository
-public interface LoginTokenInfoRepository extends JpaRepository<LoginTokenInfo, String>{
+public interface LoginTokenInfoRepository extends JpaRepository<LoginTokenInfo, Long>{
 	@Query("SELECT e.tokenExpiredAt from LoginTokenInfo e where e.token = :refreshToken ")
 	LocalDateTime findTokenExpiredAtByRefreshToken(String refreshToken);
 

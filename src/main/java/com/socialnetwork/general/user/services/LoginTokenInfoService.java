@@ -43,7 +43,7 @@ public class LoginTokenInfoService {
 	 * @param id
 	 * @return <code>true</code> tồn tại, <code>false</code> không tồn tại
 	 */
-	public boolean isExists(String id) {
+	public boolean isExists(long id) {
 		return loginTokenInfoRepository.existsById(id);
 	}
 	
@@ -67,7 +67,7 @@ public class LoginTokenInfoService {
 	 * Xóa refresh token
 	 * @param id
 	 */
-	public void delete(String id) {
+	public void delete(long id) {
 		loginTokenInfoRepository.deleteById(id);
 	}
 	

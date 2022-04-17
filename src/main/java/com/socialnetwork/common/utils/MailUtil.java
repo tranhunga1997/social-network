@@ -21,21 +21,25 @@ import org.thymeleaf.context.Context;
  * @author Mạnh Hùng
  *
  */
-@Component
-public class MailService {
-
-    @Autowired
-    private JavaMailSender javaMailSender;
-    @Autowired
-    private TemplateEngine templateEngine;
+public class MailUtil {
+    private static JavaMailSender javaMailSender;
+    private static TemplateEngine templateEngine;
     
-    /**
+    public static void setJavaMailSender(JavaMailSender javaMailSender) {
+		MailUtil.javaMailSender = javaMailSender;
+	}
+
+	public static void setTemplateEngine(TemplateEngine templateEngine) {
+		MailUtil.templateEngine = templateEngine;
+	}
+
+	/**
      * Gửi mail dạng văn bản
      * @param toEmail
      * @param subject
      * @param message
      */
-    public void sendTextMail(String toEmail, String subject, String message){
+    public static void sendTextMail(String toEmail, String subject, String message){
         MailMessage mailMessage = new SimpleMailMessage();
 
         mailMessage.setTo(toEmail);
@@ -51,7 +55,7 @@ public class MailService {
      * @param content
      * @throws MessagingException
      */
-    public void sendHtmlMail(String toEmail, String subject, String content) throws MessagingException {
+    public static void sendHtmlMail(String toEmail, String subject, String content) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
         MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage);
         mimeMessageHelper.setTo(toEmail);
@@ -66,7 +70,7 @@ public class MailService {
      * @param attrs (các tham số truyền vào template dưới dạng Map)
      * @return 
      */
-    public String sendWithHtmlTemplate(String pathTemplate,Map<String, Object> attrs) {
+    public static String sendWithHtmlTemplate(String pathTemplate,Map<String, Object> attrs) {
     	final String baseUrl = ServletUriComponentsBuilder.fromCurrentContextPath().build().toUriString();
     	Context context = new Context(null, attrs);
     	context.setVariable("baseUrl", baseUrl);

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.socialnetwork.common.entities.user.RoleInfo;
 import com.socialnetwork.common.exceptions.InputException;
 import com.socialnetwork.common.exceptions.SocialException;
-import com.socialnetwork.common.utils.MailService;
+import com.socialnetwork.common.utils.MailUtil;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.common.utils.TokenProvider;
 import com.socialnetwork.general.user.dtos.AuthenticateInfoDto;
@@ -28,6 +29,7 @@ import com.socialnetwork.general.user.dtos.LoginResponseData;
 import com.socialnetwork.general.user.dtos.LoginTokenInfoDto;
 import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
 import com.socialnetwork.general.user.dtos.RoleInfoDto;
+import com.socialnetwork.general.user.dtos.UserDetailDto;
 import com.socialnetwork.general.user.dtos.UserInfoDto;
 import com.socialnetwork.general.user.forms.UserLoginForm;
 import com.socialnetwork.general.user.forms.UserRegisterForm;
@@ -58,8 +60,6 @@ public class UserApi {
 	RegistTokenService registTokenService;
 	@Autowired
 	LoginTokenInfoService loginTokenInfoService;
-	@Autowired
-	MailService mailService;
 	@Autowired
 	LoginHistoryService loginHistoryService;
 	
@@ -109,7 +109,7 @@ public class UserApi {
 		
 		// gửi mail
 		String clientHost = req.getLocalName();
-		mailService.sendTextMail(form.getEmail(), "Kích hoạt tài khoản", clientHost+"/api/user/register-active?token="+token);
+		MailUtil.sendTextMail(form.getEmail(), "Kích hoạt tài khoản", clientHost+"/api/user/register-active?token="+token);
 		
 		return ResponseEntity.ok().build();
 	}
@@ -160,7 +160,7 @@ public class UserApi {
 		
 		// khởi tạo jwt và refresh token
 		LoginTokenInfoDto loginTokenInfoDto = loginTokenInfoService.create(userInfoDto.getUserId(), ipAddress);
-		String jwt = TokenProvider.generateJwt(username, userInfoDto.getUserId());
+		String jwt = TokenProvider.generateJwt(username, loginTokenInfoDto.getRefreshId());
 		
 		// ghi lại lịch sử đăng nhập
 		LoginHistoryInfoDto loginHistoryInfoDto = new LoginHistoryInfoDto();
@@ -171,5 +171,56 @@ public class UserApi {
 		
 		// trả về jwt và refresh token
 		return ResponseEntity.ok(new LoginResponseData(jwt, loginTokenInfoDto.getRefreshToken()));
+	}
+	
+	/**
+	 * Controller đăng xuất
+	 * @param request
+	 * @return
+	 */
+	@ApiOperation(value = "Đăng xuất tài khoản")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@PostMapping("/logout")
+	ResponseEntity<?> logout(HttpServletRequest request){
+		long refreshId = TokenProvider.getRefreshTokenIdFromRequest(request);
+		loginTokenInfoService.delete(refreshId);
+		
+		return ResponseEntity.ok().build();
+	}
+	
+	/**
+	 * Controller thông tin chi tiết
+	 * @param request
+	 * @param username
+	 * @return
+	 */
+	@ApiOperation(value = "Xem thông tin chi tiết")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@GetMapping("/detail/{username}")
+	ResponseEntity<UserDetailDto> detail(HttpServletRequest request, @PathVariable String username){
+		String usernameLocal = TokenProvider.getUserUsernameFromRequest(request);
+		
+		// Kiểm tra thông tin tài khoản muốn lấy có hợp lệ
+		if(!username.equals(usernameLocal)) {
+			log.debug("Lấy dữ liệu tài khoản " + username + " thất bại");
+			throw new SocialException("W_00011", "lấy dữ liệu");
+		}
+		
+		// lấy dữ liệu tài khoản
+		UserInfoDto userInfoDto = userService.findByUsername(usernameLocal);
+		
+		// khởi tạo dữ liệu cần thiết trả về
+		UserDetailDto userDetailDto = UserDetailDto.builder()
+				.firstName(userInfoDto.getFirstName())
+				.lastName(userInfoDto.getLastName())
+				.email(userInfoDto.getEmail())
+				.build();
+		return ResponseEntity.ok(userDetailDto);
 	}
 }

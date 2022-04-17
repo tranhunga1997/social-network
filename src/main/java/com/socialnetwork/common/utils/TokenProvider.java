@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
 import com.socialnetwork.common.entities.user.UserInfo;
+import com.socialnetwork.common.exceptions.SocialException;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
@@ -33,8 +34,8 @@ public class TokenProvider {
      * @param refreshTokenId tác dụng tăng tính an toàn
      * @return JWT
      */
-    public static String generateJwt(String username, long userId){
-        String jwt = Jwts.builder().setSubject(username).setId(String.valueOf(userId))
+    public static String generateJwt(String username, long refreshToken){
+        String jwt = Jwts.builder().setSubject(username).setId(String.valueOf(refreshToken))
                 .setIssuedAt(new Date()).setExpiration(generateExpirationDate()).signWith(SignatureAlgorithm.HS512,JWT_SECRET)
                 .compact();
         return jwt;
@@ -55,10 +56,10 @@ public class TokenProvider {
      */
     public static String getJwtFromRequest(HttpServletRequest request){
         String bearToken = request.getHeader("Authorization");
-        if(StringUtils.hasText(bearToken) && bearToken.startsWith("Bearer ")){
-            return bearToken.substring(7);
+        if(!StringUtils.hasText(bearToken) && !bearToken.startsWith("Bearer ")){
+            throw new SocialException("W_00002");
         }
-        return null;
+        return bearToken.substring(7);
     }
    
     /**
@@ -66,12 +67,14 @@ public class TokenProvider {
      * @param jwt
      * @return username
      */
-    public static String getUserUsernameFromJwt(String jwt){
+    public static String getUserUsernameFromRequest(HttpServletRequest request){
+    	String jwt = getJwtFromRequest(request);
         Claims claims = Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(jwt).getBody();
         return claims.getSubject();
     }
     
-    public static Long getUserIdFromJwt(String jwt) {
+    public static long getRefreshTokenIdFromRequest(HttpServletRequest request) {
+    	String jwt = getJwtFromRequest(request);
     	Claims claims = Jwts.parser().setSigningKey(JWT_SECRET).parseClaimsJws(jwt).getBody();
     	return Long.parseLong(claims.getId());
     }

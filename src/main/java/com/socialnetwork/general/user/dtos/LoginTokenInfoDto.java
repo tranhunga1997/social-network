@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 public class LoginTokenInfoDto {
-//	private Long id;
+	private Long refreshId;
 	private String ipAddress;
 	private Long userId;
 	private String refreshToken;

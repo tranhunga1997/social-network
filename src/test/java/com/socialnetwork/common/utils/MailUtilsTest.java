@@ -14,9 +14,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class MailUtilsTest {
 	
-	@Autowired
-	MailService mailService;
-	
 	@BeforeEach
 	void setUp() throws Exception {
 	}
@@ -27,14 +24,14 @@ class MailUtilsTest {
 
 	@Test
 	void testSendTextMail() {
-		mailService.sendTextMail("tranhunga1997@gmail.com", "Test text", "Hi there!!");
+		MailUtil.sendTextMail("tranhunga1997@gmail.com", "Test text", "Hi there!!");
 //		fail("Not yet implemented");
 	}
 
 	@Test
 	void testSendHtmlMail() {
 		try {
-			mailService.sendHtmlMail("tranhunga1997@gmail.com", "Test html", "<h1>Hi there!!</h1>");
+			MailUtil.sendHtmlMail("tranhunga1997@gmail.com", "Test html", "<h1>Hi there!!</h1>");
 		} catch (MessagingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

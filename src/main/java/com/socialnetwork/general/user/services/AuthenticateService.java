@@ -1,7 +1,6 @@
 package com.socialnetwork.general.user.services;
 
 import java.time.LocalDateTime;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,7 +12,7 @@ import com.google.common.base.Objects;
 import com.socialnetwork.common.entities.user.AuthenticateInfo;
 import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.AuthenticateRepository;
-import com.socialnetwork.common.utils.MailService;
+import com.socialnetwork.common.utils.MailUtil;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.general.user.dtos.AuthenticateInfoDto;
 import com.socialnetwork.general.user.dtos.ForgetPwdTokenInfoDto;
@@ -32,8 +31,6 @@ public class AuthenticateService {
 	private UserService userService;
 	@Autowired
 	private ForgetPwdTokenInfoService forgetPwdTokenInfoService;
-	@Autowired
-	private MailService mailService;
 	
 	@Value("${user.login.failed_counter}")
 	private int loginFailedCounter;
@@ -141,7 +138,7 @@ public class AuthenticateService {
 		// tạo token
 		ForgetPwdTokenInfoDto forgetPwdTokenInfoDto = forgetPwdTokenInfoService.create(userInfoDto.getUserId());
 		// gửi mail
-		mailService.sendTextMail(email, "title", "forget password token");
+		MailUtil.sendTextMail(email, "title", "forget password token");
 		
 	}
 	
