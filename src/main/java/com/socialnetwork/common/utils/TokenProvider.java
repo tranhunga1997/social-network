@@ -56,7 +56,7 @@ public class TokenProvider {
      */
     public static String getJwtFromRequest(HttpServletRequest request){
         String bearToken = request.getHeader("Authorization");
-        if(!StringUtils.hasText(bearToken) && !bearToken.startsWith("Bearer ")){
+        if(StringUtil.isNull(bearToken) && !StringUtils.hasText(bearToken) && !bearToken.startsWith("Bearer ")){
             throw new SocialException("W_00002");
         }
         return bearToken.substring(7);

@@ -7,6 +7,8 @@ import com.socialnetwork.common.entities.user.RoleInfo;
 import com.socialnetwork.common.entities.user.UserInfo;
 import com.socialnetwork.common.utils.BeanCopyUtils;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 /**
@@ -15,9 +17,11 @@ import lombok.NoArgsConstructor;
  *
  */
 @Data
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class UserInfoDto {
-	private long userId;
+	private Long userId;
 	private String username;
 	private String lastName;
 	private String firstName;

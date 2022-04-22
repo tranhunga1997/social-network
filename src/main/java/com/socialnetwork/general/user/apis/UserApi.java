@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -31,6 +32,8 @@ import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
 import com.socialnetwork.general.user.dtos.RoleInfoDto;
 import com.socialnetwork.general.user.dtos.UserDetailDto;
 import com.socialnetwork.general.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.forms.ChangePasswordForm;
+import com.socialnetwork.general.user.forms.UserInfoUpdateForm;
 import com.socialnetwork.general.user.forms.UserLoginForm;
 import com.socialnetwork.general.user.forms.UserRegisterForm;
 import com.socialnetwork.general.user.services.AuthenticateService;
@@ -203,7 +206,7 @@ public class UserApi {
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
 	@GetMapping("/detail/{username}")
-	ResponseEntity<UserDetailDto> detail(HttpServletRequest request, @PathVariable String username){
+	ResponseEntity<UserDetailDto> viewDetail(HttpServletRequest request, @PathVariable String username) {
 		String usernameLocal = TokenProvider.getUserUsernameFromRequest(request);
 		
 		// Kiểm tra thông tin tài khoản muốn lấy có hợp lệ
@@ -222,5 +225,75 @@ public class UserApi {
 				.email(userInfoDto.getEmail())
 				.build();
 		return ResponseEntity.ok(userDetailDto);
+	}
+	
+	/**
+	 * Controller sửa thông tin chi tiết tài khoản
+	 * @param request
+	 * @param username
+	 * @param form
+	 * @return
+	 */
+	@ApiOperation(value = "Sửa thông tin chi tiết")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@PutMapping("detail/{username}")
+	ResponseEntity<UserDetailDto> updateDetail(HttpServletRequest request, @PathVariable String username, UserInfoUpdateForm form) {
+		String usernameLocal = TokenProvider.getUserUsernameFromRequest(request);
+		
+		// Kiểm tra thông tin tài khoản muốn lấy có hợp lệ
+		if(!username.equals(usernameLocal)) {
+			log.debug("Lấy dữ liệu tài khoản " + username + " thất bại");
+			throw new SocialException("W_00011", "lấy dữ liệu");
+		}
+		
+		// lấy thông tin user
+		UserInfoDto userDto = userService.findByUsername(username);
+		
+		userDto.setEmail(form.getEmail());
+		userDto.setFirstName(form.getFirstName());
+		userDto.setLastName(form.getLastName());
+		userDto.setUpdateDatetime(LocalDateTime.now());
+		
+		UserInfoDto uDto = userService.create(userDto);
+		
+		UserDetailDto resultDto = UserDetailDto.builder()
+				.email(uDto.getEmail())
+				.firstName(uDto.getFirstName())
+				.lastName(uDto.getLastName())
+				.build();
+		
+		return ResponseEntity.ok(resultDto);
+	}
+	
+	@PostMapping("password/change")
+	ResponseEntity<String> changePassword(HttpServletRequest request, ChangePasswordForm form) {
+		String username = TokenProvider.getUserUsernameFromRequest(request);
+		UserInfoDto userInfoDto = userService.findByUsername(username);
+		
+		// kiểm tra tồn tại tài khoản
+		if (StringUtil.isNull(userInfoDto)) {
+			throw new SocialException("E_00003");
+		}
+		
+		// kiểm tra mật khẩu mới không trùng mật khẩu cũ
+		if (Objects.equals(form.getPassword(), form.getNewPassword())) {
+			throw new InputException("mật khẩu", "W_00019", "Mật khẩu cũ", "mật khẩu mới");
+		}
+		
+		// kiểm tra xác nhận mật khẩu
+		if (!Objects.equals(form.getNewPassword(), form.getNewPasswordConfirm())) {
+			throw new InputException("xác nhận mật khẩu", "E_00012", "mật khẩu", "xác nhận mật khẩu");
+		}
+		
+		// xử lý thay đổi mật khẩu
+		authService.update(userInfoDto.getUserId(), form.getNewPassword());
+		
+		// gửi email thông báo
+		MailUtil.sendTextMail(userInfoDto.getEmail(), "Thông báo thay đổi mật khẩu", "Mật khẩu của tài khoản (" + username + ") đã được thay đổi.");
+		
+		return ResponseEntity.ok("Thành công");
 	}
 }

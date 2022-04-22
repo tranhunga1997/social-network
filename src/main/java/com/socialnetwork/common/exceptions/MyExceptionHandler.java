@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import com.socialnetwork.common.utils.MessageUtils;
+
 import lombok.extern.slf4j.Slf4j;
 
 
@@ -43,8 +45,9 @@ public class MyExceptionHandler {
 	@ExceptionHandler(InputException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public String inputExceptionHandle(InputException e) {
-		log.debug(e.getMessage());
-		return e.getMessage();
+		String msg = MessageUtils.getMessage(e.getMessageCode(), e.getArgs());
+		log.debug(msg);
+		return msg;
 	}
 	
 	/**
@@ -74,9 +77,9 @@ public class MyExceptionHandler {
 		// đoạn if trả về lỗi unauthentication viết sau
 		
 		//
-		
-		log.debug(e.getMessage());
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+		String msg = MessageUtils.getMessage(e.getMessageCode(), e.getArgs());
+		log.debug(msg);
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
 	}
 	
 }

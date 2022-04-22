@@ -133,7 +133,7 @@ public class UserService {
 	 * @return UserInfoDto
 	 */
 	public UserInfoDto update(UserInfoDto dto) {
-		if(StringUtil.isNull(dto.getUsername())) {
+		if(StringUtil.isNull(dto.getUserId())) {
 			throw new SocialException("W_00002");
 		}
 		

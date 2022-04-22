@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -26,7 +28,10 @@ public class ForgetPwdTokenInfo implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Id
+	@Id @Column(name = "TOKEN_ID")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long tokenId;
+	
 	@Column(name="user_id")
 	private Long userId;
 
