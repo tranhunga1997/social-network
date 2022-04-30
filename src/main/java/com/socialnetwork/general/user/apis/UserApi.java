@@ -7,17 +7,23 @@ import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.validation.constraints.Email;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.socialnetwork.common.dtos.Pagination;
+import com.socialnetwork.common.entities.user.PermissionInfo;
 import com.socialnetwork.common.entities.user.RoleInfo;
 import com.socialnetwork.common.exceptions.InputException;
 import com.socialnetwork.common.exceptions.SocialException;
@@ -25,20 +31,26 @@ import com.socialnetwork.common.utils.MailUtil;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.common.utils.TokenProvider;
 import com.socialnetwork.general.user.dtos.AuthenticateInfoDto;
+import com.socialnetwork.general.user.dtos.ForgetPwdTokenInfoDto;
 import com.socialnetwork.general.user.dtos.LoginHistoryInfoDto;
 import com.socialnetwork.general.user.dtos.LoginResponseData;
 import com.socialnetwork.general.user.dtos.LoginTokenInfoDto;
+import com.socialnetwork.general.user.dtos.PermissionInfoDto;
 import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
 import com.socialnetwork.general.user.dtos.RoleInfoDto;
 import com.socialnetwork.general.user.dtos.UserDetailDto;
 import com.socialnetwork.general.user.dtos.UserInfoDto;
 import com.socialnetwork.general.user.forms.ChangePasswordForm;
+import com.socialnetwork.general.user.forms.ForgetPasswordForm;
+import com.socialnetwork.general.user.forms.RoleCreateForm;
 import com.socialnetwork.general.user.forms.UserInfoUpdateForm;
 import com.socialnetwork.general.user.forms.UserLoginForm;
 import com.socialnetwork.general.user.forms.UserRegisterForm;
 import com.socialnetwork.general.user.services.AuthenticateService;
+import com.socialnetwork.general.user.services.ForgetPwdTokenInfoService;
 import com.socialnetwork.general.user.services.LoginHistoryService;
 import com.socialnetwork.general.user.services.LoginTokenInfoService;
+import com.socialnetwork.general.user.services.PermissionInfoService;
 import com.socialnetwork.general.user.services.RegistTokenService;
 import com.socialnetwork.general.user.services.RoleInfoService;
 import com.socialnetwork.general.user.services.UserService;
@@ -65,6 +77,10 @@ public class UserApi {
 	LoginTokenInfoService loginTokenInfoService;
 	@Autowired
 	LoginHistoryService loginHistoryService;
+	@Autowired
+	ForgetPwdTokenInfoService forgetPwdTokenInfoService;
+	@Autowired
+	PermissionInfoService permissionInfoService;
 	
 	/* ============================================================================================ */
 	/**
@@ -268,6 +284,17 @@ public class UserApi {
 		return ResponseEntity.ok(resultDto);
 	}
 	
+	/**
+	 * Controller thay đổi mật khẩu
+	 * @param request HttpServletRequest
+	 * @param form ChangePasswordForm
+	 * @return
+	 */
+	@ApiOperation(value = "Thay đổi mật khẩu")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại hoặc danh sách lỗi")
+	})
 	@PostMapping("password/change")
 	ResponseEntity<String> changePassword(HttpServletRequest request, ChangePasswordForm form) {
 		String username = TokenProvider.getUserUsernameFromRequest(request);
@@ -285,7 +312,7 @@ public class UserApi {
 		
 		// kiểm tra xác nhận mật khẩu
 		if (!Objects.equals(form.getNewPassword(), form.getNewPasswordConfirm())) {
-			throw new InputException("xác nhận mật khẩu", "E_00012", "mật khẩu", "xác nhận mật khẩu");
+			throw new InputException("xác nhận mật khẩu", "W_00012", "mật khẩu", "xác nhận mật khẩu");
 		}
 		
 		// xử lý thay đổi mật khẩu
@@ -294,6 +321,151 @@ public class UserApi {
 		// gửi email thông báo
 		MailUtil.sendTextMail(userInfoDto.getEmail(), "Thông báo thay đổi mật khẩu", "Mật khẩu của tài khoản (" + username + ") đã được thay đổi.");
 		
+		return ResponseEntity.ok("Thành công");
+	}
+	
+	/**
+	 * Controller quên mật khẩu (nhập email)
+	 * @param request
+	 * @param email
+	 * @return
+	 */
+	@ApiOperation(value = "Quên mật khẩu (nhập email)")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@PostMapping("forget-password")
+	ResponseEntity<String> forgetPasswordEmailInput(HttpServletRequest request, String email) {
+		UserInfoDto userInfoDto = userService.findByEmail(email);
+		// kiểm tra email tồn tại
+		if (StringUtil.isNull(userInfoDto)) {
+			throw new SocialException("E_00003");
+		}
+		
+		// khởi tạo token 
+		ForgetPwdTokenInfoDto forgetPwdTokenInfoDto = forgetPwdTokenInfoService.create(userInfoDto.getUserId());
+		// gửi mail
+		MailUtil.sendTextMail(email, "Quên mật khẩu", "Mã xác nhận: " + forgetPwdTokenInfoDto.getToken());
+		return ResponseEntity.ok("Thành công");
+	}
+	
+	/**
+	 * Controller quên mật khẩu (nhập mật khẩu)
+	 * @param request
+	 * @param form
+	 * @return
+	 */
+	@ApiOperation(value = "Quên mật khẩu (nhập mật khẩu)")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@PutMapping("forget-password")
+	ResponseEntity<String> forgetPassword(HttpServletRequest request, @Valid ForgetPasswordForm form) {
+		// kiểm tra xác nhận mật khẩu mới
+		if(!Objects.equals(form.getNewPassword(), form.getNewPasswordConfirm())) {
+			throw new InputException("xác nhận mật khẩu mới", "W_00012", "mật khẩu mới", "xác nhận mật khẩu mới");
+		}
+		
+		// kiểm tra token
+		ForgetPwdTokenInfoDto forgetPwdTokenInfoDto = forgetPwdTokenInfoService.find(form.getToken());
+		
+		if(forgetPwdTokenInfoDto.getTokenExpiredAt().isBefore(LocalDateTime.now())) {
+			// kiểm tra hiệu lực
+			throw new SocialException("W_00021", "token");
+		}
+		
+		// thay đổi mật khẩu
+		authService.update(forgetPwdTokenInfoDto.getUserId(), form.getNewPassword());
+		// xóa token (dự định không xóa)
+		return ResponseEntity.ok("Thành công");
+	}
+	
+	/**
+	 * Controller xem quyền hạn
+	 * @return
+	 */
+	@ApiOperation(value = "Xem tất cả permission (quyền hạn)")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@GetMapping("permission")
+	ResponseEntity<Pagination<PermissionInfoDto>> viewPermission(@RequestParam(defaultValue = "1") int page){
+		Pagination<PermissionInfoDto> pagination = new Pagination<>();
+		Page<PermissionInfoDto> dataPage = permissionInfoService.findAll(page-1, 5);
+		
+		pagination.setTotalElements(dataPage.getTotalElements());
+		pagination.setTotalPages(dataPage.getTotalPages());
+		pagination.setDatas(dataPage.toList());
+		
+		return ResponseEntity.ok(pagination);
+	}
+	
+	/**
+	 * Controller xem role
+	 * @param page
+	 * @return
+	 */
+	@ApiOperation(value = "Xem tất cả role")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@GetMapping("role")
+	ResponseEntity<Pagination<RoleInfoDto>> viewRole(@RequestParam(defaultValue = "1") int page) {
+		Pagination<RoleInfoDto> pagination = new Pagination<>();
+		Page<RoleInfoDto> dtoPage = roleInfoService.findAll(page, 5);
+		
+		pagination.setTotalElements(dtoPage.getTotalElements());
+		pagination.setTotalPages(dtoPage.getTotalPages());
+		pagination.setDatas(dtoPage.toList());
+		return ResponseEntity.ok(pagination);
+	}
+	
+	/**
+	 * Tạo mới role
+	 * @param form
+	 * @return
+	 */
+	@ApiOperation(value = "Tạo mới role")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@PostMapping("role")
+	ResponseEntity<RoleInfoDto> createRole(@Valid RoleCreateForm form) {
+		List<PermissionInfoDto> permissionInfos = new ArrayList<>();
+		RoleInfoDto dto = new RoleInfoDto();
+		
+		// set giá trị cho đối tượng dto
+		List<String> permissionsForm = form.getPermissions();
+		if(!StringUtil.isNull(permissionsForm) && permissionsForm.size() != 0) {
+			permissionInfos = permissionInfoService.findBySlugIn(permissionsForm);
+			dto.setPermissions(permissionInfos);
+		}
+		dto.setName(form.getName());
+		
+		// tạo mới role
+		roleInfoService.create(dto);
+		
+		return ResponseEntity.ok(dto);
+	}
+	
+	/**
+	 * Xóa role
+	 * @param roleId
+	 * @return
+	 */
+	@ApiOperation(value = "Xóa role")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@DeleteMapping("role")
+	ResponseEntity<String> deleteRole(@RequestParam(required = true) int roleId) {
+		roleInfoService.delete(roleId);
 		return ResponseEntity.ok("Thành công");
 	}
 }

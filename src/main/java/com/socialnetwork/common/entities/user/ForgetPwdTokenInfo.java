@@ -28,8 +28,9 @@ public class ForgetPwdTokenInfo implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	@Id @Column(name = "TOKEN_ID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id 
+	@Column(name = "TOKEN_ID")
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long tokenId;
 	
 	@Column(name="user_id")

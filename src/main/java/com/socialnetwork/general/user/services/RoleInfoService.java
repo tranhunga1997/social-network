@@ -1,17 +1,23 @@
 package com.socialnetwork.general.user.services;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.socialnetwork.common.entities.user.PermissionInfo;
 import com.socialnetwork.common.entities.user.RoleInfo;
 import com.socialnetwork.common.exceptions.SystemException;
 import com.socialnetwork.common.repositories.user.RoleInfoRepository;
 import com.socialnetwork.common.utils.StringUtil;
+import com.socialnetwork.general.user.dtos.PermissionInfoDto;
 import com.socialnetwork.general.user.dtos.RoleInfoDto;
 
 /**
@@ -33,6 +39,16 @@ public class RoleInfoService {
 		dto.setSlug(StringUtil.toSlug(dto.getName()));
 		dto.setCreateAt(LocalDateTime.now());
 		RoleInfo entity = dto.toRoleInfo();
+		
+		if(!StringUtil.isNull(dto.getPermissions()) && dto.getPermissions().size() != 0) {
+			List<PermissionInfo> permissionEntityList = new ArrayList<PermissionInfo>();
+			
+			for(PermissionInfoDto permissionDto : dto.getPermissions()) {
+				permissionEntityList.add(permissionDto.toPermissionInfo());
+			}
+			
+			entity.setPermissions(permissionEntityList);
+		}
 		RoleInfo result = roleInfoRepository.save(entity);
 		dto.setId(result.getId());
 	}
@@ -43,8 +59,16 @@ public class RoleInfoService {
 	 * @param size
 	 * @return tất cả thông tin role
 	 */
-	public Page<RoleInfo> findAll(int page, int size){
-		return roleInfoRepository.findAll(PageRequest.of(page, size, Sort.by("role_id")));
+	public Page<RoleInfoDto> findAll(int page, int size){
+		Pageable pageable = PageRequest.of(page, size, Sort.by("role_id"));
+		Page<RoleInfo> rolePage = roleInfoRepository.findAll(pageable);
+		List<RoleInfoDto> dtos = new ArrayList<>();
+		
+		for(RoleInfo role : rolePage) {
+			dtos.add(new RoleInfoDto(role));
+		}
+		
+		return new PageImpl<>(dtos, pageable, rolePage.getTotalElements());
 		
 	}
 	

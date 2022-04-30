@@ -31,6 +31,7 @@ public class MyExceptionHandler {
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	public String exceptionHandle(Exception e) {
 		log.error(e.getMessage());
+		e.getStackTrace();
 		return "Lỗi không xác định";
 	}
 	

@@ -20,10 +20,10 @@ public class RegistTokenHistory implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@Column(name="user_id")
-	private Long userId;
 	@Column(length = 100, nullable = false)
 	private String token;
+	@Column(name="user_id")
+	private Long userId;
 	@Column(nullable = false, name="active_at")
 	private LocalDateTime activeAt;
 

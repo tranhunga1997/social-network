@@ -1,8 +1,11 @@
 package com.socialnetwork.common.utils;
 
+import static org.mockito.Mockito.RETURNS_DEEP_STUBS;
+
 import java.time.Instant;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.ThreadLocalRandom;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -43,10 +46,19 @@ public class TokenProvider {
     
     /**
      * Tạo token random (UUID)
-     * @return String
+     * @return token
      */
     public static String generateToken() {
     	return UUID.randomUUID().toString();
+    }
+    
+    /**
+     * Tạo token dạng số (6 số)
+     * @return token
+     */
+    public static String generateTokenNumber() {
+    	ThreadLocalRandom rd = ThreadLocalRandom.current();
+    	return String.valueOf(rd.nextInt(100000, 999999));
     }
     
     /**

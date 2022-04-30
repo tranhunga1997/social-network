@@ -38,7 +38,7 @@ public class RoleInfo extends BaseEntity {
 	private Integer id;
 	@Column(name="role_slug",length = 25)
 	private String slug;
-	@Column(name="role_name",length = 25)
+	@Column(name="role_name",length = 100)
 	private String name;
 	
 	@ManyToMany(fetch = FetchType.LAZY,targetEntity = UserInfo.class)

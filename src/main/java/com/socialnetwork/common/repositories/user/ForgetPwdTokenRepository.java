@@ -7,5 +7,8 @@ import com.socialnetwork.common.entities.user.ForgetPwdTokenInfo;
 
 @Repository
 public interface ForgetPwdTokenRepository extends JpaRepository<ForgetPwdTokenInfo, Long> {
+	ForgetPwdTokenInfo findByToken(String token);
 	void deleteByToken(String token);
+	
+	boolean existsByToken(String token);
 }
