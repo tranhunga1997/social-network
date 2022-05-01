@@ -1,16 +1,18 @@
-package com.socialnetwork.general.user.services;
+package com.socialnetwork.general.user.services.impl;
 
 import java.util.ArrayList;
+
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.socialnetwork.common.entities.user.ForgetPwdTokenInfo;
+import com.socialnetwork.common.entities.user.PermissionInfo;
 import com.socialnetwork.common.entities.user.UserInfo;
 import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.UserRepository;
-import com.socialnetwork.common.utils.BeanCopyUtils;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
 import com.socialnetwork.general.user.dtos.UserInfoDto;
@@ -20,7 +22,7 @@ import com.socialnetwork.general.user.dtos.UserInfoDto;
  *
  */
 @Service
-public class UserService {
+public class UserService extends UserServiceBase<UserInfo>{
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -208,4 +210,5 @@ public class UserService {
 		registTokenService.deleteLogic(userId);
 		return true;
 	}
+	
 }

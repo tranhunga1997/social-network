@@ -1,4 +1,4 @@
-package com.socialnetwork.general.user.services;
+package com.socialnetwork.general.user.services.impl;
 
 import java.util.ArrayList;
 import java.util.List;

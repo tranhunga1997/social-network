@@ -12,7 +12,7 @@ import com.socialnetwork.common.entities.sequence.SequenceInfo;
 import com.socialnetwork.common.services.sequence.SequenceService;
 import com.socialnetwork.common.utils.MessageUtils;
 import com.socialnetwork.general.user.dtos.UserInfoDto;
-import com.socialnetwork.general.user.services.UserService;
+import com.socialnetwork.general.user.services.impl.UserService;
 
 @Configuration
 public class DataInit {

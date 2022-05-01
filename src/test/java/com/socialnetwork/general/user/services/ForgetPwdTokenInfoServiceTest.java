@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.socialnetwork.common.utils.TokenProvider;
+import com.socialnetwork.general.user.services.impl.ForgetPwdTokenInfoService;
 
 @SpringBootTest
 class ForgetPwdTokenInfoServiceTest {

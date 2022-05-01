@@ -2,11 +2,16 @@ package com.socialnetwork.general.user.dtos;
 
 import com.socialnetwork.common.entities.user.PermissionInfo;
 import com.socialnetwork.common.utils.BeanCopyUtils;
+import com.vvt.jpa.query.ConditionType;
+import com.vvt.jpa.query.SearchColumn;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
+@NoArgsConstructor
 public class PermissionInfoDto {
+	@SearchColumn(condition = ConditionType.GT)
 	private Integer id;
 	private String slug;
 	private String name;

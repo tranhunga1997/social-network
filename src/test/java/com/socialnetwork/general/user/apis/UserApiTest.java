@@ -22,7 +22,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.util.MultiValueMapAdapter;
 
 import com.socialnetwork.common.exceptions.SocialException;
-import com.socialnetwork.general.user.services.UserService;
+import com.socialnetwork.general.user.services.impl.UserService;
 
 @SpringBootTest
 class UserApiTest {

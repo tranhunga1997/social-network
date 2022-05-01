@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.general.user.dtos.AuthenticateInfoDto;
-import com.socialnetwork.general.user.services.AuthenticateService;
+import com.socialnetwork.general.user.services.impl.AuthenticateService;
 @SpringBootTest
 class AuthenticateServiceTest {
 

@@ -1,4 +1,4 @@
-package com.socialnetwork.general.user.services;
+package com.socialnetwork.general.user.services.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
