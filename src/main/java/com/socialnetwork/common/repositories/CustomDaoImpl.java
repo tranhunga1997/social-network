@@ -1,5 +1,8 @@
 package com.socialnetwork.common.repositories;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.lang.reflect.TypeVariable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -14,8 +17,11 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.vvt.jpa.query.SearchQuery;
 
 public class CustomDaoImpl<E, EID> implements CustomDao<E>{
 	@PersistenceContext
@@ -95,6 +101,17 @@ public class CustomDaoImpl<E, EID> implements CustomDao<E>{
 		query.where(cb.equal(root, entity));
 		return em.createQuery(query).setLockMode(LockModeType.PESSIMISTIC_WRITE).getSingleResult();
 	}
-
-
+	@Override
+	public long countBySearch(Class<E> entityClass, Object search) {
+		SearchQuery<E> searchQuery = new SearchQuery<E>(entityClass, em);
+		searchQuery.where(search);
+		return searchQuery.getCount();
+	}
+	@Override
+	public List<E> findBySearch(Class<E> entityClass, Object search, Pageable pageable) {
+		SearchQuery<E> searchQuery = new SearchQuery<E>(entityClass, em);
+		searchQuery.where(search);
+		searchQuery.pageable(pageable);
+		return searchQuery.getResultList();
+	}
 }
