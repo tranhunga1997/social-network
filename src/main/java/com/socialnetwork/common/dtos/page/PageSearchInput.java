@@ -15,4 +15,5 @@ public class PageSearchInput extends AbstractSearch{
 	private PageType pageType;
 	private boolean delFlag;
 	private boolean blockFlag;
+
 }
