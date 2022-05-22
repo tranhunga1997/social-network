@@ -8,11 +8,12 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 @Data
 @EqualsAndHashCode(callSuper = false)
-public class PageSearch extends AbstractSearch{
+public class PageSearchInput extends AbstractSearch{
 	private Long pageId;
 	private Long ownerId;
 	private String pageName;
 	private PageType pageType;
 	private boolean delFlag;
 	private boolean blockFlag;
+
 }

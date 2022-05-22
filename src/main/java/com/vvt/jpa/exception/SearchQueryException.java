@@ -9,5 +9,10 @@ public class SearchQueryException extends RuntimeException{
 	public SearchQueryException(String msg) {
 		super(msg);
 	}
+	
+	public SearchQueryException(String msg, Throwable throwable) {
+		super(msg, throwable);
+		
+	}
 
 }

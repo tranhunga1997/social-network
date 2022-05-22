@@ -48,4 +48,9 @@ public class PageDto {
 		BeanCopyUtils.copyProperties(this, pageInfo);
 		return pageInfo;
 	}
+	
+
+	
+	
+	
 }

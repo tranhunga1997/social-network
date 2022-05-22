@@ -1,6 +1,11 @@
 package com.socialnetwork.common.repositories;
 
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.Collection;
+import java.util.List;
+
+import org.springframework.data.domain.Pageable;
 
 public interface CustomDao<E>{
 	/**
@@ -45,4 +50,16 @@ public interface CustomDao<E>{
 	 * @return
 	 */
 	E selectForUpdate(E entity, Class<E> clazz);
+	/**
+	 * Lấy số lượng tìm kiếm
+	 * @param search
+	 * @return
+	 */
+	long countBySearch(Class<E> entityClass, Object search);
+	/**
+	 * Lấy dữ liệu tìm kiếm
+	 * @param search
+	 * @return
+	 */
+	List<E> findBySearch(Class<E> entityClass, Object search, Pageable pageable);
 }

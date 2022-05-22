@@ -1,7 +1,6 @@
 package com.vvt.jpa.query;
 
 import java.lang.reflect.Field;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +17,7 @@ public class QueryBuilder {
 	private String[] select;
 	private boolean isCount = false;
 	private Class<?> entityClass;
-	private List<SortBy> sorts = new ArrayList<SortBy>();
+	private List<SortBy> sorts = new ArrayList<SortBy>();;
 	
 	public QueryBuilder(Class<?> entityClass, String alias) {
 		if(alias.contains(" "))
