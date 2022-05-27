@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class RoleInfoDto {
+public class RoleDetailInfoDto {
 	private Integer id;
 	private String slug;
 	private String name;
-	private List<PermissionInfoDto> permissions;
+	private List<PermissionInfo> permissions;
 	private LocalDateTime createAt;
 	
-	public RoleInfoDto(RoleInfo entity) {
+	public RoleDetailInfoDto(RoleInfo entity) {
 		BeanCopyUtils.copyProperties(entity, this);
 	}
 	

@@ -3,22 +3,13 @@ package com.socialnetwork.general.user.services;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
-public interface IUserServiceBase<T> {
+import com.socialnetwork.general.user.dtos.UserInfoDto;
+
+public interface IUserServiceBase<T1> {
+	void create(T1 t);
 	
-	/**
-	 * Tìm tất cả dữ liệu (phân trang)
-	 * @param pageable
-	 * @param clazz
-	 * @return page
-	 */
-	Page<T> findAll(Pageable pageable, Class<T> clazz);
+	void update(T1 t);
 	
-	Page<T> find(Object conditionInstant, Pageable pageable, Class<T> clazz);
-	
-	T create(T t);
-	
-	void update(T t);
-	
-	void deleteById(Object id, Class<T> clazz);
+	void deleteById(Object id);
 	
 }

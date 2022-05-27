@@ -1,33 +1,38 @@
 package com.socialnetwork.general.user.apis;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.MultiValueMap;
-import org.springframework.util.MultiValueMapAdapter;
+import org.springframework.web.context.WebApplicationContext;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.socialnetwork.common.dtos.Pagination;
 import com.socialnetwork.common.exceptions.SocialException;
+import com.socialnetwork.general.user.dtos.RoleDetailInfoDto;
 import com.socialnetwork.general.user.services.impl.UserService;
 
 @SpringBootTest
 class UserApiTest {
-
+	
+	@Autowired
+	private WebApplicationContext webApplicationContext;
 	private MockMvc mockMvc;
+	
 	
 	@InjectMocks
 	private UserApi userApiMock;
@@ -41,7 +46,7 @@ class UserApiTest {
 		userApiMock = new UserApi();
 	}
 
-	@AfterEach
+//	@AfterEach
 	void tearDown() throws Exception {
 	}
 
@@ -73,4 +78,23 @@ class UserApiTest {
 		}
 	}
 
+	@Test
+	void testUpdateRole() {
+		mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).alwaysDo(log()).build();
+		ObjectMapper mapper = new ObjectMapper();
+		try {
+			MvcResult result = mockMvc.perform(get("/api/user/role")
+					.contentType(MediaType.APPLICATION_JSON).accept(MediaType.APPLICATION_JSON))
+					.andExpect(status().is(200))
+					.andReturn();
+			Pagination<RoleDetailInfoDto> pagination = new Pagination<RoleDetailInfoDto>();
+			pagination = mapper.readValue(result.getResponse().getContentAsByteArray(), pagination.getClass());
+			for(Object dto : pagination.getDatas()) {
+				System.out.println(dto);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			fail();
+		}
+	}
 }

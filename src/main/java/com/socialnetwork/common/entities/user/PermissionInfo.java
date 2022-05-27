@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,6 +13,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.socialnetwork.common.entities.BaseEntity;
 
 import lombok.Data;
@@ -34,14 +37,25 @@ public class PermissionInfo extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="permission_id")
 	private Integer id;
-	@Column(name="permission_slug",length = 20, nullable = false, unique = true)
+	@Column(name="permission_slug",length = 150, nullable = false, unique = true)
 	private String slug;
-	@Column(name= "permission_name",length = 20, nullable = false)
+	@Column(name= "permission_name",length = 100, nullable = false)
 	private String name;
 	
-	@ManyToMany(targetEntity = RoleInfo.class)
-	@JoinTable(name = "m_role_permission_link",
-			joinColumns = @JoinColumn(name = "permission_id"),
-			inverseJoinColumns = @JoinColumn(name = "role_id"))
+//	@ManyToMany(targetEntity = RoleInfo.class, fetch = FetchType.LAZY)
+//	@JoinTable(name = "m_role_permission_link",
+//			joinColumns = @JoinColumn(name = "permission_id"),
+//			inverseJoinColumns = @JoinColumn(name = "role_id"))
+//	private List<RoleInfo> roles;
+	
+	@JsonProperty(access = Access.WRITE_ONLY)
+	@ManyToMany(mappedBy = "permissions")
 	private List<RoleInfo> roles;
+
+	@Override
+	public String toString() {
+		return "PermissionInfo [id=" + id + ", slug=" + slug + ", name=" + name + "]";
+	}
+	
+	
 }

@@ -1,6 +1,7 @@
 package com.socialnetwork.general.user.services.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.hibernate.criterion.Order;
@@ -77,6 +78,10 @@ public class PermissionInfoService {
 			dtos.add(new PermissionInfoDto(entity));
 		}
 		return dtos;
+	}
+	
+	public List<PermissionInfo> findAllByIds(Collection<Integer> ids) {
+		return permissionInfoRepository.findAllById(ids);
 	}
 	
 }
