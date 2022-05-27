@@ -75,8 +75,11 @@ class UserServiceTest {
 	void testFindAll() {
 		Mockito.when(userRepository.findAll()).thenReturn(userInfosGlobal);
 		
-		List<UserInfoDto> userInfoDtos = userService.findAll();
-		userInfoDtos.forEach(System.out::println);
+		Page<UserInfoDto> userInfoDtoPage = userService.findAll(PageRequest.of(0, 2));
+		System.out.println("Total: "+ userInfoDtoPage.getTotalElements());
+		System.out.println("Page: "+ userInfoDtoPage.getTotalPages());
+		userInfoDtoPage.toSet().forEach(System.out::println);
+		
 	}
 
 	@Test
@@ -87,5 +90,11 @@ class UserServiceTest {
 				System.out.println(field.getName()+": " + a.annotationType().equals(Id.class));
 			}
 		}
+	}
+	
+	@Test
+	void testCreate() {
+		UserInfoDto dto = new UserInfoDto();
+		userService.create(dto);
 	}
 }

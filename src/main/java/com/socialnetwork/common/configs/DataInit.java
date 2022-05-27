@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.domain.PageRequest;
 
 import com.socialnetwork.common.entities.sequence.SequenceInfo;
 import com.socialnetwork.common.services.sequence.SequenceService;
@@ -23,7 +24,7 @@ public class DataInit {
 	private SequenceService sequenceService;
 	//@PostConstruct
 	public void initUserData() {
-		if(userSerivce.findAll().size() != 0) {
+		if(userSerivce.findAll(PageRequest.of(0, 2)).getTotalElements() != 0) {
 			return;
 		}
 		for(int i=1; i<=10; i++) {

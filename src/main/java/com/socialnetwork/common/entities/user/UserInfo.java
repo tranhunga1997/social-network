@@ -5,7 +5,10 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Convert;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
@@ -55,6 +58,10 @@ public class UserInfo extends BaseEntity {
 	private boolean isBlocked;
 	
 	// relationship
-	@ManyToMany(mappedBy = "users")
+//	@ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER,targetEntity = RoleInfo.class)
+	@JoinTable(name = "m_user_role_link",
+			joinColumns = @JoinColumn(name = "user_id"),
+			inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<RoleInfo> roles;
 }

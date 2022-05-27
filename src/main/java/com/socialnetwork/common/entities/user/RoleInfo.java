@@ -36,17 +36,30 @@ public class RoleInfo extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="role_id")
 	private Integer id;
-	@Column(name="role_slug",length = 25)
+	@Column(name="role_slug", unique = true, length = 150)
 	private String slug;
-	@Column(name="role_name",length = 100)
+	@Column(name="role_name", length = 100)
 	private String name;
 	
-	@ManyToMany(fetch = FetchType.LAZY,targetEntity = UserInfo.class)
-	@JoinTable(name = "m_user_role_link",
-			joinColumns = @JoinColumn(name = "role_id"),
-			inverseJoinColumns = @JoinColumn(name = "user_id"))
-	private List<UserInfo> users;
+//	@ManyToMany(fetch = FetchType.LAZY,targetEntity = UserInfo.class)
+//	@JoinTable(name = "m_user_role_link",
+//			joinColumns = @JoinColumn(name = "role_id"),
+//			inverseJoinColumns = @JoinColumn(name = "user_id"))
+//	private List<UserInfo> users;
 	
 	@ManyToMany(mappedBy = "roles")
+	private List<UserInfo> users;
+	
+	@ManyToMany(targetEntity = PermissionInfo.class)
+	@JoinTable(name = "m_role_permission_link",
+			joinColumns = @JoinColumn(name = "role_id"),
+			inverseJoinColumns = @JoinColumn(name = "permission_id"))
 	private List<PermissionInfo> permissions;
+
+	@Override
+	public String toString() {
+		return "RoleInfo [id=" + id + ", slug=" + slug + ", name=" + name + ", permissions=" + permissions + "]";
+	}
+	
+	
 }

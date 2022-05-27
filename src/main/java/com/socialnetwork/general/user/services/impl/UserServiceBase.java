@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Id;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
@@ -25,122 +26,38 @@ import com.google.common.base.Objects;
 import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.general.user.services.IUserServiceBase;
 import com.vvt.jpa.query.QueryBuilder;
+import com.vvt.jpa.query.SearchQuery;
 
 @Component
-public abstract class UserServiceBase<T> implements IUserServiceBase<T> {
+public abstract class UserServiceBase<T1> implements IUserServiceBase<T1> {
 
-	@Autowired
+	@PersistenceContext
 	private EntityManager em;
 	
-	@Override
 	@SuppressWarnings("unchecked")
-	public Page<T> findAll(Pageable pageable, Class<T> clazz) {
-		String totalDataJPQL = "";
-		String dataJPQL = "";
-		Query query = null;
-		
-		QueryBuilder builder = new QueryBuilder(clazz, "e");
+	protected <T2> Page<T2> findAll(Pageable pageable, Class<T2> clazz) {
+		SearchQuery<T2> searchQuery = new SearchQuery<T2>(clazz, em);
+		searchQuery.pageable(pageable);
 		// lấy tổng số data
-		totalDataJPQL = builder.selectCount().build();
-		query = em.createQuery(totalDataJPQL);
-		long totalData = (long) query.getSingleResult();
-		
+		long totalData = searchQuery.getCount();
 		// lấy data
-		dataJPQL = builder.select().build();
-		query = em.createQuery(dataJPQL, clazz);
-		List<T> dataList = query.setFirstResult((int)pageable.getOffset())
-				.setMaxResults(pageable.getPageSize())
-				.getResultList();
+		List<T2> dataList = searchQuery.getResultList();
 		
-		return new PageImpl<T>(dataList, pageable, totalData);
+		return new PageImpl<T2>(dataList, pageable, totalData);
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
-	public Page<T> find(Object conditionInstant, Pageable pageable, Class<T> clazz) {
-		String totalDataJPQL = "";
-		String dataJPQL = "";
-		Query query = null;
-		
-		QueryBuilder builder = new QueryBuilder(clazz, "e");
-		// thiết lập điều kiện
-		builder = builder.where(conditionInstant);
-		
+	protected <T2> Page<T2> find(Object conditionInstant, Pageable pageable, Class<T2> clazz) {
+		SearchQuery<T2> searchQuery = new SearchQuery<T2>(clazz, em);
+		searchQuery.pageable(pageable);
+		// xét điều kiện tìm kiếm
+		searchQuery.where(conditionInstant);
 		// lấy tổng số data
-		totalDataJPQL = builder.selectCount().build();
-		query = em.createQuery(totalDataJPQL);
-		setParamQuery(query, builder.getParamMap());
-		long totalData = (long) query.getSingleResult();
-		
+		long totalData = searchQuery.getCount();
 		// lấy data
-		dataJPQL = builder.select().build();
-		query = em.createQuery(dataJPQL, clazz);
-		setParamQuery(query, builder.getParamMap());
-		List<T> dataList = query.setFirstResult((int)pageable.getOffset())
-				.setMaxResults(pageable.getPageSize())
-				.getResultList();
+		List<T2> dataList = searchQuery.getResultList();
 		
-		return new PageImpl<T>(dataList, pageable, totalData);
-	}
-
-	@Override
-	public T create(T t) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void update(T t) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	@Transactional
-	public void deleteById(Object id, Class<T> clazz) {
-		Field fieldId = findFieldId(clazz);
-		
-		if(null == fieldId) {
-			return;
-		}
-		
-		// khởi tạo criteria delete
-		CriteriaBuilder builder = em.getCriteriaBuilder();
-		CriteriaDelete<T> criteriaDelete = builder.createCriteriaDelete(clazz);
-		Root<T> root = criteriaDelete.from(clazz);
-		
-		// khởi tạo câu truy vấn delete
-		criteriaDelete.where(builder.equal(root.get(fieldId.getName()), String.valueOf(id)));
-        
-		em.createQuery(criteriaDelete).executeUpdate();
-	}
-	
-	/**
-	 * Tìm field id của object
-	 * @param clazz
-	 * @return field id
-	 */
-	private Field findFieldId(Class<T> clazz) {
-		for(Field field : clazz.getDeclaredFields()) {
-			for(Annotation a : field.getDeclaredAnnotations()) {
-				if(a.annotationType().equals(Id.class)) {
-					return field;
-				}
-			}
-		}
-		
-		return null;
-	}
-	
-	/**
-	 * Set param điều kiện
-	 * @param query
-	 * @param map
-	 */
-	private void setParamQuery(Query query, Map<String, Object> map) {
-		map.forEach((key, val) -> {
-			query.setParameter(key, val);
-		});
+		return new PageImpl<T2>(dataList, pageable, totalData);
 	}
 	
 }

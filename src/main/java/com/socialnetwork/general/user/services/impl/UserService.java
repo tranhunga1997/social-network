@@ -5,7 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.socialnetwork.common.entities.user.ForgetPwdTokenInfo;
@@ -22,7 +27,8 @@ import com.socialnetwork.general.user.dtos.UserInfoDto;
  *
  */
 @Service
-public class UserService extends UserServiceBase<UserInfo>{
+@Transactional
+public class UserService extends UserServiceBase<UserInfoDto> {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -32,17 +38,41 @@ public class UserService extends UserServiceBase<UserInfo>{
 	 * Tìm tất cả tài khoản
 	 * @return
 	 */
-	public List<UserInfoDto> findAll(){
-		List<UserInfo> userInfos = userRepository.findAll();
-		List<UserInfoDto> userInfoDtos = new ArrayList<>();
+//	public List<UserInfoDto> findAll(){
+//		List<UserInfo> userInfos = userRepository.findAll();
+//		List<UserInfoDto> userInfoDtos = new ArrayList<>();
+//		
+//		for(UserInfo userInfo : userInfos) {
+//			userInfoDtos.add(new UserInfoDto(userInfo));
+//		}
+//		
+//		return userInfoDtos;
+//	}
+	public Page<UserInfoDto> findAll(Pageable pageable) {
+		Page<UserInfo> pageUserInfo = super.findAll(pageable, UserInfo.class);
 		
-		for(UserInfo userInfo : userInfos) {
-			userInfoDtos.add(new UserInfoDto(userInfo));
-		}
+		List<UserInfoDto> userInfoDtos = new ArrayList<UserInfoDto>();
+		pageUserInfo.toList().forEach(item -> {
+			UserInfoDto dto = new UserInfoDto(item);
+			userInfoDtos.add(dto);
+		});
 		
-		return userInfoDtos;
+		return new PageImpl<UserInfoDto>(userInfoDtos, pageable, pageUserInfo.getTotalElements());
 	}
 	
+	public Page<UserInfoDto> find(Object conditionObj, Pageable pageable) {
+		Page<UserInfo> pageUserInfo = super.find(conditionObj, pageable, UserInfo.class);
+		List<UserInfoDto> userInfoDtos = new ArrayList<UserInfoDto>();
+		pageUserInfo.toList().forEach(item -> {
+			UserInfoDto dto = new UserInfoDto(item);
+			userInfoDtos.add(dto);
+		});
+		
+		return new PageImpl<UserInfoDto>(userInfoDtos, pageable, pageUserInfo.getTotalElements());
+	}
+
+
+
 	/**
 	 * Tìm user id
 	 * @param username
@@ -115,33 +145,23 @@ public class UserService extends UserServiceBase<UserInfo>{
 		}
 		return userInfoDto;
 	}
+	
 	/**
 	 * Tạo mới tài khoản
 	 * @param UserInfoDto
 	 * @return UserInfoDto
 	 */
-	public UserInfoDto create(UserInfoDto dto) {
-		if(StringUtil.isNull(dto.getUsername())) {
-			throw new SocialException("W_00002");
-		}
-		
-		UserInfo userInfo = dto.toUserInfo();
-		return new UserInfoDto(userRepository.save(userInfo));
-	}
-	/**
-	 * Sửa tài khoản
-	 * <b>Điều kiện: </b>phải có user id 
-	 * @param UserInfoDto
-	 * @return UserInfoDto
-	 */
-	public UserInfoDto update(UserInfoDto dto) {
-		if(StringUtil.isNull(dto.getUserId())) {
-			throw new SocialException("W_00002");
-		}
-		
-		UserInfo userInfo = dto.toUserInfo();
-		return new UserInfoDto(userRepository.save(userInfo));
-	}
+//	public void create(UserInfoDto dto) {
+//		if(StringUtil.isNull(dto.getUsername())) {
+//			throw new SocialException("W_00002");
+//		}
+//		
+//		UserInfo userInfo = dto.toUserInfo();
+//		UserInfo result = userRepository.save(userInfo);
+//		dto.setUserId(result.getUserId());
+//	}
+
+
 	/**
 	 * Kích hoạt tài khoản
 	 * @param username
@@ -210,5 +230,62 @@ public class UserService extends UserServiceBase<UserInfo>{
 		registTokenService.deleteLogic(userId);
 		return true;
 	}
+
+	/**
+	 * Sửa tài khoản
+	 * <b>Điều kiện: </b>phải có user id 
+	 * @param UserInfoDto
+	 * @return UserInfoDto
+	 */
+//	@Override
+//	public void update(UserInfoDto dto) {
+//		if(StringUtil.isNull(dto.getUserId()) {
+//			throw new SocialException("W_00002");
+//		}
+//		
+//		UserInfo userInfo = dto.toUserInfo();
+//		userRepository.save(userInfo);
+//	}
+
+	@Override
+	public void deleteById(Object id) {
+		userRepository.deleteById((Long) id);
+	}
+
+	/**
+	 * Tạo mới tài khoản
+	 * @param UserInfoDto
+	 * @return UserInfoDto
+	 */
+	@Override
+	public void create(UserInfoDto dto) {
+		if(StringUtil.isNull(dto.getUsername())) {
+			throw new SocialException("W_00002");
+		}
+		
+		UserInfo userInfo = userRepository.save(dto.toUserInfo());
+		dto.setUserId(userInfo.getUserId());
+	}
+
+	/**
+	 * Sửa tài khoản
+	 * <b>Điều kiện: </b>phải có user id 
+	 * @param UserInfoDto
+	 * @return UserInfoDto
+	 */
+	@Override
+	public void update(UserInfoDto dto) {
+		if(StringUtil.isNull(dto.getUserId())) {
+			throw new SocialException("W_00002");
+		}
+		
+		UserInfo userInfo = userRepository.save(dto.toUserInfo());
+		dto.setUserId(userInfo.getUserId());
+	}
+
+
+	
+
+
 	
 }

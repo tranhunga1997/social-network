@@ -2,6 +2,7 @@ package com.socialnetwork.general.user.apis;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,7 +38,7 @@ import com.socialnetwork.general.user.dtos.LoginResponseData;
 import com.socialnetwork.general.user.dtos.LoginTokenInfoDto;
 import com.socialnetwork.general.user.dtos.PermissionInfoDto;
 import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
-import com.socialnetwork.general.user.dtos.RoleInfoDto;
+import com.socialnetwork.general.user.dtos.RoleDetailInfoDto;
 import com.socialnetwork.general.user.dtos.UserDetailDto;
 import com.socialnetwork.general.user.dtos.UserInfoDto;
 import com.socialnetwork.general.user.forms.ChangePasswordForm;
@@ -52,6 +53,7 @@ import com.socialnetwork.general.user.services.impl.LoginHistoryService;
 import com.socialnetwork.general.user.services.impl.LoginTokenInfoService;
 import com.socialnetwork.general.user.services.impl.PermissionInfoService;
 import com.socialnetwork.general.user.services.impl.RegistTokenService;
+import com.socialnetwork.general.user.services.impl.RoleInfoDto;
 import com.socialnetwork.general.user.services.impl.RoleInfoService;
 import com.socialnetwork.general.user.services.impl.UserService;
 
@@ -107,7 +109,7 @@ public class UserApi {
 		}
 		//lấy thông tin role user
 		List<RoleInfo> roleInfos = new ArrayList<>(); 
-		RoleInfoDto roleInfoDto = roleInfoService.findById(1); // lấy thông tin role user
+		RoleDetailInfoDto roleInfoDto = roleInfoService.findById(1); // lấy thông tin role user
 		if(StringUtil.isNull(roleInfoDto)) {
 			throw new SocialException("E_00003");
 		}
@@ -116,14 +118,14 @@ public class UserApi {
 		// tạo tài khoản
 		UserInfoDto userInfoDto = form.toUserInfoDto();
 		userInfoDto.setRoles(roleInfos);
-		long userId = userService.create(userInfoDto).getUserId();
+		userService.create(userInfoDto);
 		
 		// tạo mật khẩu
-		authService.create(userId, form.getPassword());
+		authService.create(userInfoDto.getUserId(), form.getPassword());
 		
 		// tạo token
 		long registTokenExpiryDays = 1L;
-		RegistTokenInfoDto registTokenInfoDto = new RegistTokenInfoDto(userId, TokenProvider.generateToken(), registTokenExpiryDays);
+		RegistTokenInfoDto registTokenInfoDto = new RegistTokenInfoDto(userInfoDto.getUserId(), TokenProvider.generateToken(), registTokenExpiryDays);
 		String token = registTokenService.create(registTokenInfoDto).getToken();
 		
 		// gửi mail
@@ -255,7 +257,7 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@PutMapping("detail/{username}")
+	@PutMapping("/detail/{username}")
 	ResponseEntity<UserDetailDto> updateDetail(HttpServletRequest request, @PathVariable String username, UserInfoUpdateForm form) {
 		String usernameLocal = TokenProvider.getUserUsernameFromRequest(request);
 		
@@ -273,12 +275,12 @@ public class UserApi {
 		userDto.setLastName(form.getLastName());
 		userDto.setUpdateDatetime(LocalDateTime.now());
 		
-		UserInfoDto uDto = userService.create(userDto);
+		userService.create(userDto);
 		
 		UserDetailDto resultDto = UserDetailDto.builder()
-				.email(uDto.getEmail())
-				.firstName(uDto.getFirstName())
-				.lastName(uDto.getLastName())
+				.email(userDto.getEmail())
+				.firstName(userDto.getFirstName())
+				.lastName(userDto.getLastName())
 				.build();
 		
 		return ResponseEntity.ok(resultDto);
@@ -295,7 +297,7 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại hoặc danh sách lỗi")
 	})
-	@PostMapping("password/change")
+	@PostMapping("/password/change")
 	ResponseEntity<String> changePassword(HttpServletRequest request, ChangePasswordForm form) {
 		String username = TokenProvider.getUserUsernameFromRequest(request);
 		UserInfoDto userInfoDto = userService.findByUsername(username);
@@ -335,7 +337,7 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@PostMapping("forget-password")
+	@PostMapping("/forget-password")
 	ResponseEntity<String> forgetPasswordEmailInput(HttpServletRequest request, String email) {
 		UserInfoDto userInfoDto = userService.findByEmail(email);
 		// kiểm tra email tồn tại
@@ -361,7 +363,7 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@PutMapping("forget-password")
+	@PutMapping("/forget-password")
 	ResponseEntity<String> forgetPassword(HttpServletRequest request, @Valid ForgetPasswordForm form) {
 		// kiểm tra xác nhận mật khẩu mới
 		if(!Objects.equals(form.getNewPassword(), form.getNewPasswordConfirm())) {
@@ -391,7 +393,7 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@GetMapping("permission")
+	@GetMapping("/permission")
 	ResponseEntity<Pagination<PermissionInfoDto>> viewPermission(@RequestParam(defaultValue = "1") int page){
 		Pagination<PermissionInfoDto> pagination = new Pagination<>();
 		Page<PermissionInfoDto> dataPage = permissionInfoService.findAll(page-1, 5);
@@ -413,17 +415,32 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@GetMapping("role")
+	@GetMapping("/role")
 	ResponseEntity<Pagination<RoleInfoDto>> viewRole(@RequestParam(defaultValue = "1") int page) {
 		Pagination<RoleInfoDto> pagination = new Pagination<>();
-		Page<RoleInfoDto> dtoPage = roleInfoService.findAll(page, 5);
+		Page<RoleDetailInfoDto> dtoPage = roleInfoService.findAll(page-1, 5);
+		List<RoleInfoDto> resultDto = new ArrayList<RoleInfoDto>();
+		dtoPage.toList().forEach(dto -> {
+			resultDto.add(new RoleInfoDto(dto));
+		});
 		
 		pagination.setTotalElements(dtoPage.getTotalElements());
 		pagination.setTotalPages(dtoPage.getTotalPages());
-		pagination.setDatas(dtoPage.toList());
+		pagination.setDatas(resultDto);
 		return ResponseEntity.ok(pagination);
 	}
 	
+	@ApiOperation(value = "Xem chi tiết role")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@GetMapping("/role/{slug}")
+	ResponseEntity<RoleDetailInfoDto> viewOneRole(@PathVariable String slug) {
+		RoleDetailInfoDto roleInfoDto = roleInfoService.findBySlug(slug);
+		roleInfoDto.setPermissions(roleInfoDto.getPermissions());
+		return ResponseEntity.ok(roleInfoDto);
+	}
 	/**
 	 * Tạo mới role
 	 * @param form
@@ -434,15 +451,20 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@PostMapping("role")
-	ResponseEntity<RoleInfoDto> createRole(@Valid RoleCreateForm form) {
-		List<PermissionInfoDto> permissionInfos = new ArrayList<>();
-		RoleInfoDto dto = new RoleInfoDto();
+	@PostMapping("/role")
+	ResponseEntity<RoleDetailInfoDto> createRole(@Valid RoleCreateForm form) {
+		List<PermissionInfoDto> permissionInfoDtos = new ArrayList<>();
+		RoleDetailInfoDto dto = new RoleDetailInfoDto();
 		
 		// set giá trị cho đối tượng dto
 		List<String> permissionsForm = form.getPermissions();
 		if(!StringUtil.isNull(permissionsForm) && permissionsForm.size() != 0) {
-			permissionInfos = permissionInfoService.findBySlugIn(permissionsForm);
+			permissionInfoDtos = permissionInfoService.findBySlugIn(permissionsForm);
+			// chuyển permission dto sang entity
+			List<PermissionInfo> permissionInfos = new ArrayList<>();
+			permissionInfoDtos.forEach(p -> {
+				permissionInfos.add(p.toPermissionInfo());
+			});
 			dto.setPermissions(permissionInfos);
 		}
 		dto.setName(form.getName());
@@ -451,6 +473,29 @@ public class UserApi {
 		roleInfoService.create(dto);
 		
 		return ResponseEntity.ok(dto);
+	}
+	
+	/**
+	 * Sửa role
+	 * @param roleId
+	 * @param perssionIds
+	 * @return
+	 */
+	@PutMapping("/role")
+	ResponseEntity<?> updateRole(int roleId, Integer[] perssionIds) {
+		
+		RoleDetailInfoDto roleInfoDto = roleInfoService.findById(roleId);
+		if(StringUtil.isNull(roleInfoDto)) {
+			throw new SocialException("E_00003");
+		}
+		
+		
+		// lấy danh sách permission
+		roleInfoDto.setPermissions(permissionInfoService.findAllByIds(Arrays.asList(perssionIds)));
+		
+		// sửa role
+		roleInfoService.update(roleInfoDto);
+		return ResponseEntity.ok("Sửa role thành công");
 	}
 	
 	/**
@@ -463,9 +508,9 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@DeleteMapping("role")
+	@DeleteMapping("/role")
 	ResponseEntity<String> deleteRole(@RequestParam(required = true) int roleId) {
-		roleInfoService.delete(roleId);
+		roleInfoService.deleteById(roleId);
 		return ResponseEntity.ok("Thành công");
 	}
 }
