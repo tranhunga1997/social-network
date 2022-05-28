@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoDto {
+public class UserDetailInfoDto {
 	private Long userId;
 	private String username;
 	private String lastName;
@@ -37,7 +37,7 @@ public class UserInfoDto {
 	 * Constructor
 	 * @param userInfo
 	 */
-	public UserInfoDto(UserInfo userInfo) {
+	public UserDetailInfoDto(UserInfo userInfo) {
 		BeanCopyUtils.copyProperties(userInfo, this);
 	}
 	

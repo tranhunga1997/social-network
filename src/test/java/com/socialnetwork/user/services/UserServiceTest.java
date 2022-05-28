@@ -32,7 +32,7 @@ import com.socialnetwork.common.repositories.user.ForgetPwdTokenRepository;
 import com.socialnetwork.common.repositories.user.PermissionInfoRepository;
 import com.socialnetwork.common.repositories.user.UserRepository;
 import com.socialnetwork.general.user.dtos.PermissionInfoDto;
-import com.socialnetwork.general.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.dtos.UserDetailInfoDto;
 import com.socialnetwork.general.user.search.PermissionSearch;
 import com.socialnetwork.general.user.services.impl.PermissionInfoService;
 import com.socialnetwork.general.user.services.impl.UserService;
@@ -75,7 +75,7 @@ class UserServiceTest {
 	void testFindAll() {
 		Mockito.when(userRepository.findAll()).thenReturn(userInfosGlobal);
 		
-		Page<UserInfoDto> userInfoDtoPage = userService.findAll(PageRequest.of(0, 2));
+		Page<UserDetailInfoDto> userInfoDtoPage = userService.findAll(PageRequest.of(0, 2));
 		System.out.println("Total: "+ userInfoDtoPage.getTotalElements());
 		System.out.println("Page: "+ userInfoDtoPage.getTotalPages());
 		userInfoDtoPage.toSet().forEach(System.out::println);
@@ -94,7 +94,7 @@ class UserServiceTest {
 	
 	@Test
 	void testCreate() {
-		UserInfoDto dto = new UserInfoDto();
+		UserDetailInfoDto dto = new UserDetailInfoDto();
 		userService.create(dto);
 	}
 }

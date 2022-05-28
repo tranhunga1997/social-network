@@ -12,6 +12,10 @@ import javax.validation.constraints.Email;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -40,6 +44,7 @@ import com.socialnetwork.general.user.dtos.PermissionInfoDto;
 import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
 import com.socialnetwork.general.user.dtos.RoleDetailInfoDto;
 import com.socialnetwork.general.user.dtos.UserDetailDto;
+import com.socialnetwork.general.user.dtos.UserDetailInfoDto;
 import com.socialnetwork.general.user.dtos.UserInfoDto;
 import com.socialnetwork.general.user.forms.ChangePasswordForm;
 import com.socialnetwork.general.user.forms.ForgetPasswordForm;
@@ -116,7 +121,7 @@ public class UserApi {
 		roleInfos.add(roleInfoDto.toRoleInfo());
 		
 		// tạo tài khoản
-		UserInfoDto userInfoDto = form.toUserInfoDto();
+		UserDetailInfoDto userInfoDto = form.toUserInfoDto();
 		userInfoDto.setRoles(roleInfos);
 		userService.create(userInfoDto);
 		
@@ -151,7 +156,7 @@ public class UserApi {
 		// kiểm tra tài khoản
 		String username = form.getUsername();
 		String password = form.getPassword();
-		UserInfoDto userInfoDto = userService.findByUsername(username);
+		UserDetailInfoDto userInfoDto = userService.findByUsername(username);
 		AuthenticateInfoDto authenticateInfoDto = authService.findNewInfo(userInfoDto.getUserId());
 		
 		// xác thực tài khoản
@@ -223,7 +228,7 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@GetMapping("/detail/{username}")
+	@GetMapping("/{username}")
 	ResponseEntity<UserDetailDto> viewDetail(HttpServletRequest request, @PathVariable String username) {
 		String usernameLocal = TokenProvider.getUserUsernameFromRequest(request);
 		
@@ -234,7 +239,7 @@ public class UserApi {
 		}
 		
 		// lấy dữ liệu tài khoản
-		UserInfoDto userInfoDto = userService.findByUsername(usernameLocal);
+		UserDetailInfoDto userInfoDto = userService.findByUsername(usernameLocal);
 		
 		// khởi tạo dữ liệu cần thiết trả về
 		UserDetailDto userDetailDto = UserDetailDto.builder()
@@ -257,7 +262,7 @@ public class UserApi {
 			@ApiResponse(code = 200, message = "Thành công"),
 			@ApiResponse(code = 400, message = "Thất bại")
 	})
-	@PutMapping("/detail/{username}")
+	@PutMapping("/{username}")
 	ResponseEntity<UserDetailDto> updateDetail(HttpServletRequest request, @PathVariable String username, UserInfoUpdateForm form) {
 		String usernameLocal = TokenProvider.getUserUsernameFromRequest(request);
 		
@@ -268,7 +273,7 @@ public class UserApi {
 		}
 		
 		// lấy thông tin user
-		UserInfoDto userDto = userService.findByUsername(username);
+		UserDetailInfoDto userDto = userService.findByUsername(username);
 		
 		userDto.setEmail(form.getEmail());
 		userDto.setFirstName(form.getFirstName());
@@ -300,7 +305,7 @@ public class UserApi {
 	@PostMapping("/password/change")
 	ResponseEntity<String> changePassword(HttpServletRequest request, ChangePasswordForm form) {
 		String username = TokenProvider.getUserUsernameFromRequest(request);
-		UserInfoDto userInfoDto = userService.findByUsername(username);
+		UserDetailInfoDto userInfoDto = userService.findByUsername(username);
 		
 		// kiểm tra tồn tại tài khoản
 		if (StringUtil.isNull(userInfoDto)) {
@@ -339,7 +344,7 @@ public class UserApi {
 	})
 	@PostMapping("/forget-password")
 	ResponseEntity<String> forgetPasswordEmailInput(HttpServletRequest request, String email) {
-		UserInfoDto userInfoDto = userService.findByEmail(email);
+		UserDetailInfoDto userInfoDto = userService.findByEmail(email);
 		// kiểm tra email tồn tại
 		if (StringUtil.isNull(userInfoDto)) {
 			throw new SocialException("E_00003");
@@ -383,6 +388,8 @@ public class UserApi {
 		// xóa token (dự định không xóa)
 		return ResponseEntity.ok("Thành công");
 	}
+	
+	// TODO ADMIN CONROLLER
 	
 	/**
 	 * Controller xem quyền hạn
@@ -453,18 +460,14 @@ public class UserApi {
 	})
 	@PostMapping("/role")
 	ResponseEntity<RoleDetailInfoDto> createRole(@Valid RoleCreateForm form) {
-		List<PermissionInfoDto> permissionInfoDtos = new ArrayList<>();
 		RoleDetailInfoDto dto = new RoleDetailInfoDto();
 		
 		// set giá trị cho đối tượng dto
-		List<String> permissionsForm = form.getPermissions();
-		if(!StringUtil.isNull(permissionsForm) && permissionsForm.size() != 0) {
-			permissionInfoDtos = permissionInfoService.findBySlugIn(permissionsForm);
-			// chuyển permission dto sang entity
+		List<Integer> permissionIdsForm = form.getPermissionIds();
+		if(!StringUtil.isNull(permissionIdsForm) && permissionIdsForm.size() != 0) {
 			List<PermissionInfo> permissionInfos = new ArrayList<>();
-			permissionInfoDtos.forEach(p -> {
-				permissionInfos.add(p.toPermissionInfo());
-			});
+			permissionInfos = permissionInfoService.findAllByIds(permissionIdsForm);
+			// chuyển permission dto sang entity
 			dto.setPermissions(permissionInfos);
 		}
 		dto.setName(form.getName());
@@ -513,4 +516,23 @@ public class UserApi {
 		roleInfoService.deleteById(roleId);
 		return ResponseEntity.ok("Thành công");
 	}
+	
+	@ApiOperation(value = "xem tất cả thông tin user")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@GetMapping("")
+	ResponseEntity<Pagination<UserInfoDto>> viewAllUser(@RequestParam(defaultValue = "1") int page) {
+		Pageable pageable = PageRequest.of(page-1, 10, Sort.by("userId").ascending());
+		Page<UserDetailInfoDto> uDetailInfoPage = userService.findAll(pageable);
+		// convert page userdetaildto -> page userdto
+		List<UserInfoDto> userInfoDtos = new ArrayList<UserInfoDto>();
+		uDetailInfoPage.toList().forEach(u -> {
+			userInfoDtos.add(new UserInfoDto(u));
+		});
+		
+		return ResponseEntity.ok(new Pagination<>(uDetailInfoPage.getTotalPages(), uDetailInfoPage.getTotalElements(), userInfoDtos));
+	}
+	
 }

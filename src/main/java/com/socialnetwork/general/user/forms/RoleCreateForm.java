@@ -8,7 +8,7 @@ import lombok.Data;
 
 @Data
 public class RoleCreateForm {
-	@Pattern(regexp = "^[^\\d]$")
+	@Pattern(regexp = "^[^\\d]+$", message = "Ký tự đã nhập không hợp lệ (chỉ được nhập chữ)")
 	private String name;
-	private List<String> permissions;
+	private List<Integer> permissionIds;
 }
