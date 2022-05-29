@@ -58,9 +58,7 @@ public class UserInfo extends BaseEntity {
 	@Convert(converter = BooleanConvert.class)
 	private boolean isBlocked;
 	
-	// relationship
-//	@ManyToMany(mappedBy = "users", fetch = FetchType.EAGER)
-	@ManyToMany(fetch = FetchType.EAGER,targetEntity = RoleInfo.class)
+	@ManyToMany(targetEntity = RoleInfo.class)
 	@JoinTable(name = "m_user_role_link",
 			joinColumns = @JoinColumn(name = "user_id"),
 			inverseJoinColumns = @JoinColumn(name = "role_id"))

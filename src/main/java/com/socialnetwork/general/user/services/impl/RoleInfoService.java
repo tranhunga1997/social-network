@@ -79,6 +79,22 @@ public class RoleInfoService extends UserServiceBase<RoleDetailInfoDto>{
 	}
 	
 	/**
+	 * Tìm kiếm theo filter
+	 * @param conditionObj
+	 * @param pageable
+	 * @return
+	 */
+	public Page<RoleDetailInfoDto> find(Object conditionObj, Pageable pageable) {
+		Page<RoleInfo> roleInfoPage = super.find(conditionObj, pageable, RoleInfo.class);
+		List<RoleDetailInfoDto> detailInfoDtos = new ArrayList<RoleDetailInfoDto>();
+		roleInfoPage.toList().forEach(r -> {
+			detailInfoDtos.add(new RoleDetailInfoDto(r));
+		});
+		
+		return new PageImpl<>(detailInfoDtos, pageable, roleInfoPage.getTotalElements());
+	}
+	
+	/**
 	 * Tìm thông tin role sử dụng role id
 	 * @param roleId
 	 * @return thông tin role
@@ -91,7 +107,6 @@ public class RoleInfoService extends UserServiceBase<RoleDetailInfoDto>{
 		return new RoleDetailInfoDto(roleInfoRepository.findBySlug(slug));
 	}
 	
-	@Override
 	public void create(RoleDetailInfoDto dto) {
 		dto.setSlug(StringUtil.toSlug(dto.getName()));
 		dto.setCreateAt(LocalDateTime.now());
@@ -130,7 +145,6 @@ public class RoleInfoService extends UserServiceBase<RoleDetailInfoDto>{
 		}
 	}
 
-	@Override
 	public void update(RoleDetailInfoDto dto) {
 		// lấy thông tin và kiểm tra null
 		RoleDetailInfoDto roleInfoDto = findById(dto.getId());
@@ -141,12 +155,10 @@ public class RoleInfoService extends UserServiceBase<RoleDetailInfoDto>{
 		roleInfoRepository.save(dto.toRoleInfo());
 	}
 
-	@Override
 	public void deleteById(Object id) {
 		if(!(id instanceof Integer)) {
 			throw new InvalidParameterException("param \"id\" is not integer.");
 		}
 		roleInfoRepository.deleteById((Integer) id);
 	}
-
 }

@@ -38,16 +38,6 @@ public class UserService extends UserServiceBase<UserDetailInfoDto> {
 	 * Tìm tất cả tài khoản
 	 * @return
 	 */
-//	public List<UserInfoDto> findAll(){
-//		List<UserInfo> userInfos = userRepository.findAll();
-//		List<UserInfoDto> userInfoDtos = new ArrayList<>();
-//		
-//		for(UserInfo userInfo : userInfos) {
-//			userInfoDtos.add(new UserInfoDto(userInfo));
-//		}
-//		
-//		return userInfoDtos;
-//	}
 	public Page<UserDetailInfoDto> findAll(Pageable pageable) {
 		Page<UserInfo> pageUserInfo = super.findAll(pageable, UserInfo.class);
 		
@@ -60,6 +50,12 @@ public class UserService extends UserServiceBase<UserDetailInfoDto> {
 		return new PageImpl<UserDetailInfoDto>(userInfoDtos, pageable, pageUserInfo.getTotalElements());
 	}
 	
+	/**
+	 * Tìm kiếm theo filter
+	 * @param conditionObj
+	 * @param pageable
+	 * @return
+	 */
 	public Page<UserDetailInfoDto> find(Object conditionObj, Pageable pageable) {
 		Page<UserInfo> pageUserInfo = super.find(conditionObj, pageable, UserInfo.class);
 		List<UserDetailInfoDto> userInfoDtos = new ArrayList<UserDetailInfoDto>();
@@ -70,8 +66,6 @@ public class UserService extends UserServiceBase<UserDetailInfoDto> {
 		
 		return new PageImpl<UserDetailInfoDto>(userInfoDtos, pageable, pageUserInfo.getTotalElements());
 	}
-
-
 
 	/**
 	 * Tìm user id
@@ -145,22 +139,6 @@ public class UserService extends UserServiceBase<UserDetailInfoDto> {
 		}
 		return userInfoDto;
 	}
-	
-	/**
-	 * Tạo mới tài khoản
-	 * @param UserInfoDto
-	 * @return UserInfoDto
-	 */
-//	public void create(UserInfoDto dto) {
-//		if(StringUtil.isNull(dto.getUsername())) {
-//			throw new SocialException("W_00002");
-//		}
-//		
-//		UserInfo userInfo = dto.toUserInfo();
-//		UserInfo result = userRepository.save(userInfo);
-//		dto.setUserId(result.getUserId());
-//	}
-
 
 	/**
 	 * Kích hoạt tài khoản
@@ -283,9 +261,4 @@ public class UserService extends UserServiceBase<UserDetailInfoDto> {
 		dto.setUserId(userInfo.getUserId());
 	}
 
-
-	
-
-
-	
 }

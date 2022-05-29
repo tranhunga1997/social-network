@@ -25,14 +25,14 @@ public class MyExceptionHandler {
 	/**
 	 * Lỗi không xác định
 	 * @param e
-	 * @return http 400
+	 * @return http 404
 	 */
 	@ExceptionHandler(Exception.class)
-	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
+	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	public String exceptionHandle(Exception e) {
 		log.error(e.getMessage());
 		e.getStackTrace();
-		return "Lỗi không xác định";
+		return e.getMessage();
 	}
 	
 	
@@ -75,12 +75,13 @@ public class MyExceptionHandler {
 	 */
 	@ExceptionHandler(SocialException.class)
 	public ResponseEntity<String> socialException(SocialException e) {
-		// đoạn if trả về lỗi unauthentication viết sau
-		
-		//
 		String msg = MessageUtils.getMessage(e.getMessageCode(), e.getArgs());
+		// đoạn if trả về lỗi unauthentication viết sau
+		if("W_00022".equals(e.getMessageCode())) {
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(msg);
+		}
+		// trường hợp còn lại
 		log.debug(msg);
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(msg);
 	}
-	
 }

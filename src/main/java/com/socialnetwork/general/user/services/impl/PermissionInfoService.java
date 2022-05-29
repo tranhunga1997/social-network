@@ -19,7 +19,7 @@ import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.general.user.dtos.PermissionInfoDto;
 
 @Service
-public class PermissionInfoService {
+public class PermissionInfoService extends UserServiceBase<PermissionInfoDto> {
 	
 	@Autowired
 	private PermissionInfoRepository permissionInfoRepository;
@@ -29,14 +29,14 @@ public class PermissionInfoService {
 	 * @param dto
 	 * @return thông tin permission đã được tạo
 	 */
-	public PermissionInfoDto create(PermissionInfoDto dto) {
+	@Override
+	public void create(PermissionInfoDto dto) {
 		// tạo slug từ name
 		dto.setSlug(StringUtil.toSlug(dto.getName()));
 		
 		// chuyển dto sang entity
 		PermissionInfo entity = dto.toPermissionInfo();
-		PermissionInfoDto result = new PermissionInfoDto(permissionInfoRepository.save(entity));
-		return result;
+		new PermissionInfoDto(permissionInfoRepository.save(entity));
 	}
 	
 	/**
@@ -82,6 +82,31 @@ public class PermissionInfoService {
 	
 	public List<PermissionInfo> findAllByIds(Collection<Integer> ids) {
 		return permissionInfoRepository.findAllById(ids);
+	}
+	
+	public Page<PermissionInfoDto> find(Object conditionObj, Pageable pageable) {
+		Page<PermissionInfo> permissionInfoPage = super.find(conditionObj, pageable, PermissionInfo.class); 
+		List<PermissionInfoDto> permissionInfoDtos = new ArrayList<PermissionInfoDto>();
+		permissionInfoPage.toList().forEach(p -> {
+			permissionInfoDtos.add(new PermissionInfoDto(p));
+		});
+		
+		return new PageImpl<>(permissionInfoDtos, pageable, permissionInfoPage.getTotalElements());
+	}
+
+
+	@Override
+	@Deprecated
+	public void update(PermissionInfoDto t) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	@Deprecated
+	public void deleteById(Object id) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }

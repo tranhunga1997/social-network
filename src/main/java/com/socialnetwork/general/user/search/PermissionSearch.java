@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PermissionSearch {
-	@SearchColumn(condition = ConditionType.GT)
-	private int id;
+	@SearchColumn(condition = ConditionType.HasContain)
+	private String name;
 }

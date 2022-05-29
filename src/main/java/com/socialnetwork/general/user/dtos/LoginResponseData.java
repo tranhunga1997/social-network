@@ -5,10 +5,10 @@ import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
+@RequiredArgsConstructor
 public class LoginResponseData implements Serializable{
 	
 	/**
@@ -16,7 +16,7 @@ public class LoginResponseData implements Serializable{
 	 */
 	private static final long serialVersionUID = 1L;
 	
-	private String jwt;
-	private static String jwtType = "Bearer ";
-	private String refreshToken;
+	private final String jwt;
+	private String jwtType = "Bearer ";
+	private final String refreshToken;
 }

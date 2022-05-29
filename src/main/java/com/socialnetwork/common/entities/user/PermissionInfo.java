@@ -43,13 +43,6 @@ public class PermissionInfo extends BaseEntity {
 	@Column(name= "permission_name",length = 100, nullable = false)
 	private String name;
 	
-//	@ManyToMany(targetEntity = RoleInfo.class, fetch = FetchType.LAZY)
-//	@JoinTable(name = "m_role_permission_link",
-//			joinColumns = @JoinColumn(name = "permission_id"),
-//			inverseJoinColumns = @JoinColumn(name = "role_id"))
-//	private List<RoleInfo> roles;
-	
-	//@JsonProperty(access = Access.WRITE_ONLY)
 	@JsonIgnore
 	@ManyToMany(mappedBy = "permissions")
 	private List<RoleInfo> roles;

@@ -29,7 +29,7 @@ public class TokenProvider {
 	// JWT Secret
     private static final String JWT_SECRET = "111111111111111111";
     // Hạn sử dụng JWT (format: ngày*giờ*phút*giây)
-    private static final long JWT_EXPIRATION = 1*1*60*60L; 
+    private static final long JWT_EXPIRATION = 1*1*15*60; 
 	
     /**
      * Tạo jwt dựa theo thông tin user
