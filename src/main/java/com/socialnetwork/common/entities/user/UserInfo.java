@@ -17,6 +17,7 @@ import com.socialnetwork.common.types.BooleanConvert;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 /**
  * 
  * @author hung

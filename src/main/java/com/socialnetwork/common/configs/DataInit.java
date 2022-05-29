@@ -12,7 +12,7 @@ import org.springframework.data.domain.PageRequest;
 import com.socialnetwork.common.entities.sequence.SequenceInfo;
 import com.socialnetwork.common.services.sequence.SequenceService;
 import com.socialnetwork.common.utils.MessageUtils;
-import com.socialnetwork.general.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.dtos.UserDetailInfoDto;
 import com.socialnetwork.general.user.services.impl.UserService;
 
 @Configuration
@@ -28,11 +28,11 @@ public class DataInit {
 			return;
 		}
 		for(int i=1; i<=10; i++) {
-			UserInfoDto dto = new UserInfoDto();
+			UserDetailInfoDto dto = new UserDetailInfoDto();
 			//dto.setUserId(sequenceService.getNextId("USER_ID_SEQ"));
 			dto.setUsername("sunico"+i);
-			dto.setEnable(true);
-			dto.setBlock(false);
+			dto.setEnabled(true);
+			dto.setBlocked(false);
 			dto.setLastName("Hùng "+i);
 			dto.setFirstName("Mạnh");
 			dto.setEmail("tranhung"+i+"@gmail.com");

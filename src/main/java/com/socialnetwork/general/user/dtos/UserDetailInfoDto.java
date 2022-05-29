@@ -20,15 +20,15 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserInfoDto {
+public class UserDetailInfoDto {
 	private Long userId;
 	private String username;
 	private String lastName;
 	private String firstName;
 	private String email;
 	private List<RoleInfo> roles;
-	private boolean enable;
-	private boolean block;
+	private boolean isEnabled;
+	private boolean isBlocked;
 	private LocalDateTime createDatetime;
 	private LocalDateTime updateDatetime;
 	private LocalDateTime deleteDatetime;
@@ -37,7 +37,7 @@ public class UserInfoDto {
 	 * Constructor
 	 * @param userInfo
 	 */
-	public UserInfoDto(UserInfo userInfo) {
+	public UserDetailInfoDto(UserInfo userInfo) {
 		BeanCopyUtils.copyProperties(userInfo, this);
 	}
 	

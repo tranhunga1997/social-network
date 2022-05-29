@@ -16,7 +16,7 @@ import com.socialnetwork.common.utils.MailUtil;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.general.user.dtos.AuthenticateInfoDto;
 import com.socialnetwork.general.user.dtos.ForgetPwdTokenInfoDto;
-import com.socialnetwork.general.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.dtos.UserDetailInfoDto;
 
 /**
  * Xử lấy các thông tin mật khẩu
@@ -130,7 +130,7 @@ public class AuthenticateService {
 	 */
 	public void forgetPassword(String email) {
 		// lấy thông tin tài khoản từ email
-		UserInfoDto userInfoDto = userService.findByEmail(email);
+		UserDetailInfoDto userInfoDto = userService.findByEmail(email);
 		if(StringUtil.isNull(userInfoDto)) {
 			return;
 		}
@@ -164,7 +164,7 @@ public class AuthenticateService {
 	 * <br>3: quá số lần đăng nhập thất bại
 	 * <br>4: sai mật khẩu
 	 */
-	public int authentication(UserInfoDto userInfo, AuthenticateInfoDto authenticateInfo, String password) {
+	public int authentication(UserDetailInfoDto userInfo, AuthenticateInfoDto authenticateInfo, String password) {
 		int result = 0;
 		
 		/*tài khoản không tồn tại*/
@@ -176,9 +176,9 @@ public class AuthenticateService {
 		// kiểm tra mật khẩu
 		if(!Objects.equal(authenticateInfo.getPassword(), password)) {
 			// kiểm tra tài khoản active
-			if(!userInfo.isEnable()) {
+			if(!userInfo.isEnabled()) {
 				result = 1;
-			}else if(userInfo.isBlock()) {
+			}else if(userInfo.isBlocked()) {
 				result = 2;
 			}else if(authenticateInfo.getLoginFailedCounter() >= loginFailedCounter) {
 				result = 3;

@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 import com.socialnetwork.common.utils.BeanCopyUtils;
-import com.socialnetwork.general.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.dtos.UserDetailInfoDto;
 
 import lombok.Data;
 
@@ -38,12 +38,12 @@ public class UserRegisterForm {
 	@Size(max = 40)
 	private String email;
 	
-	public UserInfoDto toUserInfoDto() {
-		UserInfoDto dto = new UserInfoDto();
+	public UserDetailInfoDto toUserInfoDto() {
+		UserDetailInfoDto dto = new UserDetailInfoDto();
 		BeanCopyUtils.copyProperties(this, dto);
 		dto.setCreateDatetime(LocalDateTime.now());
-		dto.setBlock(false);
-		dto.setEnable(false);
+		dto.setBlocked(false);
+		dto.setEnabled(false);
 		return dto;
 	}
 }

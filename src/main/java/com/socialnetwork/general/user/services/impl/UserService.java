@@ -20,7 +20,7 @@ import com.socialnetwork.common.exceptions.SocialException;
 import com.socialnetwork.common.repositories.user.UserRepository;
 import com.socialnetwork.common.utils.StringUtil;
 import com.socialnetwork.general.user.dtos.RegistTokenInfoDto;
-import com.socialnetwork.general.user.dtos.UserInfoDto;
+import com.socialnetwork.general.user.dtos.UserDetailInfoDto;
 /**
  * <b>Tác dụng: </b>xử lý logic bảng thông tin tài khoản.
  * @author Mạnh Hùng
@@ -28,7 +28,7 @@ import com.socialnetwork.general.user.dtos.UserInfoDto;
  */
 @Service
 @Transactional
-public class UserService extends UserServiceBase<UserInfoDto> {
+public class UserService extends UserServiceBase<UserDetailInfoDto> {
 	@Autowired
 	private UserRepository userRepository;
 	@Autowired
@@ -48,27 +48,27 @@ public class UserService extends UserServiceBase<UserInfoDto> {
 //		
 //		return userInfoDtos;
 //	}
-	public Page<UserInfoDto> findAll(Pageable pageable) {
+	public Page<UserDetailInfoDto> findAll(Pageable pageable) {
 		Page<UserInfo> pageUserInfo = super.findAll(pageable, UserInfo.class);
 		
-		List<UserInfoDto> userInfoDtos = new ArrayList<UserInfoDto>();
+		List<UserDetailInfoDto> userInfoDtos = new ArrayList<UserDetailInfoDto>();
 		pageUserInfo.toList().forEach(item -> {
-			UserInfoDto dto = new UserInfoDto(item);
+			UserDetailInfoDto dto = new UserDetailInfoDto(item);
 			userInfoDtos.add(dto);
 		});
 		
-		return new PageImpl<UserInfoDto>(userInfoDtos, pageable, pageUserInfo.getTotalElements());
+		return new PageImpl<UserDetailInfoDto>(userInfoDtos, pageable, pageUserInfo.getTotalElements());
 	}
 	
-	public Page<UserInfoDto> find(Object conditionObj, Pageable pageable) {
+	public Page<UserDetailInfoDto> find(Object conditionObj, Pageable pageable) {
 		Page<UserInfo> pageUserInfo = super.find(conditionObj, pageable, UserInfo.class);
-		List<UserInfoDto> userInfoDtos = new ArrayList<UserInfoDto>();
+		List<UserDetailInfoDto> userInfoDtos = new ArrayList<UserDetailInfoDto>();
 		pageUserInfo.toList().forEach(item -> {
-			UserInfoDto dto = new UserInfoDto(item);
+			UserDetailInfoDto dto = new UserDetailInfoDto(item);
 			userInfoDtos.add(dto);
 		});
 		
-		return new PageImpl<UserInfoDto>(userInfoDtos, pageable, pageUserInfo.getTotalElements());
+		return new PageImpl<UserDetailInfoDto>(userInfoDtos, pageable, pageUserInfo.getTotalElements());
 	}
 
 
@@ -105,15 +105,15 @@ public class UserService extends UserServiceBase<UserInfoDto> {
 	 * @param username
 	 * @return thông tin tài khoản
 	 */
-	public UserInfoDto findByUsername(String username) {
+	public UserDetailInfoDto findByUsername(String username) {
 		Optional<UserInfo> userOptional = userRepository.findByUsername(username);
-		UserInfoDto userInfoDto = null;
+		UserDetailInfoDto userInfoDto = null;
 		
 		if(userOptional.isEmpty()) {
 			throw new SocialException("E_00003");
 		}
 		
-		userInfoDto = new UserInfoDto(userOptional.get());
+		userInfoDto = new UserDetailInfoDto(userOptional.get());
 		return userInfoDto;
 	}
 	
@@ -122,11 +122,11 @@ public class UserService extends UserServiceBase<UserInfoDto> {
 	 * @param userId
 	 * @return thông tin tài khoản
 	 */
-	public UserInfoDto findById(long userId) {
+	public UserDetailInfoDto findById(long userId) {
 		Optional<UserInfo> userOptional = userRepository.findById(userId);
-		UserInfoDto userInfoDto = null;
+		UserDetailInfoDto userInfoDto = null;
 		if(userOptional.isPresent()) {
-			userInfoDto = new UserInfoDto(userOptional.get());
+			userInfoDto = new UserDetailInfoDto(userOptional.get());
 		}
 		return userInfoDto;
 	}
@@ -136,12 +136,12 @@ public class UserService extends UserServiceBase<UserInfoDto> {
 	 * @param email
 	 * @return thông tin tài khoản
 	 */
-	public UserInfoDto findByEmail(String email) {
+	public UserDetailInfoDto findByEmail(String email) {
 		Optional<UserInfo> userOptional = userRepository.findByEmail(email);
 		
-		UserInfoDto userInfoDto = null;
+		UserDetailInfoDto userInfoDto = null;
 		if(userOptional.isPresent()) {
-			userInfoDto = new UserInfoDto(userOptional.get());
+			userInfoDto = new UserDetailInfoDto(userOptional.get());
 		}
 		return userInfoDto;
 	}
@@ -234,7 +234,7 @@ public class UserService extends UserServiceBase<UserInfoDto> {
 	/**
 	 * Sửa tài khoản
 	 * <b>Điều kiện: </b>phải có user id 
-	 * @param UserInfoDto
+	 * @param UserDetailInfoDto
 	 * @return UserInfoDto
 	 */
 //	@Override
@@ -254,11 +254,11 @@ public class UserService extends UserServiceBase<UserInfoDto> {
 
 	/**
 	 * Tạo mới tài khoản
-	 * @param UserInfoDto
+	 * @param UserDetailInfoDto
 	 * @return UserInfoDto
 	 */
 	@Override
-	public void create(UserInfoDto dto) {
+	public void create(UserDetailInfoDto dto) {
 		if(StringUtil.isNull(dto.getUsername())) {
 			throw new SocialException("W_00002");
 		}
@@ -270,11 +270,11 @@ public class UserService extends UserServiceBase<UserInfoDto> {
 	/**
 	 * Sửa tài khoản
 	 * <b>Điều kiện: </b>phải có user id 
-	 * @param UserInfoDto
+	 * @param UserDetailInfoDto
 	 * @return UserInfoDto
 	 */
 	@Override
-	public void update(UserInfoDto dto) {
+	public void update(UserDetailInfoDto dto) {
 		if(StringUtil.isNull(dto.getUserId())) {
 			throw new SocialException("W_00002");
 		}

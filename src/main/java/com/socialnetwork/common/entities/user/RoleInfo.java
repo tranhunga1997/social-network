@@ -13,10 +13,12 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.socialnetwork.common.entities.BaseEntity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 /**
  * 
@@ -27,6 +29,7 @@ import lombok.EqualsAndHashCode;
 @Table(name = "m_role_info")
 @Data
 @EqualsAndHashCode(callSuper = false)
+@ToString(exclude = "users")
 public class RoleInfo extends BaseEntity {
 	/**
 	 * 
@@ -47,6 +50,7 @@ public class RoleInfo extends BaseEntity {
 //			inverseJoinColumns = @JoinColumn(name = "user_id"))
 //	private List<UserInfo> users;
 	
+	@JsonIgnore
 	@ManyToMany(mappedBy = "roles")
 	private List<UserInfo> users;
 	
@@ -56,10 +60,10 @@ public class RoleInfo extends BaseEntity {
 			inverseJoinColumns = @JoinColumn(name = "permission_id"))
 	private List<PermissionInfo> permissions;
 
-	@Override
-	public String toString() {
-		return "RoleInfo [id=" + id + ", slug=" + slug + ", name=" + name + ", permissions=" + permissions + "]";
-	}
+//	@Override
+//	public String toString() {
+//		return "RoleInfo [id=" + id + ", slug=" + slug + ", name=" + name + ", permissions=" + permissions + "]";
+//	}
 	
 	
 }
