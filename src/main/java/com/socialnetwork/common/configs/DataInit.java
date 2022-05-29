@@ -31,8 +31,8 @@ public class DataInit {
 			UserDetailInfoDto dto = new UserDetailInfoDto();
 			//dto.setUserId(sequenceService.getNextId("USER_ID_SEQ"));
 			dto.setUsername("sunico"+i);
-			dto.setEnable(true);
-			dto.setBlock(false);
+			dto.setEnabled(true);
+			dto.setBlocked(false);
 			dto.setLastName("Hùng "+i);
 			dto.setFirstName("Mạnh");
 			dto.setEmail("tranhung"+i+"@gmail.com");

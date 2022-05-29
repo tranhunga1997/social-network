@@ -52,6 +52,8 @@ import com.socialnetwork.general.user.forms.RoleCreateForm;
 import com.socialnetwork.general.user.forms.UserInfoUpdateForm;
 import com.socialnetwork.general.user.forms.UserLoginForm;
 import com.socialnetwork.general.user.forms.UserRegisterForm;
+import com.socialnetwork.general.user.forms.UserSearchForm;
+import com.socialnetwork.general.user.search.UserSearch;
 import com.socialnetwork.general.user.services.impl.AuthenticateService;
 import com.socialnetwork.general.user.services.impl.ForgetPwdTokenInfoService;
 import com.socialnetwork.general.user.services.impl.LoginHistoryService;
@@ -63,6 +65,7 @@ import com.socialnetwork.general.user.services.impl.RoleInfoService;
 import com.socialnetwork.general.user.services.impl.UserService;
 
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
@@ -90,12 +93,6 @@ public class UserApi {
 	PermissionInfoService permissionInfoService;
 	
 	/* ============================================================================================ */
-	/**
-	 * Controller đăng ký tài khoản
-	 * @param req httpRequest
-	 * @param form biểu mẫu đăng ký
-	 * @return http code
-	 */
 	@ApiOperation(value = "Đăng ký tài khoản")
 	@ApiResponses(value = { 
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -139,11 +136,7 @@ public class UserApi {
 		
 		return ResponseEntity.ok().build();
 	}
-	
-	/**
-	 * Controller đăng nhập
-	 * @return http code
-	 */
+
 	@ApiOperation(value = "Đăng nhập tài khoản")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -198,12 +191,7 @@ public class UserApi {
 		// trả về jwt và refresh token
 		return ResponseEntity.ok(new LoginResponseData(jwt, loginTokenInfoDto.getRefreshToken()));
 	}
-	
-	/**
-	 * Controller đăng xuất
-	 * @param request
-	 * @return
-	 */
+
 	@ApiOperation(value = "Đăng xuất tài khoản")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -216,13 +204,7 @@ public class UserApi {
 		
 		return ResponseEntity.ok().build();
 	}
-	
-	/**
-	 * Controller thông tin chi tiết
-	 * @param request
-	 * @param username
-	 * @return
-	 */
+
 	@ApiOperation(value = "Xem thông tin chi tiết")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -249,14 +231,7 @@ public class UserApi {
 				.build();
 		return ResponseEntity.ok(userDetailDto);
 	}
-	
-	/**
-	 * Controller sửa thông tin chi tiết tài khoản
-	 * @param request
-	 * @param username
-	 * @param form
-	 * @return
-	 */
+
 	@ApiOperation(value = "Sửa thông tin chi tiết")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -291,12 +266,6 @@ public class UserApi {
 		return ResponseEntity.ok(resultDto);
 	}
 	
-	/**
-	 * Controller thay đổi mật khẩu
-	 * @param request HttpServletRequest
-	 * @param form ChangePasswordForm
-	 * @return
-	 */
 	@ApiOperation(value = "Thay đổi mật khẩu")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -331,12 +300,6 @@ public class UserApi {
 		return ResponseEntity.ok("Thành công");
 	}
 	
-	/**
-	 * Controller quên mật khẩu (nhập email)
-	 * @param request
-	 * @param email
-	 * @return
-	 */
 	@ApiOperation(value = "Quên mật khẩu (nhập email)")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -357,12 +320,6 @@ public class UserApi {
 		return ResponseEntity.ok("Thành công");
 	}
 	
-	/**
-	 * Controller quên mật khẩu (nhập mật khẩu)
-	 * @param request
-	 * @param form
-	 * @return
-	 */
 	@ApiOperation(value = "Quên mật khẩu (nhập mật khẩu)")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -391,10 +348,6 @@ public class UserApi {
 	
 	// TODO ADMIN CONROLLER
 	
-	/**
-	 * Controller xem quyền hạn
-	 * @return
-	 */
 	@ApiOperation(value = "Xem tất cả permission (quyền hạn)")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -412,11 +365,6 @@ public class UserApi {
 		return ResponseEntity.ok(pagination);
 	}
 	
-	/**
-	 * Controller xem role
-	 * @param page
-	 * @return
-	 */
 	@ApiOperation(value = "Xem tất cả role")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -448,11 +396,7 @@ public class UserApi {
 		roleInfoDto.setPermissions(roleInfoDto.getPermissions());
 		return ResponseEntity.ok(roleInfoDto);
 	}
-	/**
-	 * Tạo mới role
-	 * @param form
-	 * @return
-	 */
+
 	@ApiOperation(value = "Tạo mới role")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -478,14 +422,13 @@ public class UserApi {
 		return ResponseEntity.ok(dto);
 	}
 	
-	/**
-	 * Sửa role
-	 * @param roleId
-	 * @param perssionIds
-	 * @return
-	 */
+	@ApiOperation(value = "Sửa thông tin role")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
 	@PutMapping("/role")
-	ResponseEntity<?> updateRole(int roleId, Integer[] perssionIds) {
+	ResponseEntity<?> updateRole(@RequestParam int roleId, @ApiParam(value = "Ví dụ:\ndanh sách permission id hiện tại: 1,2,3.\nmuốn xóa 2 và thêm 4, dữ liệu gửi như bên dưới\npermissionIds = {1,3,4}") @RequestParam Integer[] perssionIds) {
 		
 		RoleDetailInfoDto roleInfoDto = roleInfoService.findById(roleId);
 		if(StringUtil.isNull(roleInfoDto)) {
@@ -501,11 +444,6 @@ public class UserApi {
 		return ResponseEntity.ok("Sửa role thành công");
 	}
 	
-	/**
-	 * Xóa role
-	 * @param roleId
-	 * @return
-	 */
 	@ApiOperation(value = "Xóa role")
 	@ApiResponses(value = {
 			@ApiResponse(code = 200, message = "Thành công"),
@@ -533,6 +471,32 @@ public class UserApi {
 		});
 		
 		return ResponseEntity.ok(new Pagination<>(uDetailInfoPage.getTotalPages(), uDetailInfoPage.getTotalElements(), userInfoDtos));
+	}
+	
+	@ApiOperation(value = "tìm kiếm thông tin user")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@GetMapping("/filter")
+	ResponseEntity<Pagination<UserDetailInfoDto>> userFilter(UserSearchForm form, @RequestParam(defaultValue = "1") int page) {
+		UserSearch userSearch = new UserSearch();
+		userSearch.setUsername(form.getUsername());
+		userSearch.setRoleId(form.getRoleId());
+		Page<UserDetailInfoDto> userInfoPage = userService.find(userSearch, PageRequest.of(page-1, 10));
+		return ResponseEntity.ok(new Pagination<>(userInfoPage.getTotalPages(), userInfoPage.getTotalElements(), userInfoPage.toList()));
+	}
+	
+	@ApiOperation(value = "Tính năng khóa tài khoản", notes = "trạng thái tài khoản khóa -> mở khóa \ntrạng thái tài khoản không khóa -> khóa")
+	@ApiResponses(value = {
+			@ApiResponse(code = 200, message = "Thành công"),
+			@ApiResponse(code = 400, message = "Thất bại")
+	})
+	@PostMapping("/block")
+	ResponseEntity<?> blockAndUnblock(@RequestParam String username) {
+		boolean status = userService.findByUsername(username).isBlocked();
+		userService.blockAndUnblock(username, status);
+		return ResponseEntity.ok().build();
 	}
 	
 }

@@ -27,8 +27,8 @@ public class UserDetailInfoDto {
 	private String firstName;
 	private String email;
 	private List<RoleInfo> roles;
-	private boolean enable;
-	private boolean block;
+	private boolean isEnabled;
+	private boolean isBlocked;
 	private LocalDateTime createDatetime;
 	private LocalDateTime updateDatetime;
 	private LocalDateTime deleteDatetime;

@@ -176,9 +176,9 @@ public class AuthenticateService {
 		// kiểm tra mật khẩu
 		if(!Objects.equal(authenticateInfo.getPassword(), password)) {
 			// kiểm tra tài khoản active
-			if(!userInfo.isEnable()) {
+			if(!userInfo.isEnabled()) {
 				result = 1;
-			}else if(userInfo.isBlock()) {
+			}else if(userInfo.isBlocked()) {
 				result = 2;
 			}else if(authenticateInfo.getLoginFailedCounter() >= loginFailedCounter) {
 				result = 3;

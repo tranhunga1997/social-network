@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.validation.constraints.Pattern;
 
+import org.springframework.web.bind.annotation.RequestParam;
+
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
